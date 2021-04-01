@@ -1,15 +1,6 @@
 import './LoginPage.css';
-import logoFWB from './logo.jpg';
 import logoFWBLogin from './logoLogin.jpg';
 import React from 'react';
-
-function Title() {
-  return (
-    <div className="titleCard">
-      <img src={logoFWB} alt="fireworks title" height={125} width={366} />
-    </div>
-  )
-}
 
 class CreateAccount extends React.Component {
   constructor(props) {
@@ -48,12 +39,12 @@ class CreateAccount extends React.Component {
         <div className="rightForm">
           <form>
             <input type="text" id="inputLogin" name="UserName" value={this.state.UserName} className="floatLeft" onChange={this.handleChange} />
-            <label for="username"/>
+            <label htmlFor="username"/>
             <br />
 
             
             <input type="text" id="inputLogin" name="Password" value={this.state.Password} className="floatLeft" onChange={this.handleChange} />
-            <label for="password"/>
+            <label htmlFor="password"/>
             <br />
 
             <input type="submit" id="submitLogin" value="Log In" className="floatLeft" onClick={this.handleSubmit}/>
@@ -70,7 +61,6 @@ class CreateAccount extends React.Component {
 function LoginPage() {
   return (
     <div>
-      <Title />
       <CreateAccount />
     </div>
   )
