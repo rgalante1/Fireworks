@@ -1,15 +1,6 @@
 import './LoginPage.css';
-import logoFWB from './logo.jpg';
 import logoFWBLogin from './logoLogin.jpg';
 import React from 'react';
-
-function Title() {
-  return (
-    <div className="titleCard">
-      <img src={logoFWB} alt="fireworks title" height={125} width={366} />
-    </div>
-  )
-}
 
 class CreateAccount extends React.Component {
   constructor(props) {
@@ -70,7 +61,6 @@ class CreateAccount extends React.Component {
 function LoginPage() {
   return (
     <div>
-      <Title />
       <CreateAccount />
     </div>
   )
