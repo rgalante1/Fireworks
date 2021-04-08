@@ -14,11 +14,8 @@ class DeleteAccount extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      FirstName: 'First Name',
-      LastName: 'Last Name',
-      UserName: 'User Name',
-      Password: 'Password',
-      Birthday: ''
+      UserName: '',
+      Password: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,13 +41,13 @@ class DeleteAccount extends React.Component{
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-            onChange={this.handleChange}/><br/>
+            placeholder="User Name" onChange={this.handleChange}/><br/>
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
-            onChange={this.handleChange}/><br/>
+            placeholder="Password" onChange={this.handleChange}/><br/>
           </label>
-          <button type="button" className="floatLeft">Cancel</button>
+          <button type="button" className="floatLeft" onClick={() => alert('Cancel')}>Cancel</button>
           <input type="submit" value="Delete" className="floatRight"/>
         </form>
       </div>
