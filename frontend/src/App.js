@@ -89,7 +89,7 @@ function App () {
   return (
     <div className="App">
       <Title />
-      <ProfilePage usernameLooking={"medusa"} usernamePassed={"medusa"} />
+      <DeletePage />
     </div>
     /*
     <Router>

@@ -94,8 +94,8 @@ class CreatePost extends React.Component{
             onChange={this.handleChange}/>
             <span className="checkboxText">Verified Users Only</span><br/>
           </label>
-          <button type="button" className="floatLeft">Cancel</button>
-          <input type="submit" value="Create Post" className="floatRight"/>
+          <button type="button" id="cancel" className="floatLeft">Cancel</button>
+          <input type="submit" value="Create Post" id="submit" className="floatRight"/>
         </form>
       </div>
     )

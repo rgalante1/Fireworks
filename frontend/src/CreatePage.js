@@ -1,7 +1,5 @@
 import React from 'react';
 import './CreatePage.css';
-import logo from './logo.jpg';
-
 
 class CreateAccount extends React.Component{
   constructor(props){
@@ -53,9 +51,9 @@ class CreateAccount extends React.Component{
             <input type="text" id="Password" name="Password" value={this.state.Password} 
             placeholder="Password" onChange={this.handleChange}/><br/>
           </label>
-          <label htmlFor="Birthday" className="floatLeft" id="birthday">
+          <label htmlFor="Birthday" id="birthday">
             <p>Birthday:</p>
-            <input type="date" name="Birthday" className="floatLeft" id="birthdayDate" 
+            <input type="date" name="Birthday" id="birthdayDate" 
             onChange={this.handleChange}/>
             <div className="clear"></div>
           </label>

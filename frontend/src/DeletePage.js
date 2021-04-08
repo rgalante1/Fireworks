@@ -1,14 +1,5 @@
 import React from 'react';
 import './DeletePage.css';
-import logo from './logo.jpg';
-
-function Title(){
-  return(
-    <div className = "titleCard">
-      <img src={logo} alt="fireworks title" height={125} width={366}/>
-    </div>
-  )
-}
 
 class DeleteAccount extends React.Component{
   constructor(props){
@@ -47,8 +38,8 @@ class DeleteAccount extends React.Component{
             <input type="text" id="Password" name="Password" value={this.state.Password} 
             placeholder="Password" onChange={this.handleChange}/><br/>
           </label>
-          <button type="button" className="floatLeft" onClick={() => alert('Cancel')}>Cancel</button>
-          <input type="submit" value="Delete" className="floatRight"/>
+          <button type="button" id="cancel"  onClick={() => alert('Cancel')}>Cancel</button>
+          <input type="submit" id="delete" value="Delete"/>
         </form>
       </div>
     )
@@ -58,10 +49,9 @@ class DeleteAccount extends React.Component{
 function DeletePage(){
   return(
     <div>
-      <Title />
       <DeleteAccount />
     </div>
   )
 }
 
-export default DeleteAccount;
+export default DeletePage;
