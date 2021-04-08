@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
 import DeletePage from './DeletePage.js';
+import CreatePage from './CreatePage.js';
 import axios from 'axios';
 
 function Title() {
@@ -78,22 +85,36 @@ function App () {
   }, [])
 
   return (
-    <div className="App">
-      {/* <header className="App-header">
-        <button onClick={fetchBase} style={{marginBottom: '1rem'}}> {`GET: http://${url}:8000/`} </button>
-        <button onClick={reset}> Reset DB </button>
-        <form onSubmit={handleSubmit}>
-          <input type="text" value={number} onChange={handleChange}/>
-          <br/>
-          <input type="submit" value="Submit" />
-        </form>
-        <ul>
-          { values.map((value, i) => <li key={i}>{value.value}</li>) }
-        </ul>
-      </header> */}
-      <Title />
-      <DeletePage />
-    </div>
+    // <div className="App">
+    //   {/* <header className="App-header">
+    //     <button onClick={fetchBase} style={{marginBottom: '1rem'}}> {`GET: http://${url}:8000/`} </button>
+    //     <button onClick={reset}> Reset DB </button>
+    //     <form onSubmit={handleSubmit}>
+    //       <input type="text" value={number} onChange={handleChange}/>
+    //       <br/>
+    //       <input type="submit" value="Submit" />
+    //     </form>
+    //     <ul>
+    //       { values.map((value, i) => <li key={i}>{value.value}</li>) }
+    //     </ul>
+    //   </header> */}
+    //   <Title />
+    //   <DeletePage />
+    // </div>
+    <Router>
+      <Title></Title>
+      <Switch>
+        <Route path="/login">
+          <LoginPage></LoginPage>
+        </Route>
+        <Route path="/deleteaccount">
+          <DeletePage></DeletePage>
+        </Route>
+        <Route path="/createaccount">
+          <CreatePage></CreatePage>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
