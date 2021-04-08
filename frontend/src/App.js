@@ -9,6 +9,7 @@ import './App.css';
 import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
 import DeletePage from './DeletePage.js';
+import CreatePostPage from './CreatePostPage.js';
 import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
 import axios from 'axios';
