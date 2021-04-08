@@ -9,6 +9,7 @@ import './App.css';
 import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
 import DeletePage from './DeletePage.js';
+import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
 import axios from 'axios';
 
@@ -85,22 +86,11 @@ function App () {
   }, [])
 
   return (
-    // <div className="App">
-    //   {/* <header className="App-header">
-    //     <button onClick={fetchBase} style={{marginBottom: '1rem'}}> {`GET: http://${url}:8000/`} </button>
-    //     <button onClick={reset}> Reset DB </button>
-    //     <form onSubmit={handleSubmit}>
-    //       <input type="text" value={number} onChange={handleChange}/>
-    //       <br/>
-    //       <input type="submit" value="Submit" />
-    //     </form>
-    //     <ul>
-    //       { values.map((value, i) => <li key={i}>{value.value}</li>) }
-    //     </ul>
-    //   </header> */}
-    //   <Title />
-    //   <DeletePage />
-    // </div>
+    <div className="App">
+      <Title />
+      <ProfilePage usernameLooking={"Kryptsm"} usernamePassed={"medusa"} />
+    </div>
+    {/*
     <Router>
       <Title></Title>
       <Switch>
@@ -115,6 +105,7 @@ function App () {
         </Route>
       </Switch>
     </Router>
+    */}
   );
 }
 
