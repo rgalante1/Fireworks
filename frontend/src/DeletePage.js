@@ -1,6 +1,6 @@
 import React from 'react';
-import './DeleteAccount.css';
-import logo from './FireWorksLogoUpdated.jpg';
+import './DeletePage.css';
+import logo from './logo.jpg';
 
 function Title(){
   return(
@@ -58,7 +58,7 @@ class DeleteAccount extends React.Component{
   }
 }
 
-function DeleteAccount(){
+function DeletePage(){
   return(
     <div>
       <Title />
