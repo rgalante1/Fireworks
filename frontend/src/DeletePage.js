@@ -1,6 +1,6 @@
 import React from 'react';
-import './DeleteAccount.css';
-import logo from './FireWorksLogoUpdated.jpg';
+import './DeletePage.css';
+import logo from './logo.jpg';
 
 function Title(){
   return(
@@ -41,13 +41,17 @@ class DeleteAccount extends React.Component{
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
+<<<<<<< HEAD:frontend/src/DeleteAccount.js
             placeholder="User name" onChange={this.handleChange}/><br/>
+=======
+            placeholder="User Name" onChange={this.handleChange}/><br/>
+>>>>>>> e90a09da4b048cb2d3311fd043258090b56b1d38:frontend/src/DeletePage.js
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
             placeholder="Password" onChange={this.handleChange}/><br/>
           </label>
-          <button type="button" className="floatLeft">Cancel</button>
+          <button type="button" className="floatLeft" onClick={() => alert('Cancel')}>Cancel</button>
           <input type="submit" value="Delete" className="floatRight"/>
         </form>
       </div>
@@ -55,7 +59,7 @@ class DeleteAccount extends React.Component{
   }
 }
 
-function DeleteAccount(){
+function DeletePage(){
   return(
     <div>
       <Title />
