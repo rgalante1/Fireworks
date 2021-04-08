@@ -38,12 +38,12 @@ class CreateAccount extends React.Component {
         </div>
         <div className="rightForm">
           <form>
-            <input type="text" id="inputLogin" name="UserName" value={this.state.UserName} className="floatLeft" onChange={this.handleChange} />
+            <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName} className="floatLeft" onChange={this.handleChange} />
             <label htmlFor="username"/>
             <br />
 
             
-            <input type="text" id="inputLogin" name="Password" value={this.state.Password} className="floatLeft" onChange={this.handleChange} />
+            <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password} className="floatLeft" onChange={this.handleChange} />
             <label htmlFor="password"/>
             <br />
 
