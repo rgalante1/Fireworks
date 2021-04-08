@@ -4,6 +4,7 @@ import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
 import DeletePage from './DeletePage.js';
 import CreatePage from './CreatePage.js';
+import CreatePostPage from './CreatePostPage.js';
 import axios from 'axios';
 
 function Title() {
@@ -93,7 +94,7 @@ function App () {
         </ul>
       </header> */}
       <Title />
-      <CreatePage />
+      <CreatePostPage />
     </div>
   );
 }

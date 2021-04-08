@@ -2,13 +2,6 @@ import React from 'react';
 import './CreatePage.css';
 import logo from './logo.jpg';
 
-function Title(){
-  return(
-    <div className = "titleCard">
-      <img src={logo} alt="fireworks title" height={125} width={366}/>
-    </div>
-  )
-}
 
 class CreateAccount extends React.Component{
   constructor(props){
@@ -32,6 +25,14 @@ class CreateAccount extends React.Component{
 
   handleSubmit(event){
     alert('Account Created');
+    var bday = document.querySelector("#birthdayDate");
+    bday.value = "";
+    this.setState({
+      Name: '',
+      UserName: '',
+      Password: '',
+      Birthday: ''
+    });
     event.preventDefault();
   }
 
@@ -68,7 +69,6 @@ class CreateAccount extends React.Component{
 function CreatePage(){
   return(
     <div>
-      <Title />
       <CreateAccount />
     </div>
   )
