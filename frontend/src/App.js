@@ -3,6 +3,7 @@ import './App.css';
 import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
 import DeletePage from './DeletePage.js';
+import ProfilePage from './ProfilePage.js';
 import axios from 'axios';
 
 function Title() {
@@ -92,7 +93,7 @@ function App () {
         </ul>
       </header> */}
       <Title />
-      <DeletePage />
+      <ProfilePage usernameLooking={"Kryptsm"} usernamePassed={"medusa"} />
     </div>
   );
 }
