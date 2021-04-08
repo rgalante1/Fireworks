@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
+/*import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
-} from "react-router-dom";
+} from "react-router-dom";*/
 import './App.css';
 import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
@@ -90,7 +90,7 @@ function App () {
       <Title />
       <ProfilePage usernameLooking={"Kryptsm"} usernamePassed={"medusa"} />
     </div>
-    {/*
+    /*
     <Router>
       <Title></Title>
       <Switch>
@@ -105,7 +105,7 @@ function App () {
         </Route>
       </Switch>
     </Router>
-    */}
+    */
   );
 }
 
