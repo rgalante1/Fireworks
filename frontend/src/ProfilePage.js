@@ -1,8 +1,6 @@
 import './ProfilePage.css';
 import React from 'react';
 
-
-
 class ShowProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -17,10 +15,12 @@ class ShowProfile extends React.Component {
             PhoneNumber: '412-996-7269',
             EmailAddress: 'srwalsh@smu.edu',
             ProfilePhotoURL: 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg',
-            
+            MessageText: 'Hello! I\'d love to schedule a meeting with you if possible. Let me know!',
+
         }
         this.handleChange = this.handleChange.bind(this);
-        this.chooseOption = this.chooseOption.bind(this);
+        this.buttonEdit = this.buttonEdit.bind(this);
+        this.buttonInvite = this.buttonInvite.bind(this);
     }
 
     handleChange(event) {
@@ -28,20 +28,52 @@ class ShowProfile extends React.Component {
         const value = target.value;
         const name = target.name;
         this.setState({ [name]: value })
+        if (name === "UserName" && this.state.UserName === this.state.UserNameLooking)
+            this.setState({ UserNameLooking: value })
     }
 
     buttonInvite(event) {
-        alert("Button has been clicked.");
-        { document.getElementById("invitebutton").disabled = true; };
+        if (this.state.UserName !== this.state.UserNameLooking) {
+            return (
+                <div className="wrapper">
+                    <button type="button" className="btn btn-success buttonInvite" id="invitebutton" data-toggle="modal" data-target="#exampleModal">Invite</button>
+
+                    <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Please enter in your custom message to this user:</h5>
+                                </div>
+                                <div className="modal-body">
+                                    <form className="changeForm">
+                                        <label htmlFor="MessageText" className="labels">Message:</label><br />
+                                        <textarea className="inputs AboutMeTxt" id="MessageText" name="MessageText" rows="4" cols="78" maxLength="300" placeholder={this.state.MessageText} onChange={this.handleChange} />
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal">Send message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else{
+            return(
+                <button type="button" className="btn btn-success buttonInvite" id="invitebutton" data-toggle="modal" data-target="#exampleModal" disabled>Invite</button>
+        )}
+            
     }
 
-    chooseOption(props) {
+    buttonEdit(props) {
         if (this.state.UserName === this.state.UserNameLooking) {
             return (
                 <div className="wrapper">
                     <button type="button" className="btn btn-secondary buttonEdit" data-toggle="modal" data-target="#changeInfoModal">Edit Information</button>
 
-                    <div className="modal fade" id="changeInfoModal" tabindex="-1" role="dialog">
+                    <div className="modal fade" id="changeInfoModal" tabIndex="-1" role="dialog">
                         <div className="modal-dialog modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
@@ -81,7 +113,7 @@ class ShowProfile extends React.Component {
 
                                         <div className="form-group">
                                             <label htmlFor="AboutMe" className="labels">About Me (300 Character Limit):</label><br />
-                                            <textarea className="inputs AboutMeTxt" id="AboutMe" name="AboutMe" rows="4" cols="78" maxlength="300" value={this.state.AboutMe} onChange={this.handleChange} />
+                                            <textarea className="inputs AboutMeTxt" id="AboutMe" name="AboutMe" rows="4" cols="78" maxLength="300" value={this.state.AboutMe} onChange={this.handleChange} />
                                         </div>
                                     </form>
                                 </div>
@@ -115,12 +147,12 @@ class ShowProfile extends React.Component {
                 <div className="row">
                     <div className="col">
                         <div className="buttonStuff">
-                            <button type="button" className="btn btn-success buttonInvite" id="invitebutton" >Invite</button>
+                            {this.buttonInvite()}
                         </div>
                     </div>
                     <div className="col">
                         <div className="buttonStuff">
-                            { this.chooseOption() }
+                            {this.buttonEdit()}
                         </div>
                     </div>
                 </div>

@@ -41,11 +41,7 @@ class DeleteAccount extends React.Component{
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-<<<<<<< HEAD:frontend/src/DeleteAccount.js
-            placeholder="User name" onChange={this.handleChange}/><br/>
-=======
             placeholder="User Name" onChange={this.handleChange}/><br/>
->>>>>>> e90a09da4b048cb2d3311fd043258090b56b1d38:frontend/src/DeletePage.js
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
