@@ -2,22 +2,14 @@ import React from 'react';
 import './CreatePage.css';
 import logo from './logo.jpg';
 
-function Title(){
-  return(
-    <div className = "titleCard">
-      <img src={logo} alt="fireworks title" height={125} width={366}/>
-    </div>
-  )
-}
 
 class CreateAccount extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      FirstName: 'First Name',
-      LastName: 'Last Name',
-      UserName: 'User Name',
-      Password: 'Password',
+      Name: '',
+      UserName: '',
+      Password: '',
       Birthday: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -33,6 +25,14 @@ class CreateAccount extends React.Component{
 
   handleSubmit(event){
     alert('Account Created');
+    var bday = document.querySelector("#birthdayDate");
+    bday.value = "";
+    this.setState({
+      Name: '',
+      UserName: '',
+      Password: '',
+      Birthday: ''
+    });
     event.preventDefault();
   }
 
@@ -41,21 +41,17 @@ class CreateAccount extends React.Component{
       <div className="createAccount">
         <h1>Sign Up</h1>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="FirstName">
-            <input type="text" id="FirstName" name="FirstName" value={this.state.FirstName} 
-            className="floatLeft" onChange={this.handleChange}/>
-          </label>
-          <label htmlFor="LastName">
-            <input type="text" id="LastName" name="LastName" value={this.state.LastName} 
-            onChange={this.handleChange}/><br/>
+          <label htmlFor="Name">
+            <input type="text" id="Name" name="Name" value={this.state.Name} 
+            placeholder="Full Name" onChange={this.handleChange}/>
           </label>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-            onChange={this.handleChange}/><br/>
+            placeholder="User Name" onChange={this.handleChange}/><br/>
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
-            onChange={this.handleChange}/><br/>
+            placeholder="Password" onChange={this.handleChange}/><br/>
           </label>
           <label htmlFor="Birthday" className="floatLeft" id="birthday">
             <p>Birthday:</p>
@@ -73,7 +69,6 @@ class CreateAccount extends React.Component{
 function CreatePage(){
   return(
     <div>
-      <Title />
       <CreateAccount />
     </div>
   )
