@@ -44,7 +44,7 @@ class CreatePost extends React.Component{
   }
 
   handleVirtual(event){
-    if(this.state.disabled == false){
+    if(!this.state.disabled){
       this.setState({
         disabled: true,
         loc: 'Virtual'

@@ -3,7 +3,9 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useRouteMatch,
+  useParams
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
@@ -20,6 +22,25 @@ function Title() {
       <img src={logoFWB} alt="fireworks title" height={125} width={366} />
     </div>
   )
+}
+
+function UserProfilesRouter() {
+  const match = useRouteMatch();
+  return (
+    <Switch>
+      <Route path={`${match.path}/:usernamePassed`}>
+        <UserProfileRoute></UserProfileRoute>
+      </Route>
+      <Route path={match.path}>
+        <h3>Please select a user to visit their profile.</h3>
+      </Route>
+    </Switch>
+  );
+}
+
+function UserProfileRoute() {
+  const { usernamePassed } = useParams();
+  return ProfilePage({usernameLooking: "Alex Meech", usernamePassed: usernamePassed});
 }
 
 // React functional component
@@ -87,11 +108,6 @@ function App () {
   }, [])
 
   return (
-    <div className="App">
-      <Title />
-      <DeletePage />
-    </div>
-    /*
     <Router>
       <Title></Title>
       <Switch>
@@ -104,9 +120,14 @@ function App () {
         <Route path="/createaccount">
           <CreatePage></CreatePage>
         </Route>
+        <Route path="/createpost">
+          <CreatePostPage></CreatePostPage>
+        </Route>
+        <Route path="/profile">
+          <UserProfilesRouter></UserProfilesRouter>
+        </Route>
       </Switch>
     </Router>
-    */
   );
 }
 
