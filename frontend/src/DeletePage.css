@@ -14,7 +14,7 @@
   font-weight: bold;
 }
 
-.deleteAccount > h1, p{
+.deleteAccount > h1, .deleteAccount >  p{
   text-align: center;
 }
 
