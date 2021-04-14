@@ -1,0 +1,50 @@
+.postDisplay {
+    text-align: left;
+    background-color: white;
+    width: 50vw;
+    height: 45vh;
+    border-radius: 5%;
+    border: thin solid black;
+    margin: auto;
+    margin-top: 12vh;
+    overflow: auto;
+  }
+  
+  .postDisplay > p {
+    font-size: 90%;
+    font-weight: bold;
+  }
+  
+  .postDisplay > h1, .postDisplay > p, .postDisplay > a {
+    margin-left: 3vw;
+    margin-top: 3vh;
+  }
+
+  .postLocation::before {
+    content: url(./map-marker-alt-solid.png);
+    margin-right: 1vw;
+  }
+
+  .postTimeDate::before {
+    content: url(./calendar-alt-solid.png);
+    margin-right: 1vw;
+  }
+  
+  #rsvp {
+    width: 15vw;
+    height: 4vh;
+    margin-left: 3vw;
+    margin-top: 3vh;
+    border-radius: 20%;
+    color: white;
+    font-size: 130%;
+    font-weight: bold;
+  }
+  
+  #rsvp:hover {
+    background-color: lightgray;
+  }
+  
+  button {
+    background-color: darkgrey;
+  }
