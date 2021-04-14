@@ -3,7 +3,9 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useRouteMatch,
+  useParams
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
@@ -12,6 +14,8 @@ import DeletePage from './DeletePage.js';
 import CreatePostPage from './CreatePostPage.js';
 import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
+import PostDisplay from './app/PostDisplay'
+import Post from './models/Post'
 import axios from 'axios';
 
 function Title() {
@@ -20,6 +24,46 @@ function Title() {
       <img src={logoFWB} alt="fireworks title" height={125} width={366} />
     </div>
   )
+}
+
+function UserProfilesRouter() {
+  const match = useRouteMatch();
+  return (
+    <Switch>
+      <Route path={`${match.path}/:usernamePassed`}>
+        <UserProfileRoute></UserProfileRoute>
+      </Route>
+      <Route path={match.path}>
+        <h3>Please select a user to visit their profile.</h3>
+      </Route>
+    </Switch>
+  );
+}
+
+function UserProfileRoute() {
+  const { usernamePassed } = useParams();
+  return ProfilePage({usernameLooking: "Alex Meech", usernamePassed: usernamePassed});
+}
+
+function UserPostRouter() {
+  const match = useRouteMatch();
+  return (
+    <Switch>
+      <Route path={`${match.path}/:postId`}>
+        <UserPostRoute></UserPostRoute>
+      </Route>
+      <Route path={match.path}>
+        <h3>Please select a post to view it.</h3>
+      </Route>
+    </Switch>
+  );
+}
+
+function UserPostRoute() {
+  const { postId } = useParams();
+  return (
+    <PostDisplay post={new Post(postId, "Specific Post", "This is a specific post.", new Date("2020-04-01"), "Junkins 303", postId % 2 === 0 ? "https://smu.edu/live" : undefined)}></PostDisplay>
+  );
 }
 
 // React functional component
@@ -87,11 +131,6 @@ function App () {
   }, [])
 
   return (
-    <div className="App">
-      <Title />
-      <DeletePage />
-    </div>
-    /*
     <Router>
       <Title></Title>
       <Switch>
@@ -104,9 +143,20 @@ function App () {
         <Route path="/createaccount">
           <CreatePage></CreatePage>
         </Route>
+        <Route path="/createpost">
+          <CreatePostPage></CreatePostPage>
+        </Route>
+        <Route path="/profile">
+          <UserProfilesRouter></UserProfilesRouter>
+        </Route>
+        <Route path="/post">
+          <UserPostRouter></UserPostRouter>
+        </Route>
+        <Route path="/">
+          <PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+        </Route>
       </Switch>
     </Router>
-    */
   );
 }
 
