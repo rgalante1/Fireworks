@@ -32,21 +32,23 @@ class CreateAccount extends React.Component {
   render() {
     return (
       <div className="logIn">
-        <h1 className="titleLogIn">Log In</h1>
-        <form className="loginForm">
-          <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName} className="floatLeft" onChange={this.handleChange} />
-          <label htmlFor="username" />
-          <br />
+        <div className="loginWrapper">
+          <h1 className="titleLogIn">Log In</h1>
+          <form className="loginForm">
+            <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName} className="floatLeft" onChange={this.handleChange} />
+            <label htmlFor="username" />
+            <br />
 
-          <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password} className="floatLeft" onChange={this.handleChange} />
-          <label htmlFor="password" />
-          <br />
+            <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password} className="floatLeft" onChange={this.handleChange} />
+            <label htmlFor="password" />
+            <br />
 
-          <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} />
-          <br />
+            <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} />
+            <br />
 
-          <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} />
-        </form>
+            <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} />
+          </form>
+        </div>
       </div>
     )
   }
