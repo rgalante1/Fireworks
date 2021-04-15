@@ -12,21 +12,21 @@
   }
 
   .usernameLabel {
-      padding-top: 10px;
+      padding-top: 0.7%;
   }
 
   .companyName {
-      padding-top: 5px;
+      padding-top: 0.5%;
   }
 
   .InviteButton {
-      margin-top: 15px;
+      margin-top: 1%;
   }
 
 .bundleText {
     border: 1px solid black;
-    width: 450px;
-    height: 370px;
+    width: 95%;
+    height: 95%;
     text-align: left;
     padding: 25px;
     margin-top: 25px;

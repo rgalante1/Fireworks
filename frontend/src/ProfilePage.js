@@ -78,43 +78,43 @@ class ShowProfile extends React.Component {
                         <div className="modal-dialog modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">Make any changes (16 character limit unless specified):</h5>
+                                    <h5 className="modal-title" id="exampleModalLabel">Make any changes:</h5>
                                 </div>
                                 <div className="modal-body">
                                     <form className="changeForm">
                                         <div className="form-group">
                                             <label htmlFor="UserName" className="labels">Username:</label><br />
-                                            <input type="text" className="inputs" id="UserName" name="UserName" maxLength="16" value={this.state.UserName} onChange={this.handleChange} />
+                                            <input type="text" className="inputs" id="UserName" name="UserName" value={this.state.UserName} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
                                             <label htmlFor="RealName" className="labels">Name:</label><br />
-                                            <input type="text" className="inputs" id="RealName" name="RealName" maxLength="16" value={this.state.RealName} onChange={this.handleChange} />
+                                            <input type="text" className="inputs" id="RealName" name="RealName" value={this.state.RealName} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
                                             <label htmlFor="JobTitle" className="labels">Job Title:</label><br />
-                                            <input type="text" className="inputs" id="JobTitle" name="JobTitle" maxLength="16" value={this.state.JobTitle} onChange={this.handleChange} />
+                                            <input type="text" className="inputs" id="JobTitle" name="JobTitle" value={this.state.JobTitle} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
                                             <label htmlFor="Location" className="labels">Location:</label><br />
-                                            <input type="text" className="inputs" id="Location" name="Location" maxLength="16" value={this.state.Location} onChange={this.handleChange} />
+                                            <input type="text" className="inputs" id="Location" name="Location" value={this.state.Location} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
                                             <label htmlFor="PhoneNumber" className="labels">Phone Number:</label><br />
-                                            <input type="text" className="inputs" id="PhoneNumber" name="PhoneNumber" maxLength="16" value={this.state.PhoneNumber} onChange={this.handleChange} />
+                                            <input type="text" className="inputs" id="PhoneNumber" name="PhoneNumber" value={this.state.PhoneNumber} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
                                             <label htmlFor="EmailAddress" className="labels">Email Address:</label><br />
-                                            <input type="text" className="inputs" id="EmailAddress" name="EmailAddress" maxLength="16" value={this.state.EmailAddress} onChange={this.handleChange} />
+                                            <input type="text" className="inputs" id="EmailAddress" name="EmailAddress" value={this.state.EmailAddress} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
-                                            <label htmlFor="AboutMe" className="labels">About Me (300 Character Limit):</label><br />
-                                            <textarea className="inputs AboutMeTxt" id="AboutMe" name="AboutMe" rows="4" cols="78" maxLength="300" value={this.state.AboutMe} onChange={this.handleChange} />
+                                            <label htmlFor="AboutMe" className="labels">About Me:</label><br />
+                                            <textarea className="inputs AboutMeTxt" id="AboutMe" name="AboutMe" rows="4" cols="78" value={this.state.AboutMe} onChange={this.handleChange} />
                                         </div>
                                     </form>
                                 </div>
