@@ -25,7 +25,7 @@
 
 .bundleText {
     border: 1px solid black;
-    width: 600px;
+    width: 450px;
     height: 370px;
     text-align: left;
     padding: 25px;
@@ -79,6 +79,7 @@
     border: 1px solid black;
     padding: 10px;
     margin-top: 10px;
+    margin-left: 25px;
     word-wrap: break-word;
 }
 
