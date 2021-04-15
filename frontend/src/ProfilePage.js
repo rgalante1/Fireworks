@@ -60,11 +60,12 @@ class ShowProfile extends React.Component {
                 </div>
             )
         }
-        else{
-            return(
+        else {
+            return (
                 <button type="button" className="btn btn-success buttonInvite" id="invitebutton" data-toggle="modal" data-target="#exampleModal" disabled>Invite</button>
-        )}
-            
+            )
+        }
+
     }
 
     buttonEdit(props) {
@@ -138,11 +139,13 @@ class ShowProfile extends React.Component {
     render() {
         return (
             <div className="profilePage">
-                <div className="profilePic">
-                    <img src={this.state.ProfilePhotoURL} alt="fireworks login" className="center-cropped rounded-circle" />
+                <div className="titleStuff">
+                    <div className="profilePic">
+                        <img src={this.state.ProfilePhotoURL} alt="fireworks login" className="center-cropped rounded-circle" />
+                    </div>
+                    <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
+                    <h4 className="companyName text-capitalize">{this.state.CompanyName}</h4>
                 </div>
-                <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
-                <h4 className="companyName text-capitalize">{this.state.CompanyName}</h4>
 
                 <div className="row">
                     <div className="col">
