@@ -114,7 +114,7 @@ class ShowProfile extends React.Component {
 
                                         <div className="form-group">
                                             <label htmlFor="AboutMe" className="labels">About Me:</label><br />
-                                            <textarea className="inputs AboutMeTxt" id="AboutMe" name="AboutMe" rows="4" cols="78" value={this.state.AboutMe} onChange={this.handleChange} />
+                                            <textarea className="AboutMeTxt" id="AboutMe" name="AboutMe" rows="5" value={this.state.AboutMe} onChange={this.handleChange} />
                                         </div>
                                     </form>
                                 </div>
