@@ -4,8 +4,14 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
-// const mysqlConnect = require('./db');
-const routes = require('./routes');
+
+var connection = mysql.createConnection({
+  host: process.env.MYSQL_CLOUD_HOST,
+  password: process.env.MYSQL_CLOUD_PASS,
+  port: process.env.MYSQL_PORT,
+  user: process.env.MYSQL_CLOUD_USER,
+  database: process.env.MYSQL_DB
+});
 
 // set up some configs for express.
 const config = {
@@ -27,8 +33,38 @@ app.use(cors({
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-//include routes
-routes(app, logger);
+connection.connect(function(err) {  
+  if (err) throw err;
+  logger.info("Connected");
+});
+
+// middleware to use for all requests
+app.use(function(req, res, next) {
+	// do logging
+	logger.info('Something is happening.');
+	next();
+});
+
+ // GET /
+app.get('/', (req, res) => {
+  res.status(200).send('Go to 0.0.0.0:3000.');
+});
+
+  //Get users
+app.get('/users/get', function (req, res) {
+	connection.query("SELECT * FROM user", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+  //Get company
+app.get('/company/get', function (req, res) {
+	connection.query("SELECT * FROM company", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
 
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
