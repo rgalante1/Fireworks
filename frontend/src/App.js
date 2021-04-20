@@ -132,28 +132,28 @@ function App () {
 
   return (
     <Router>
-      <Title></Title>
+      <Title />
       <Switch>
         <Route path="/login">
-          <LoginPage></LoginPage>
+          <LoginPage />
         </Route>
         <Route path="/deleteaccount">
-          <DeletePage></DeletePage>
+          <DeletePage />
         </Route>
         <Route path="/createaccount">
-          <CreatePage></CreatePage>
+          <CreatePage />
         </Route>
         <Route path="/createpost">
-          <CreatePostPage></CreatePostPage>
+          <CreatePostPage />
         </Route>
         <Route path="/profile">
-          <UserProfilesRouter></UserProfilesRouter>
+          <UserProfilesRouter />
         </Route>
         <Route path="/post">
-          <UserPostRouter></UserPostRouter>
+          <UserPostRouter />
         </Route>
         <Route path="/">
-          <PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+          <PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")} />
         </Route>
       </Switch>
     </Router>

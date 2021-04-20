@@ -23,11 +23,11 @@ export class Company extends React.Component{
         return(<>
         <label htmlFor="CompanyName">
             <input type="text" id="CompanyName" name="CompanyName" value={this.state.Name} 
-              placeholder="Company Name" onChange={this.handleChange}/>
-        </label> <br />
+              placeholder="Company Name" onChange={this.handleChange} className="form-control"/>
+        </label>
         <label htmlFor="CompanyDesc" >
             <textarea id="CompanyDesc" name="CompanyDesc" value={this.state.Name} rows="3"
-            placeholder="Description" onChange={this.handleChange}/>
+            placeholder="Description" onChange={this.handleChange} className="form-control"/>
         </label>
         </>);
     }

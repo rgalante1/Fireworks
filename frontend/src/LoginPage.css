@@ -1,4 +1,4 @@
-.logIn{
+/* .logIn{
   text-align: center;
   background-color: white;
   width: 35%;
@@ -123,4 +123,9 @@ body{
 
 .clear{
   clear: both;
+} */
+
+#logCard{
+  border-radius: 15px;
+  width: 50%;
 }

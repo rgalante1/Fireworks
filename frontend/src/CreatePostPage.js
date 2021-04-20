@@ -61,41 +61,41 @@ class CreatePost extends React.Component{
 
   render(){
     return(
-      <div className="createPost">
-        <h1>Create Post</h1>
-        <form onSubmit={this.handleSubmit}>
+      <div className="container my-5">
+        <form onSubmit={this.handleSubmit} className="card container py-4" id="createPost">
+          <h1 className="card-title text-center">Create Post</h1>
           <label htmlFor="title" id="title">
-          <input type="text" id="title" name="title" value={this.state.title} placeholder="Title"
-            onChange={this.handleChange}/><br/>
+            <input type="text" id="title" name="title" value={this.state.title} placeholder="Title"
+            onChange={this.handleChange} className="form-control"/>
           </label>
           <label htmlFor="desc" id="desc">
             <textarea rows="15" id="desc" name="desc" value={this.state.desc} placeholder="Your text here"
-            onChange={this.handleChange}/><br/>
+            onChange={this.handleChange} className="form-control"/>
           </label>
           <label htmlFor="loc" id="loc">
             <input type="text" id="loc" name="loc" value={this.state.loc} placeholder="Location"
-            disabled={(this.state.disabled) ? "disabled" : ""} onChange={this.handleChange}/> <br/>
+            disabled={(this.state.disabled) ? "disabled" : ""} onChange={this.handleChange} className="form-control"/>
           </label>
           <label htmlFor="date">
             <input type="date" id="date" name="date" value={this.state.date} 
-            onChange={this.handleChange}/>
+            onChange={this.handleChange} className="form-control"/>
           </label>
           <label htmlFor="time">
             <input type="time" id="time" name="time" value={this.state.time} 
-            onChange={this.handleChange}/><br />
+            onChange={this.handleChange} className="form-control"/>
           </label>
-          <label htmlFor="virtual">
+          <label htmlFor="virtual" className="form-check">
             <input type="checkbox" id="virtual" name="virtual" value={this.state.verified} 
-            onChange={this.handleVirtual}/>
+            onChange={this.handleVirtual} className="form-check-input"/>
             <span className="checkboxText">Virtual</span>
           </label>
-          <label htmlFor="verified">
+          <label htmlFor="verified" className="form-check">
             <input type="checkbox" id="verified" name="verified" value={this.state.verified} 
-            onChange={this.handleChange}/>
-            <span className="checkboxText">Verified Users Only</span><br/>
+            onChange={this.handleChange} className="form-check-input"/>
+            <span className="checkboxText">Verified Users Only</span>
           </label>
-          <button type="button" id="cancel" className="floatLeft">Cancel</button>
-          <input type="submit" value="Create Post" id="submit" className="floatRight"/>
+          <button type="button" id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</button>
+          <input type="submit" value="Create Post" id="submit" className="col btn btn-success rounded-pill mt-2"/>
         </form>
       </div>
     )
