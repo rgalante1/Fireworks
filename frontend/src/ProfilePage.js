@@ -1,13 +1,14 @@
 import './ProfilePage.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-class ShowProfile extends React.Component {
+export default class ProfilePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            UserName: this.props.usernamePassed,
+            UserName: '',
             RealName: 'Rani Rogan',
-            UserNameLooking: this.props.usernameLooking,
+            UserNameLooking: 'error',
             CompanyName: 'rugby realty',
             AboutMe: 'Tenebrae descendunt super terras. Media nox mox aderit. Bestiae correpunt qui cruorem appetant ut tuam vicinitatem perterreant. Et quicumque videbitur habere nullum animum qui motet, debet consistere ut canibus infernalibus obviet ne intra tegumen cadaveris conputresceret.',
             JobTitle: 'Website Wizard',
@@ -137,59 +138,73 @@ class ShowProfile extends React.Component {
     }
 
     render() {
-        return (
-            <div className="profilePage">
-                <div className="titleStuff">
-                    <div className="profilePic">
-                        <img src={this.state.ProfilePhotoURL} alt="fireworks login" className="center-cropped rounded-circle" />
+        if (this.state.UserName === "") {
+            return <>
+                <h3 className="text-center mt-5">Loading...</h3>
+            </>
+        }
+        else if(this.state.UserName === "usrnotfounderror") {
+            return <>
+                <h3 className="text-center mt-5">We are recording an error finding the user. Please go back and try again.</h3>
+            </>
+        }
+        else {
+            return <>
+                <div className="profilePage">
+                    <div className="titleStuff">
+                        <div className="profilePic">
+                            <img src={this.state.ProfilePhotoURL} alt="fireworks login" className="center-cropped rounded-circle" />
+                        </div>
+                        <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
+                        <h4 className="companyName text-capitalize">{this.state.CompanyName}</h4>
                     </div>
-                    <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
-                    <h4 className="companyName text-capitalize">{this.state.CompanyName}</h4>
+
+                    <div className="row">
+                        <div className="col">
+                            <div className="buttonStuff">
+                                {this.buttonInvite()}
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="buttonStuff">
+                                {this.buttonEdit()}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div className="row no-gutters">
+                        <div className="col">
+                            <div className="bundleText BTLeft">
+                                <p className="titles"><b>About Me:</b></p>
+                                <p className="info">{this.state.AboutMe}</p>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="bundleText BTRight">
+                                <p className="titles"><b >Name:</b> {this.state.RealName}</p>
+                                <p className="titles"><b >Job Title:</b> {this.state.JobTitle}</p>
+                                <p className="titles"><b >Location:</b> {this.state.Location}</p>
+                                <p className="titles"><b >Phone:</b> {this.state.PhoneNumber}</p>
+                                <p className="titles"><b >Email:</b> {this.state.EmailAddress}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </>
+        }
+    }
 
-                <div className="row">
-                    <div className="col">
-                        <div className="buttonStuff">
-                            {this.buttonInvite()}
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="buttonStuff">
-                            {this.buttonEdit()}
-                        </div>
-                    </div>
-                </div>
+    componentDidMount() {
+        let userLook = this.props.match.params.usernameLooking;
+        if (userLook) {
+            this.setState({ userNameLooking: userLook });
+        }
 
-
-
-                <div className="row no-gutters">
-                    <div className="col">
-                        <div className="bundleText BTLeft">
-                            <p className="titles"><b>About Me:</b></p>
-                            <p className="info">{this.state.AboutMe}</p>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="bundleText BTRight">
-                            <p className="titles"><b >Name:</b> {this.state.RealName}</p>
-                            <p className="titles"><b >Job Title:</b> {this.state.JobTitle}</p>
-                            <p className="titles"><b >Location:</b> {this.state.Location}</p>
-                            <p className="titles"><b >Phone:</b> {this.state.PhoneNumber}</p>
-                            <p className="titles"><b >Email:</b> {this.state.EmailAddress}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+        let userPass = this.props.match.params.usernamePassed;
+        if (userPass) {
+            this.setState({ UserName: userPass });
+        }
     }
 }
-
-const ProfilePage = ({ usernameLooking, usernamePassed }) => {
-    return (
-        <div>
-            <ShowProfile usernameLooking={usernameLooking} usernamePassed={usernamePassed} />
-        </div>
-    )
-}
-
-export default ProfilePage;
