@@ -150,7 +150,7 @@ export default class ProfilePage extends React.Component {
         }
         else {
             return <>
-                <div className="profilePage">
+                <div className="profilePage mb-5">
                     <div className="titleStuff">
                         <div className="profilePic">
                             <img src={this.state.ProfilePhotoURL} alt="fireworks login" className="center-cropped rounded-circle" />
