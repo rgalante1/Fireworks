@@ -73,11 +73,6 @@
     margin: 0 2.5% 0 2.5%;
 }
 
-.inputs {
-    padding: 2.5%;
-    width: 95%;
-}
-
 .AboutMeTxt {
     border-radius: 18px;
     border: 1px solid black;
@@ -93,4 +88,9 @@
 .form-group {
     padding-right: 0;
     margin-right: 0;
+}
+
+.no-resize {
+    min-height: 50px;
+    min-width: 50px;
 }
