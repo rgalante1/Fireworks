@@ -1,6 +1,6 @@
 .center-cropped {
-    width: 250px;
-    height: 250px;
+    width: 12.5%;
+    height: 12.5%;
     background-position: center center;
     background-repeat: no-repeat;
     overflow: hidden;
@@ -12,25 +12,24 @@
   }
 
   .usernameLabel {
-      padding-top: 10px;
+      padding-top: 0.7%;
   }
 
   .companyName {
-      padding-top: 5px;
+      padding-top: 0.5%;
   }
 
   .InviteButton {
-      margin-top: 15px;
+      margin-top: 1%;
   }
 
 .bundleText {
     border: 1px solid black;
-    width: 600px;
-    height: 370px;
+    width: 95%;
+    height: 95%;
     text-align: left;
-    padding: 25px;
-    margin-top: 25px;
-    margin-bottom: 20px;
+    padding: 2.5%;
+    margin-top: 2.5%;
     word-wrap: break-word;
 }
 
@@ -55,7 +54,7 @@
 }
 
 .buttonStuff {
-    margin: 15px;
+    margin: 1.5%;
 }
 
 .buttonInvite {
@@ -71,13 +70,27 @@
 }
 
 .changeForm {
-    margin: 0px;
+    margin: 0 2.5% 0 2.5%;
+}
+
+.inputs {
+    padding: 2.5%;
+    width: 95%;
 }
 
 .AboutMeTxt {
     border-radius: 18px;
     border: 1px solid black;
-    padding: 10px;
-    margin-top: 10px;
-    word-wrap: break-word;
+    margin-left: 2.5%;
+    width: 90%;
+    padding: 1.5%;
+}
+
+.titleStuff {
+    text-align: center;
+}
+
+.form-group {
+    padding-right: 0;
+    margin-right: 0;
 }

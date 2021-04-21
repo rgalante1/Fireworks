@@ -26,23 +26,9 @@ function Title() {
   )
 }
 
-function UserProfilesRouter() {
-  const match = useRouteMatch();
-  return (
-    <Switch>
-      <Route path={`${match.path}/:usernamePassed`}>
-        <UserProfileRoute></UserProfileRoute>
-      </Route>
-      <Route path={match.path}>
-        <h3>Please select a user to visit their profile.</h3>
-      </Route>
-    </Switch>
-  );
-}
-
 function UserProfileRoute() {
   const { usernamePassed } = useParams();
-  return ProfilePage({usernameLooking: "Alex Meech", usernamePassed: usernamePassed});
+  return ProfilePage({usernameLooking: "Kryptsm", usernamePassed: usernamePassed});
 }
 
 function UserPostRouter() {
@@ -146,9 +132,7 @@ function App () {
         <Route path="/createpost">
           <CreatePostPage></CreatePostPage>
         </Route>
-        <Route path="/profile">
-          <UserProfilesRouter></UserProfilesRouter>
-        </Route>
+        <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage}/>
         <Route path="/post">
           <UserPostRouter></UserPostRouter>
         </Route>

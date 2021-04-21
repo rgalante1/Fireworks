@@ -41,6 +41,9 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`user` (
   `userType` INT NULL,
   `mail` VARCHAR(45) NULL,
   `employerID` INT NULL,
+  `picture` VARCHAR(100) NULL,
+  `bio` VARCHAR(500) NULL,
+  `title` VARCHAR(100) NULL,
   PRIMARY KEY (`userID`),
   UNIQUE INDEX `userID_UNIQUE` (`userID` ASC) VISIBLE,
   INDEX `employerID_idx` (`employerID` ASC) VISIBLE,
@@ -64,7 +67,6 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`meeting` (
   `hostCompanyID` INT NULL,
   `location` VARCHAR(45) NULL,
   `meetingType` VARCHAR(45) NULL,
-  `rating` INT(6) NULL,
   `eventDate` DATE NULL,
   PRIMARY KEY (`meetingID`),
   UNIQUE INDEX `meetingID_UNIQUE` (`meetingID` ASC) VISIBLE,
@@ -169,6 +171,25 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`meetingInvites` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `fireworks`.`rating`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `fireworks`.`rating` (
+  `ratingID` INT NOT NULL AUTO_INCREMENT,
+  `meeting` INT NOT NULL,
+  `name` VARCHAR(100) NULL,
+  `description` VARCHAR(255) NULL,
+  `rating` INT(2) NULL,
+  PRIMARY KEY (`ratingID`),
+  UNIQUE INDEX `ratingID_UNIQUE` (`ratingID` ASC) VISIBLE,
+  INDEX `meeting_idx` (`meeting` ASC) VISIBLE,
+  CONSTRAINT `meeting`
+    FOREIGN KEY (`meeting`)
+    REFERENCES `fireworks`.`meeting` (`meetingID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -193,13 +214,13 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fireworks`;
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`) VALUES (DEFAULT, 'lawrimore', 'abc123', 'John', 'Lawrimore', '1234567000', 1, 'example.email@gmail.com', NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`) VALUES (DEFAULT, 'cannon', '1234', 'Kristina', 'Cannon', '8005882300', 2, 'example.email@gmail.com', 1);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`) VALUES (DEFAULT, 'henry', '0000', 'Jordan', 'Spieth', '5436578000', 1, 'example.email@gmail.com', NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`) VALUES (DEFAULT, 'chan', 'password!', 'Will', 'Chan', '9054367854', 3, 'example.email@gmail.com', NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`) VALUES (DEFAULT, 'malhotra', 'helloworld', 'Naishur', 'Malhotra', '4569807600', 2, 'example.email@gmail.com', 4);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`) VALUES (DEFAULT, 'walsh', 'password123', 'Sam', 'Walsh', '3451236578', 2, 'example.email@gmail.com', 5);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`) VALUES (DEFAULT, 'rgalante', 'password', 'Riley', 'Galante', '1111110000', 1, 'example.email@gmail.com', NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'lawrimore', 'abc123', 'John', 'Lawrimore', '1234567000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'cannon', '1234', 'Kristina', 'Cannon', '8005882300', 2, 'example.email@gmail.com', 1, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'henry', '0000', 'Jordan', 'Spieth', '5436578000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'chan', 'password!', 'Will', 'Chan', '9054367854', 3, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'malhotra', 'helloworld', 'Naishur', 'Malhotra', '4569807600', 2, 'example.email@gmail.com', 4, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'walsh', 'password123', 'Sam', 'Walsh', '3451236578', 2, 'example.email@gmail.com', 5, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'rgalante', 'password', 'Riley', 'Galante', '1111110000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
 
 COMMIT;
 
@@ -209,11 +230,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fireworks`;
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `rating`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '12:00', '13:00', 'https://examplelink.com', 1, 'Seattle, WA', 'In-person', 5, '2021-04-29');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `rating`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '10:00', '11:00', 'https://examplelink.com', 2, 'Dallas, TX', 'In-person', 4, '2021-05-13');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `rating`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '09:15', '10:00', 'https://examplelink.com', 3, 'Dallas, TX', 'In-person', 5, '2021-05-19');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `rating`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '15:00', '15:30', 'https://examplelink.com', 4, 'Dallas, TX', 'In-person', 5, '2021-06-10');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `rating`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '08:00', '10:00', 'https://examplelink.com', 5, 'Dallas, TX', 'In-person', 4, '2021-07-05');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '12:00', '13:00', 'https://examplelink.com', 1, 'Seattle, WA', 'In-person', '2021-04-29');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '10:00', '11:00', 'https://examplelink.com', 2, 'Dallas, TX', 'In-person', '2021-05-13');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '09:15', '10:00', 'https://examplelink.com', 3, 'Dallas, TX', 'In-person', '2021-05-19');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '15:00', '15:30', 'https://examplelink.com', 4, 'Dallas, TX', 'In-person', '2021-06-10');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '08:00', '10:00', 'https://examplelink.com', 5, 'Dallas, TX', 'In-person', '2021-07-05');
 
 COMMIT;
 
@@ -245,3 +266,15 @@ INSERT INTO `fireworks`.`friendship` (`friendshipID`, `user1ID`, `user2ID`, `dat
 
 COMMIT;
 
+-- -----------------------------------------------------
+-- Data for table `fireworks`.`rating`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `fireworks`;
+INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 1, 'Jordan Spieth', 'Informative', '5');
+INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 1, 'Ricky Fowler', 'Too Lengthy', '2');
+INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 2, 'Tiger Woods', 'Did not have time to answer questions', '3');
+INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 4, 'Jordan Spieth', 'Interesting opportunity', '5');
+INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 4, 'Rory Mcilroy', 'Informative', '4');
+
+COMMIT;

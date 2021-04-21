@@ -1,5 +1,4 @@
 import './LoginPage.css';
-import logoFWBLogin from './logoLogin.jpg';
 import React from 'react';
 
 class CreateAccount extends React.Component {
@@ -33,24 +32,21 @@ class CreateAccount extends React.Component {
   render() {
     return (
       <div className="logIn">
-        <div className="leftImage">
-          <img src={logoFWBLogin} alt="fireworks login" height={300} width={315} />
-        </div>
-        <div className="rightForm">
-          <form>
+        <div className="loginWrapper">
+          <h1 className="titleLogIn">Log In</h1>
+          <form className="loginForm">
             <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName} className="floatLeft" onChange={this.handleChange} />
-            <label htmlFor="username"/>
+            <label htmlFor="username" />
             <br />
 
-            
             <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password} className="floatLeft" onChange={this.handleChange} />
-            <label htmlFor="password"/>
+            <label htmlFor="password" />
             <br />
 
-            <input type="submit" id="submitLogin" value="Log In" className="floatLeft" onClick={this.handleSubmit}/>
+            <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} />
             <br />
 
-            <input type="submit" id="submitCreate" value="Create Account" className="floatLeft" onClick={this.handleCreate}/>
+            <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} />
           </form>
         </div>
       </div>
