@@ -1,5 +1,6 @@
 import './LoginPage.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class CreateAccount extends React.Component {
   constructor(props) {
@@ -24,11 +25,6 @@ class CreateAccount extends React.Component {
     event.preventDefault();
   }
 
-  handleCreate(event) {
-    console.log('Create Account');
-    event.preventDefault();
-  }
-
   render() {
     return (
       <div className="logIn">
@@ -46,7 +42,7 @@ class CreateAccount extends React.Component {
             <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} />
             <br />
 
-            <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} />
+            <Link to="/createaccount"><input type="button" id="submitCreate" value="Create Account" /></Link>
           </form>
         </div>
       </div>

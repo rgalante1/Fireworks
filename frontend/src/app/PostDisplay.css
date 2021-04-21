@@ -15,7 +15,7 @@
     font-weight: bold;
   }
   
-  .postDisplay > h1, .postDisplay > p, .postDisplay > a {
+  .postDisplay > h1, .postDisplay > a > h1, .postDisplay > p, .postDisplay > a {
     margin-left: 3vw;
     margin-top: 3vh;
   }
