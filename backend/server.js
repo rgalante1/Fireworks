@@ -28,6 +28,7 @@ const logger = log({ console: true, file: false, label: config.name });
 
 // specify middleware to use
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(cors({
   origin: '*'
 }));
@@ -78,6 +79,39 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 });
 
 // POST /
+
+app.post('/login', (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
+	if(!(req.body.username && req.body.password)){
+		res.status(400).send("Missing email or password");
+		return;
+	}
+
+	var query = "select * from user where username=\""+req.body.username+"\" and p"+
+				"assword=\""+req.body.password+"\";";
+  console.log(query);
+				
+	connection.query(query, function(err, result, fields){
+		if(err){
+			res.status(500).send("Failed SQL Query");
+			return;
+		}
+		
+		switch(result.length){
+			case 0:
+				res.status(401).send("No Users Found");
+				return;
+			case 1:
+        res.status(200).send(result[0]);
+				break;
+			default:
+				res.status(402).send("Too Many Users Found");
+				return;
+		}
+		
+	})
+})
 
 // create a company post
 app.post('/createpost', async (req, res) => {
