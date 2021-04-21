@@ -2,7 +2,7 @@ import axios from "axios";
 
 export class AccountsRepository {
 
-    url = 'https://api.johnlawrimore.com/directory/accounts';
+    url = 'localhost:8000';
 
     config = {
         headers: {
