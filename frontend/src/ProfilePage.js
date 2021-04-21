@@ -199,7 +199,7 @@ export default class ProfilePage extends React.Component {
     componentDidMount() {
         let userLook = this.props.match.params.usernameLooking;
         if (userLook) {
-            this.setState({ userNameLooking: userLook });
+            this.setState({UserNameLooking: userLook });
         }
 
         let userPass = this.props.match.params.usernamePassed;
