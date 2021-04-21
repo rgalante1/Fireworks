@@ -40,9 +40,10 @@ class CreateAccount extends React.Component {
             <label htmlFor="password" />
             <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} 
             className="form-control btn btn-success rounded-pill my-2"/>
-            <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} 
-            className="form-control btn btn-primary rounded-pill mt-1" />
-            <Link to="/createaccount"><input type="button" id="submitCreate" value="Create Account" /></Link>
+            {/* <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} 
+            className="form-control btn btn-primary rounded-pill mt-1" /> */}
+            <Link to="/createaccount"><input type="button" id="submitCreate" value="Create Account" 
+            className="form-control btn btn-primary rounded-pill mt-1" /></Link>
           </form>
         </div>
       </div>
