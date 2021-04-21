@@ -1,5 +1,6 @@
 import './LoginPage.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class CreateAccount extends React.Component {
   constructor(props) {
@@ -24,11 +25,6 @@ class CreateAccount extends React.Component {
     event.preventDefault();
   }
 
-  handleCreate(event) {
-    console.log('Create Account');
-    event.preventDefault();
-  }
-
   render() {
     return (
       <div className="logIn container my-5 py-4">
@@ -42,11 +38,11 @@ class CreateAccount extends React.Component {
             <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password} 
             className="form-control" onChange={this.handleChange} />
             <label htmlFor="password" />
-
             <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} 
             className="form-control btn btn-success rounded-pill my-2"/>
             <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} 
             className="form-control btn btn-primary rounded-pill mt-1" />
+            <Link to="/createaccount"><input type="button" id="submitCreate" value="Create Account" /></Link>
           </form>
         </div>
       </div>

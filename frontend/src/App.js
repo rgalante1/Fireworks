@@ -17,32 +17,19 @@ import CreatePage from './CreatePage.js';
 import PostDisplay from './app/PostDisplay'
 import Post from './models/Post'
 import axios from 'axios';
+import DashboardPage from './app/DashboardPage';
 
 function Title() {
   return (
     <div className="titleCard">
-      <img src={logoFWB} alt="fireworks title" height={125} width={366} />
+      <Link to="/"><img src={logoFWB} alt="fireworks title" height={125} width={366} /></Link>
     </div>
   )
 }
 
-function UserProfilesRouter() {
-  const match = useRouteMatch();
-  return (
-    <Switch>
-      <Route path={`${match.path}/:usernamePassed`}>
-        <UserProfileRoute></UserProfileRoute>
-      </Route>
-      <Route path={match.path}>
-        <h3>Please select a user to visit their profile.</h3>
-      </Route>
-    </Switch>
-  );
-}
-
 function UserProfileRoute() {
   const { usernamePassed } = useParams();
-  return ProfilePage({usernameLooking: "Alex Meech", usernamePassed: usernamePassed});
+  return ProfilePage({usernameLooking: "Kryptsm", usernamePassed: usernamePassed});
 }
 
 function UserPostRouter() {
@@ -146,14 +133,14 @@ function App () {
         <Route path="/createpost">
           <CreatePostPage />
         </Route>
-        <Route path="/profile">
-          <UserProfilesRouter />
-        </Route>
+        <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage}/>
         <Route path="/post">
           <UserPostRouter />
         </Route>
-        <Route path="/">
-          <PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")} />
+          {
+          //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+          }
+          <DashboardPage loggedIn={false}></DashboardPage>
         </Route>
       </Switch>
     </Router>
