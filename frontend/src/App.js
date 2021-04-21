@@ -17,11 +17,12 @@ import CreatePage from './CreatePage.js';
 import PostDisplay from './app/PostDisplay'
 import Post from './models/Post'
 import axios from 'axios';
+import DashboardPage from './app/DashboardPage';
 
 function Title() {
   return (
     <div className="titleCard">
-      <img src={logoFWB} alt="fireworks title" height={125} width={366} />
+      <Link to="/"><img src={logoFWB} alt="fireworks title" height={125} width={366} /></Link>
     </div>
   )
 }
@@ -137,7 +138,10 @@ function App () {
           <UserPostRouter></UserPostRouter>
         </Route>
         <Route path="/">
-          <PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+          {
+          //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+          }
+          <DashboardPage loggedIn={false}></DashboardPage>
         </Route>
       </Switch>
     </Router>
