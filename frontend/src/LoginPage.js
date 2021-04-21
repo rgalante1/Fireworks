@@ -27,21 +27,21 @@ class CreateAccount extends React.Component {
 
   render() {
     return (
-      <div className="logIn">
+      <div className="logIn container my-5 py-4">
         <div className="loginWrapper">
-          <h1 className="titleLogIn">Log In</h1>
-          <form className="loginForm">
-            <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName} className="floatLeft" onChange={this.handleChange} />
+          <form className="loginForm card container py-4" id="logCard">
+            <h1 className="titleLogIn text-center text-center">Log In</h1>
+            <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName} 
+            className="form-control" onChange={this.handleChange} />
             <label htmlFor="username" />
-            <br />
 
-            <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password} className="floatLeft" onChange={this.handleChange} />
+            <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password} 
+            className="form-control" onChange={this.handleChange} />
             <label htmlFor="password" />
-            <br />
-
-            <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} />
-            <br />
-
+            <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit} 
+            className="form-control btn btn-success rounded-pill my-2"/>
+            <input type="submit" id="submitCreate" value="Create Account" onClick={this.handleCreate} 
+            className="form-control btn btn-primary rounded-pill mt-1" />
             <Link to="/createaccount"><input type="button" id="submitCreate" value="Create Account" /></Link>
           </form>
         </div>

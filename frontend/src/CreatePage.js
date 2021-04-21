@@ -44,41 +44,42 @@ class CreateAccount extends React.Component{
 
   render(){
     return(
-      <div className="createAccount">
-        <h1>Sign Up</h1>
-        <form onSubmit={this.handleSubmit}>
+      <div className="container my-5 py-4">
+        <form onSubmit={this.handleSubmit} className="card container py-4" id="signup">
+          <h1 className="card-title text-center">Sign Up</h1>
           <div className="row">
-            <label htmlFor="FirstName" className="col-6">
+            <label htmlFor="FirstName" className="col">
               <input type="text" id="FirstName" name="FirstName" value={this.state.FirstName} 
-              placeholder="First Name" onChange={this.handleChange}/>
+              placeholder="First Name" onChange={this.handleChange} className="form-control"/>
             </label>
-            <label htmlFor="LastName" className="col-6 ml-n3">
+            <label htmlFor="LastName" className="col">
               <input type="text" id="LastName" name="LastName" value={this.state.LastName} 
-              placeholder="Last Name" onChange={this.handleChange}/>
+              placeholder="Last Name" onChange={this.handleChange} className="form-control"/>
             </label>
           </div>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-            placeholder="User Name" onChange={this.handleChange}/><br/>
+            placeholder="User Name" onChange={this.handleChange} className="form-control"/>
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
-            placeholder="Password" onChange={this.handleChange}/><br/>
+            placeholder="Password" onChange={this.handleChange} className="form-control"/>
           </label>
           <label htmlFor="Birthday" id="birthday">
             <p>Birthday:</p>
-            <input type="date" name="Birthday" id="birthdayDate" 
+            <input type="date" name="Birthday" id="birthdayDate" className="form-control"
             onChange={this.handleChange}/>
             <div className="clear"></div>
           </label>
-          <label htmlFor="Company">
-            <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}/>
+          <label htmlFor="Company" className="mt-2">
+            <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
+            value={this.state.Company}/>
             <span className="font-weight-bold ml-2">Company Account</span>
-          </label> <br />
+          </label> 
           {
             this.state.Company && <Company onChange={ (event) => this.handleChange(event) }/>
           }
-          <input type="submit" value="Create"/>
+          <input type="submit" value="Create" className="btn btn-success mb-3 rounded-pill"/>
         </form>
       </div>
     )
