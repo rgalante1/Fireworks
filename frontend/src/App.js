@@ -18,6 +18,7 @@ import PostDisplay from './app/PostDisplay'
 import Post from './models/Post'
 import axios from 'axios';
 import DashboardPage from './app/DashboardPage';
+import { MeetingRating } from './MeetingRating';
 
 function Title() {
   return (
@@ -82,6 +83,9 @@ function App () {
         <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage}/>
         <Route path="/post">
           <UserPostRouter />
+        </Route>
+        <Route path="/rating/">
+          <MeetingRating />
         </Route>
         <Route path="/dashboard">
           {
