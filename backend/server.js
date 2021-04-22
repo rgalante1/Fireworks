@@ -130,16 +130,11 @@ app.listen(config.port, config.host, (e) => {
 
 app.post('/createaccount',function (req,res){
 	var FirstName = req.param('First Name');
-	console.log(FirstName);
 	var LastName = req.param('Last Name');
-	console.log(LastName);
 	var UserName = req.param('User Name');
-	console.log(UserName);
 	var PassWord = req.param('Password');
-	console.log(PassWord);
 	var BirthDate = req.param('Birthday');
 	var CompanyAccount = req.param('Company Account');
-	console.log(CompanyAccount);
 	var CompanyName = req.param('Company Name');
 	var Description = req.param('Description');
 	
@@ -154,6 +149,7 @@ app.post('/createaccount',function (req,res){
 		
 	});
 	*/
+	
 	if(CompanyAccount == "selected")
 	{
 		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName,LastName,UserName,PassWord],  function (err, result, fields) {
