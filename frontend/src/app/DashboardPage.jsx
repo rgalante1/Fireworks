@@ -4,7 +4,6 @@ import Post from './../models/Post';
 import PostDisplay from './PostDisplay';
 
 export const DashboardPage = (props) => {
-    console.log(props)
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -24,7 +23,7 @@ export const DashboardPage = (props) => {
 
     if (!props.loggedIn) {
         return (
-            <LoginPage history={props.history}></LoginPage>
+            <LoginPage></LoginPage>
         );
     }
 
