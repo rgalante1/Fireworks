@@ -65,11 +65,13 @@ function App () {
   const url = ec2 ? ec2_url : 'localhost'
 
 
-  return (
+    return (
     <Router>
       <Title />
       <Switch>
-        <Route path={["/", "/login"]} exact component={LoginPage} />
+        <Route path="/login">
+          <LoginPage />
+        </Route>
         <Route path="/deleteaccount">
           <DeletePage />
         </Route>
@@ -80,15 +82,17 @@ function App () {
           <CreatePostPage />
         </Route>
         <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage}/>
-        <Route path="/post/:postId" exact>
+        <Route path="/post">
           <UserPostRouter />
         </Route>
-        <Route path="/post/:meetingId/rating" component={MeetingRating} />
         <Route path="/dashboard">
           {
           //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
           }
           <DashboardPage loggedIn={true}/>
+        </Route>
+        <Route path="/">
+          <LoginPage />
         </Route>
       </Switch>
     </Router>

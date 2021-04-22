@@ -173,7 +173,6 @@ export default class ProfilePage extends React.Component {
         }
         else {
             return <>
-                {console.log(this.accountRepo.getUsers())}
                 <div className="profilePage pb-5">
                     <div className="titleStuff">
                         <div className="profilePic">
