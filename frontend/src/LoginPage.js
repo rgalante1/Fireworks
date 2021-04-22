@@ -91,7 +91,7 @@ class CreateAccount extends React.Component {
       </>
     } else if (this.state.LinkStatus) {
       return <>
-        <Redirect to="/dashboard" />
+        <Redirect to={"/dashboard/" + this.state.UserName} />
       </>
     }
 
