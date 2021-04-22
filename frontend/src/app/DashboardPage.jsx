@@ -24,7 +24,7 @@ export const DashboardPage = (props) => {
         const interval = setInterval(() => {
             // Load more posts
             setPosts(posts => posts.concat(new Post(posts.length, "Post " + (posts.length + 1), "Random new post", new Date(), undefined, "https://smu.edu/live")));
-        }, 1000);
+        }, 10000);
         return () => clearInterval(interval);
     }, []);
 
@@ -45,6 +45,7 @@ export const DashboardPage = (props) => {
         return <>
             <div className="colorBlue pb-5">
                 <Link to={"/profile/" + params.username + "/" + params.username} className="btn btn-info float-right mr-3">Profile</Link>
+                <Link to={"/" + params.username + "/createpost"} className="btn btn-success float-right mr-3">Create Post</Link>
             </div>
             <div className="clear-fix" />
             <div className="dashboardPage">
@@ -56,6 +57,7 @@ export const DashboardPage = (props) => {
         return <>
             <div className="colorBlue pb-5">
                 <Link to={"/profile/" + params.username + "/" + params.username} className="btn btn-info float-right mr-3">Profile</Link>
+                <Link to={"/" + params.username + "/createpost"} className="btn btn-success float-right mr-3">Create Post</Link>
             </div>
             <div className="clear-fix" />
             <div className="dashboardPage">
