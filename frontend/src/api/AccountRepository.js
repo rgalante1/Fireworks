@@ -11,11 +11,7 @@ export class AccountsRepository {
     };
 
 
-    getUsers(params) {
-        if (params) {
-            let config = this.config;
-            config.params = params;
-        }
+    getUsers() {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/users/get`, this.config)
                 .then(x => resolve(x.data))
