@@ -1,6 +1,6 @@
 import React from 'react';
 import './MeetingRating.css';
-import { Link, Redirect, Router } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Rating } from './Rating';
 
 export class MeetingRating extends React.Component {
@@ -12,7 +12,8 @@ export class MeetingRating extends React.Component {
       Rating: '',
       RatingDesc: '',
       submit: false,
-      postId: ''
+      postId: '',
+      user: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,9 +43,9 @@ export class MeetingRating extends React.Component {
   render() {
     const submitted = this.state.submit;
     if(submitted){
-      return <Redirect to="/dashboard" />
+      return <Redirect to={"/dashboard/" + this.state.user} />
     }
-    return (
+    return (<>
       <div className="container my-5 py-4">
           <div className="card container py-4" id="ratingCard">
             <h1 className="text-center text-center">Rate This Meeting</h1>
@@ -79,12 +80,17 @@ export class MeetingRating extends React.Component {
             </form>
           </div>
       </div>
+      </>
     )
   }
   componentDidMount() {
     let meetingId = this.props.match.params.meetingId;
     if (meetingId) {
         this.setState({ postId: meetingId });
+    }
+    let userName = this.props.match.params.userName;
+    if(userName){
+      this.setState({user: userName});
     }
   }
 }
