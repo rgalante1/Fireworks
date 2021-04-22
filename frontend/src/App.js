@@ -17,11 +17,12 @@ import CreatePage from './CreatePage.js';
 import PostDisplay from './app/PostDisplay'
 import Post from './models/Post'
 import axios from 'axios';
+import DashboardPage from './app/DashboardPage';
 
 function Title() {
   return (
     <div className="titleCard">
-      <img src={logoFWB} alt="fireworks title" height={125} width={366} />
+      <Link to="/"><img src={logoFWB} alt="fireworks title" height={125} width={366} /></Link>
     </div>
   )
 }
@@ -118,26 +119,29 @@ function App () {
 
   return (
     <Router>
-      <Title></Title>
+      <Title />
       <Switch>
         <Route path="/login">
-          <LoginPage></LoginPage>
+          <LoginPage />
         </Route>
         <Route path="/deleteaccount">
-          <DeletePage></DeletePage>
+          <DeletePage />
         </Route>
         <Route path="/createaccount">
-          <CreatePage></CreatePage>
+          <CreatePage />
         </Route>
         <Route path="/createpost">
-          <CreatePostPage></CreatePostPage>
+          <CreatePostPage />
         </Route>
         <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage}/>
         <Route path="/post">
-          <UserPostRouter></UserPostRouter>
+          <UserPostRouter />
         </Route>
-        <Route path="/">
-          <PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+        <Route>
+          {
+          //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+          }
+          <DashboardPage loggedIn={false}></DashboardPage>
         </Route>
       </Switch>
     </Router>

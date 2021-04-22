@@ -26,20 +26,21 @@ class DeleteAccount extends React.Component{
 
   render(){
     return(
-      <div className="deleteAccount">
-        <h1>Delete Account</h1>
-        <p>Warning: this action is permanent</p>
-        <form onSubmit={this.handleSubmit}>
+      <div className="container my-5">
+        <form onSubmit={this.handleSubmit} className="container card py-4" id="deletePage">
+          <h1 className="card-title text-center">Delete Account</h1>
+          <p className="text-center">Warning: this action is permanent</p>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-            placeholder="User Name" onChange={this.handleChange}/><br/>
+            placeholder="User Name" onChange={this.handleChange} className="form-control"/>
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
-            placeholder="Password" onChange={this.handleChange}/><br/>
+            placeholder="Password" onChange={this.handleChange} className="form-control"/>
           </label>
-          <button type="button" id="cancel"  onClick={() => alert('Cancel')}>Cancel</button>
-          <input type="submit" id="delete" value="Delete"/>
+          <button type="button" id="cancel"  onClick={() => alert('Cancel')} 
+          className="form-control btn btn-secondary rounded-pill mt-2">Cancel</button>
+          <input type="submit" id="delete" value="Delete" className="form-control btn btn-danger rounded-pill mt-2"/>
         </form>
       </div>
     )
