@@ -22,6 +22,17 @@ export class AccountsRepository {
         })
     }
 
+    getUserByID(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/users/${id}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting user by ID!");
+                    reject(error);
+                });
+        });
+    }
+
     getAttendees(meetingID) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/meeting/${meetingID}/attendees`, this.config)
@@ -47,6 +58,16 @@ export class AccountsRepository {
     getUserPass(username, password) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/login`, {username, password}, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    getAllFriendInvites() {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/friendInvites`, this.config)
                 .then(x => resolve(x))
                 .catch(error => {
                     reject(error);
@@ -97,6 +118,8 @@ export class AccountsRepository {
                 })
         })
     }
+
+    
 
 
 }
