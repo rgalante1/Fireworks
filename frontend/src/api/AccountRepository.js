@@ -1,17 +1,18 @@
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 export class AccountsRepository {
 
-    url = 'https://api.johnlawrimore.com/directory/accounts';
+    url = 'http://localhost:8000';
 
     config = {
-        headers: {
-            Authorization: 'swalsh'
-        }
+        withCredentials: true
     };
 
+
     getUsers(params) {
-        if(params){
+        if (params) {
             let config = this.config;
             config.params = params;
         }
@@ -36,9 +37,9 @@ export class AccountsRepository {
         });
     }
 
-    createCompanyPost(companyID, title, description){
+    createCompanyPost(companyID, title, description) {
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/createpost`, {companyID, title, description}, this.config)
+            axios.post(`${this.url}/createpost`, { companyID, title, description }, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error creating company post!");
@@ -47,9 +48,9 @@ export class AccountsRepository {
         });
     }
 
-    createMeeting(description, startTime, endTime, meetingLink, hostCompanyID, location, meetingType, eventDate){
+    createMeeting(description, startTime, endTime, meetingLink, hostCompanyID, location, meetingType, eventDate) {
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/createmeeting`, {description, startTime, endTime, meetingLink, hostCompanyID, location, meetingType, eventDate}, this.config)
+            axios.post(`${this.url}/createmeeting`, { description, startTime, endTime, meetingLink, hostCompanyID, location, meetingType, eventDate }, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error creating meeting!");
@@ -71,11 +72,11 @@ export class AccountsRepository {
 
     deleteMeeting(meetingID) {
         return new Promise((resolve, reject) => {
-            axios.dedlete(`${this.url}/meeting/${meetingID}`, this.config)
+            axios.delete(`${this.url}/meeting/${meetingID}`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error deleting meeting!");
-                    reject(ereror);
+                    reject(error);
                 })
         })
     }
