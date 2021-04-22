@@ -15,7 +15,7 @@ import { DeletePage } from './DeletePage.js';
 import CreatePostPage from './CreatePostPage.js';
 import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
-import PostDisplay from './app/PostDisplay'
+import {PostDisplay} from './app/PostDisplay'
 import Post from './models/Post'
 import axios from 'axios';
 import DashboardPage from './app/DashboardPage';
@@ -29,30 +29,9 @@ function Title() {
   )
 }
 
-function TitleWithProfileButton() {
-  return <>
-  
-    
-  </>
-}
-
 function UserProfileRoute() {
   const { usernamePassed } = useParams();
   return ProfilePage({ usernameLooking: "Kryptsm", usernamePassed: usernamePassed });
-}
-
-function UserPostRouter() {
-  const match = useRouteMatch();
-  return (
-    <Switch>
-      <Route path={`${match.path}/:postId`}>
-        <UserPostRoute />
-      </Route>
-      <Route path={match.path}>
-        <h3>Please select a post to view it.</h3>
-      </Route>
-    </Switch>
-  );
 }
 
 function UserPostRoute() {
@@ -80,23 +59,18 @@ function App() {
           <LoginPage />
         </Route>
         <Route path="/:userName/deleteaccount" component={DeletePage} />
-        <Route path="/:userName/createaccount">
+        <Route path="/createaccount">
           <CreatePage />
         </Route>
         <Route path="/:userName/createpost">
           <CreatePostPage />
         </Route>
         <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage} />
-        <Route path="/:userName/post/:postId" exact component={UserPostRoute} />
-        <Route path="/dashboard/:username">
-          {
-            //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
-          }
-          <TitleWithProfileButton />
-          <DashboardPage loggedIn={true} />
-        </Route>
-        <Route path="/:userName/post/:meetingId/rating" component={MeetingRating} />
-        <Route path="/">
+        <Route path="/post/:postId" exact component={PostDisplay} />
+        <Route path="/dashboard/:username" component={DashboardPage} />
+
+        <Route path="/post/:meetingId/rating" component={MeetingRating} />
+        <Route path="/" exact>
           <LoginPage />
         </Route>
       </Switch>
