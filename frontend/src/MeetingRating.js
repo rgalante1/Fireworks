@@ -1,6 +1,6 @@
 import React from 'react';
 import './MeetingRating.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, Router } from 'react-router-dom';
 import { Rating } from './Rating';
 
 export class MeetingRating extends React.Component {
@@ -10,7 +10,9 @@ export class MeetingRating extends React.Component {
       Title: 'Example Title',
       MeetingDesc: 'Example Description',
       Rating: '',
-      RatingDesc: ''
+      RatingDesc: '',
+      submit: false,
+      postId: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,12 +33,17 @@ export class MeetingRating extends React.Component {
       Title: 'Example Title',
       MeetingDesc: 'Example Description',
       Rating: '',
-      RatingDesc: ''
+      RatingDesc: '',
+      submit: true
     });
     event.preventDefault();
   }
 
   render() {
+    const submitted = this.state.submit;
+    if(submitted){
+      return <Redirect to="/dashboard" />
+    }
     return (
       <div className="container my-5 py-4">
           <div className="card container py-4" id="ratingCard">
@@ -48,7 +55,7 @@ export class MeetingRating extends React.Component {
                 <div className="form-group col-3">
                   <label htmlFor="Rating">Rating</label>
                   <select id="Rating" className="form-control" value={this.state.Rating}
-                  onChange={event => this.setState({Rating: event.target.value})}>
+                  onChange={event => this.setState({Rating: event.target.value})} required>
                     <option></option>
                     {
                         this.ratings.map((x, i) => <option key={ i }>{ x }</option>)
@@ -62,16 +69,22 @@ export class MeetingRating extends React.Component {
               </div>
               <div className="form-group mb-4">
                 <textarea rows="5" id="RatingDesc" name="RatingDesc" value={this.state.RatingDesc} 
-                placeholder="Leave a comment" onChange={this.handleChange} className="form-control" />
+                placeholder="Leave a comment (optional)" onChange={this.handleChange} className="form-control"/>
               </div>
               <div className="form-row">
                 <div className="col-7"></div>
-                <button className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</button>
+                <Link to={"/post/" + this.state.postId } className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
                 <input type="submit" value="Submit Review" className="ml-2 btn btn-success mb-3 rounded-pill col-2"/>
               </div>
             </form>
           </div>
       </div>
     )
+  }
+  componentDidMount() {
+    let meetingId = this.props.match.params.meetingId;
+    if (meetingId) {
+        this.setState({ postId: meetingId });
+    }
   }
 }

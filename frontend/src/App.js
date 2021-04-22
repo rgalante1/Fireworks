@@ -38,7 +38,7 @@ function UserPostRouter() {
   return (
     <Switch>
       <Route path={`${match.path}/:postId`}>
-        <UserPostRoute></UserPostRoute>
+        <UserPostRoute />
       </Route>
       <Route path={match.path}>
         <h3>Please select a post to view it.</h3>
@@ -81,17 +81,15 @@ function App () {
           <CreatePostPage />
         </Route>
         <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage}/>
-        <Route path="/post">
+        <Route path="/post/:postId" exact>
           <UserPostRouter />
         </Route>
-        <Route path="/rating/">
-          <MeetingRating />
-        </Route>
+        <Route path="/post/:meetingId/rating" component={MeetingRating} />
         <Route path="/dashboard">
           {
           //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
           }
-          <DashboardPage loggedIn={false}></DashboardPage>
+          <DashboardPage loggedIn={true}/>
         </Route>
       </Switch>
     </Router>

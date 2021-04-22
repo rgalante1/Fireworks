@@ -44,24 +44,25 @@ export class Meeting extends React.Component{
         return(<>
         <label htmlFor="loc" id="loc">
             <input type="text" id="loc" name="loc" value={this.state.loc} placeholder="Location"
-            disabled={(this.state.disabled) ? "disabled" : ""} onChange={this.handleChange} className="form-control"/>
+            disabled={(this.state.disabled) ? "disabled" : ""} onChange={this.handleChange} 
+            className="form-control" required/>
           </label>
           <label htmlFor="date">
             <input type="date" id="date" name="date" value={this.state.date} 
-            onChange={this.handleChange} className="form-control"/>
+            onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="time">
             <input type="time" id="time" name="time" value={this.state.time} 
-            onChange={this.handleChange} className="form-control"/>
+            onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="virtual" className="form-check">
             <input type="checkbox" id="virtual" name="virtual" value={this.state.verified} 
-            onChange={this.handleVirtual} className="form-check-input"/>
+            onChange={this.handleVirtual} className="form-check-input" />
             <span className="checkboxText">Virtual</span>
           </label>
           <label htmlFor="verified" className="form-check">
             <input type="checkbox" id="verified" name="verified" value={this.state.verified} 
-            onChange={this.handleChange} className="form-check-input"/>
+            onChange={this.handleChange} className="form-check-input" />
             <span className="checkboxText">Verified Users Only</span>
           </label>
         </>);
