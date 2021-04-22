@@ -10,7 +10,8 @@ export default class ProfilePage extends React.Component {
         super(props);
         this.state = {
             UserName: '',
-            RealName: '',
+            FirstName: '',
+            LastName: '',
             UserNameLooking: '',
             CompanyName: '',
             AboutMe: '',
@@ -24,7 +25,6 @@ export default class ProfilePage extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.buttonEdit = this.buttonEdit.bind(this);
-        this.buttonInvite = this.buttonInvite.bind(this);
         this.imageExists = this.imageExists.bind(this);
     }
 
@@ -46,38 +46,6 @@ export default class ProfilePage extends React.Component {
         return http.status !== 404;
     }
 
-    buttonInvite(event) {
-        if (this.state.UserName !== this.state.UserNameLooking) {
-            return (
-                <div className="wrapper">
-                    <button type="button" className="btn btn-success buttonInvite" id="invitebutton" data-toggle="modal" data-target="#exampleModal">Friend Request</button>
-
-                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div className="modal-dialog modal-sm" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h3 className="modal-title" id="exampleModalLabel">Friend invite sent!</h3>
-                                </div>
-                                <div className="modal-body">
-                                    <p className="modal-title" id="exampleModalLabel">Check back later to see if they accept or decline.</p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-        else {
-            return (
-                <button type="button" className="btn btn-success buttonInvite" id="invitebutton" data-toggle="modal" data-target="#exampleModal" disabled>Friend Request</button>
-            )
-        }
-
-    }
-
     buttonEdit(props) {
         if (this.state.UserName === this.state.UserNameLooking) {
             return (
@@ -93,8 +61,13 @@ export default class ProfilePage extends React.Component {
                                 <div className="modal-body overflow-auto">
                                     <form className="changeForm">
                                         <div className="form-group">
-                                            <label htmlFor="RealName" className="labels">Name:</label><br />
-                                            <input type="form-control" className="form-control border border-secondary" id="RealName" name="RealName" value={this.state.RealName} onChange={this.handleChange} />
+                                            <label htmlFor="FirstName" className="labels">First Name:</label><br />
+                                            <input type="form-control" className="form-control border border-secondary" id="FirstName" name="FirstName" value={this.state.FirstName} onChange={this.handleChange} />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="LastName" className="labels">Last Name:</label><br />
+                                            <input type="form-control" className="form-control border border-secondary" id="LastName" name="LastName" value={this.state.LastName} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
@@ -150,7 +123,25 @@ export default class ProfilePage extends React.Component {
         }
         else {
             return (
-                <button type="button" className="btn btn-secondary buttonEdit" disabled>Edit Information</button>
+                <div className="wrapper">
+                    <button type="button" className="btn btn-success buttonEdit" id="invitebutton" data-toggle="modal" data-target="#exampleModal">Friend Request</button>
+
+                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog modal-sm" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h3 className="modal-title" id="exampleModalLabel">Friend invite sent!</h3>
+                                </div>
+                                <div className="modal-body">
+                                    <p className="modal-title" id="exampleModalLabel">Check back later to see if they accept or decline.</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )
         }
     }
@@ -159,11 +150,6 @@ export default class ProfilePage extends React.Component {
         if (this.state.UserName === "") {
             return <>
                 <h3 className="text-center mt-5">Loading...</h3>
-            </>
-        }
-        else if (this.state.UserName === "usrnotfounderror") {
-            return <>
-                <h3 className="text-center mt-5">We are recording an error finding the user. Please go back and try again.</h3>
             </>
         }
         else {
@@ -179,18 +165,18 @@ export default class ProfilePage extends React.Component {
 
                     <div className="row">
                         <div className="col">
-                            <div className="buttonStuff">
-                                {this.buttonInvite()}
+                            <div className="m-2">
+                                <Link to={"/dashboard/" + this.state.UserNameLooking} className="btn btn-primary buttonLink">Back to Dashboard</Link>
                             </div>
                         </div>
                         <div className="col">
-                            <div className="buttonStuff">
+                            <div className="m-2">
                                 {this.buttonEdit()}
                             </div>
                         </div>
                     </div>
 
-
+                    <div className="clearfix" />
 
                     <div className="row no-gutters">
                         <div className="col">
@@ -201,7 +187,7 @@ export default class ProfilePage extends React.Component {
                         </div>
                         <div className="col">
                             <div className="bundleText BTRight">
-                                <p className="titles"><b >Name:</b> {this.state.RealName}</p>
+                                <p className="titles"><b >Name:</b> {this.state.FirstName + " " + this.state.LastName}</p>
                                 <p className="titles"><b >Job Title:</b> {this.state.JobTitle}</p>
                                 <p className="titles"><b >Location:</b> {this.state.Location}</p>
                                 <p className="titles"><b >Phone:</b> {this.state.PhoneNumber}</p>
@@ -228,23 +214,28 @@ export default class ProfilePage extends React.Component {
         if (userPass) {
             this.accountRepo.getUserInfo(userPass).then(account => {
                 let accArray = account[0];
-                if(accArray.firstName || accArray.lastName)
-                    this.setState({ RealName: (accArray.firstName + " " + accArray.lastName) });
-                
-                if(accArray.bio)
-                    this.setState({ AboutMe: accArray.bio });
+                if (accArray) {
+                    if (accArray.firstName)
+                        this.setState({ FirstName: accArray.firstName });
 
-                if(accArray.title)
-                    this.setState({ JobTitle: accArray.title });
+                    if (accArray.lastName)
+                        this.setState({ LastName: accArray.lastName });
 
-                if(accArray.phone)
-                    this.setState({ PhoneNumber: accArray.phone });
+                    if (accArray.bio)
+                        this.setState({ AboutMe: accArray.bio });
 
-                if(accArray.mail)
-                    this.setState({ EmailAddress: accArray.mail });
+                    if (accArray.title)
+                        this.setState({ JobTitle: accArray.title });
 
-                if(accArray.picture)
-                    this.setState({ ProfilePhotoURL: accArray.picture });
+                    if (accArray.phone)
+                        this.setState({ PhoneNumber: accArray.phone });
+
+                    if (accArray.mail)
+                        this.setState({ EmailAddress: accArray.mail });
+
+                    if (accArray.picture)
+                        this.setState({ ProfilePhotoURL: accArray.picture });
+                }
             })
         }
     }

@@ -146,6 +146,7 @@ app.get('/friendship/:id', function (req, res) {
 	});
 });
 
+
 //Get meetingInvites
 app.get('/meetingInvites', function (req, res) {
 	connection.query("SELECT * FROM friendship", function (err, result, fields) {
