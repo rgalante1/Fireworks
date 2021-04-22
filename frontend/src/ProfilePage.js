@@ -115,7 +115,7 @@ export default class ProfilePage extends React.Component {
                                         <div className="form-group">
                                             <label htmlFor="ProfilePhotoURL" className="labels">Profile Photo URL:</label><br />
                                             <input type="form-control" className="form-control border border-secondary" id="ProfilePhotoURL" name="ProfilePhotoURL" value={this.state.ProfilePhotoURL} onChange={this.handleChange} />
-                                            <small id="ProfilePhotoURL" class="form-text text-muted">Please use a link, such as an IMGUR link.</small>
+                                            <small id="ProfilePhotoURL" className="form-text text-muted">Please use a link, such as an IMGUR link.</small>
                                         </div>
 
                                         <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" className="center-block rounded-circle" height="100" width="100" />
@@ -128,7 +128,7 @@ export default class ProfilePage extends React.Component {
                                         <div className="form-group">
                                             <label htmlFor="PhoneNumber" className="labels">Phone Number:</label><br />
                                             <input type="tel" className="form-control border border-secondary" id="PhoneNumber" name="PhoneNumber" value={this.state.PhoneNumber} onChange={this.handleChange} />
-                                            <small id="PhoneNumber" class="form-text text-muted">Format: 123-456-7890</small>
+                                            <small id="PhoneNumber" className="form-text text-muted">Format: 123-456-7890</small>
                                         </div>
 
                                         <div className="form-group">
@@ -173,10 +173,12 @@ export default class ProfilePage extends React.Component {
         }
         else {
             return <>
-                <div className="profilePage pb-5">
+                <div className=" pb-5">
                     <div className="titleStuff">
                         <div className="profilePic">
-                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" className="rounded-circle" height="200" width="200" />
+                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : 
+                                "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" 
+                                className="rounded-circle" height="200" width="200" />
                         </div>
                         <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
                         <h4 className="companyName text-capitalize">{this.state.CompanyName}</h4>
@@ -198,14 +200,14 @@ export default class ProfilePage extends React.Component {
 
 
                     <div className="row no-gutters">
-                        <div className="col">
-                            <div className="bundleText BTLeft">
+                        <div className="col ">
+                            <div className="bundleText BTLeft profilePage">
                                 <p className="titles"><b>About Me:</b></p>
                                 <p className="info">{this.state.AboutMe}</p>
                             </div>
                         </div>
                         <div className="col">
-                            <div className="bundleText BTRight">
+                            <div className="bundleText BTRight profilePage">
                                 <p className="titles"><b >Name:</b> {this.state.RealName}</p>
                                 <p className="titles"><b >Job Title:</b> {this.state.JobTitle}</p>
                                 <p className="titles"><b >Location:</b> {this.state.Location}</p>

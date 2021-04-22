@@ -11,7 +11,7 @@ import {
 import './App.css';
 import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
-import DeletePage from './DeletePage.js';
+import { DeletePage } from './DeletePage.js';
 import CreatePostPage from './CreatePostPage.js';
 import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
@@ -31,9 +31,6 @@ function Title() {
 
 function TitleWithProfileButton() {
   return <>
-    <div className="titleCard">
-      <Link to="/"><img src={logoFWB} alt="fireworks title" height={125} width={366} /></Link>
-    </div>
   
     
   </>
@@ -77,28 +74,20 @@ function App() {
 
   return (
     <Router>
+      <Title />
       <Switch>
         <Route path="/login">
-          <Title />
           <LoginPage />
         </Route>
-        <Route path="/deleteaccount">
-          <Title />
-          <DeletePage />
-        </Route>
-        <Route path="/createaccount">
-          <Title />
+        <Route path="/:userName/deleteaccount" component={DeletePage} />
+        <Route path="/:userName/createaccount">
           <CreatePage />
         </Route>
-        <Route path="/createpost">
-          <Title />
+        <Route path="/:userName/createpost">
           <CreatePostPage />
         </Route>
         <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage} />
-        <Route path="/post">
-          <Title />
-          <UserPostRouter />
-        </Route>
+        <Route path="/:userName/post/:postId" exact component={UserPostRoute} />
         <Route path="/dashboard/:username">
           {
             //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
@@ -106,8 +95,8 @@ function App() {
           <TitleWithProfileButton />
           <DashboardPage loggedIn={true} />
         </Route>
+        <Route path="/:userName/post/:meetingId/rating" component={MeetingRating} />
         <Route path="/">
-          <Title />
           <LoginPage />
         </Route>
       </Switch>

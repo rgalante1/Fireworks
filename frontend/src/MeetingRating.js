@@ -1,7 +1,8 @@
 import React from 'react';
 import './MeetingRating.css';
-import { Link, Redirect, Router } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Rating } from './Rating';
+import logoFWB from './logo.jpg';
 
 export class MeetingRating extends React.Component {
   constructor(props) {
@@ -44,7 +45,10 @@ export class MeetingRating extends React.Component {
     if(submitted){
       return <Redirect to="/dashboard" />
     }
-    return (
+    return (<>
+      <div className="titleCard">
+      <Link to="/"><img src={logoFWB} alt="fireworks title" height={125} width={366} /></Link>
+      </div>
       <div className="container my-5 py-4">
           <div className="card container py-4" id="ratingCard">
             <h1 className="text-center text-center">Rate This Meeting</h1>
@@ -79,6 +83,7 @@ export class MeetingRating extends React.Component {
             </form>
           </div>
       </div>
+      </>
     )
   }
   componentDidMount() {
