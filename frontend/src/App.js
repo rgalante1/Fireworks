@@ -29,9 +29,19 @@ function Title() {
   )
 }
 
+function TitleWithProfileButton() {
+  return <>
+    <div className="titleCard">
+      <Link to="/"><img src={logoFWB} alt="fireworks title" height={125} width={366} /></Link>
+    </div>
+  
+    
+  </>
+}
+
 function UserProfileRoute() {
   const { usernamePassed } = useParams();
-  return ProfilePage({usernameLooking: "Kryptsm", usernamePassed: usernamePassed});
+  return ProfilePage({ usernameLooking: "Kryptsm", usernamePassed: usernamePassed });
 }
 
 function UserPostRouter() {
@@ -56,7 +66,7 @@ function UserPostRoute() {
 }
 
 // React functional component
-function App () {
+function App() {
   // ENTER YOUR EC2 PUBLIC IP/URL HERE
   const ec2_url = ''
   // CHANGE THIS TO TRUE IF HOSTING ON EC2, MAKE SURE TO ADD IP/URL ABOVE
@@ -65,33 +75,39 @@ function App () {
   const url = ec2 ? ec2_url : 'localhost'
 
 
-    return (
+  return (
     <Router>
-      <Title />
       <Switch>
         <Route path="/login">
+          <Title />
           <LoginPage />
         </Route>
         <Route path="/deleteaccount">
+          <Title />
           <DeletePage />
         </Route>
         <Route path="/createaccount">
+          <Title />
           <CreatePage />
         </Route>
         <Route path="/createpost">
+          <Title />
           <CreatePostPage />
         </Route>
-        <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage}/>
+        <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage} />
         <Route path="/post">
+          <Title />
           <UserPostRouter />
         </Route>
-        <Route path="/dashboard">
+        <Route path="/dashboard/:username">
           {
-          //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
+            //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
           }
-          <DashboardPage loggedIn={true}/>
+          <TitleWithProfileButton />
+          <DashboardPage loggedIn={true} />
         </Route>
         <Route path="/">
+          <Title />
           <LoginPage />
         </Route>
       </Switch>
