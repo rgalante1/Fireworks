@@ -11,21 +11,24 @@ export const PostDisplay = (props) => {
     }
 
     return (
-        <div className="postDisplay">
-            {postHeader}
-            <p>{props.post.description}</p>
-            {(() => {
-                if (props.post.location) {
-                    return <p className="postLocation">{props.post.location}</p>
-                }
-            })()}
-            <p className="postTimeDate">{new Intl.DateTimeFormat('en-US', dateOptions).format(props.post.date)}</p>
-            {(() => {
-                if (props.post.meetingLink) {
-                    return <p><a href={props.post.meetingLink} className="postMeetingLink" target="_blank" rel="noopener noreferrer">{props.post.meetingLink}</a></p>
-                }
-            })()}
-            <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}>RSVP</button>
+        <div className="postDisplay container mt-1 mb-1 py-4">
+            <div className="card container py-4" id="post">
+                <h1 className="titleLogIn text-center text-center">{postHeader}</h1>
+                <p >{props.post.description}</p>
+                {(() => {
+                    if (props.post.location) {
+                        return <p className="postLocation">{props.post.location}</p>
+                    }
+                })()}
+                <p className="postTimeDate text-secondary">{new Intl.DateTimeFormat('en-US', dateOptions).format(props.post.date)}</p>
+                {(() => {
+                    if (props.post.meetingLink) {
+                        return <p><a href={props.post.meetingLink} className="postMeetingLink" target="_blank" rel="noopener noreferrer">{props.post.meetingLink}</a></p>
+                    }
+                })()}
+                <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
+                className="form-control btn btn-success rounded-pill mt-1">RSVP</button>
+            </div>
         </div>
     );
 }

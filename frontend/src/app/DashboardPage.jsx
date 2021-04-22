@@ -17,7 +17,7 @@ export const DashboardPage = (props) => {
             }
             // Load more posts
             setPosts(posts => posts.concat(new Post(posts.length, "Post " + (posts.length + 1), "Random new post", new Date(), undefined, "https://smu.edu/live")));
-        }, 10000);
+        }, 2000);
         return () => clearInterval(interval);
     }, []);
 
