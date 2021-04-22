@@ -12,7 +12,8 @@ export class MeetingRating extends React.Component {
       Rating: '',
       RatingDesc: '',
       submit: false,
-      postId: ''
+      postId: '',
+      user: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,7 +43,7 @@ export class MeetingRating extends React.Component {
   render() {
     const submitted = this.state.submit;
     if(submitted){
-      return <Redirect to="/dashboard" />
+      return <Redirect to={"/dashboard/" + this.state.user} />
     }
     return (<>
       <div className="container my-5 py-4">
@@ -86,6 +87,10 @@ export class MeetingRating extends React.Component {
     let meetingId = this.props.match.params.meetingId;
     if (meetingId) {
         this.setState({ postId: meetingId });
+    }
+    let userName = this.props.match.params.userName;
+    if(userName){
+      this.setState({user: userName});
     }
   }
 }
