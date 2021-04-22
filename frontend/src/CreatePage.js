@@ -1,6 +1,7 @@
 import React from 'react';
 import { Company } from './Company';
 import './CreatePage.css';
+import { Link, Redirect } from 'react-router-dom';
 
 class CreateAccount extends React.Component{
   constructor(props){
@@ -11,7 +12,8 @@ class CreateAccount extends React.Component{
       UserName: '',
       Password: '',
       Birthday: '',
-      Company: false
+      Company: false,
+      login: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,7 +28,6 @@ class CreateAccount extends React.Component{
 
   handleSubmit(event){
     alert('Account Created');
-    console.log(this.state);
     var bday = document.querySelector("#birthdayDate");
     bday.value = "";
     this.setState({
@@ -37,12 +38,17 @@ class CreateAccount extends React.Component{
       Birthday: '',
       Company: false,
       CompanyName: '',
-      CompanyDesc: ''
+      CompanyDesc: '',
+      login: true
     });
     event.preventDefault();
   }
 
   render(){
+    const login = this.state.login;
+    if(login){
+      return <Redirect  to={{pathname: "/dashboard", state: { loggedIn: true }}} />
+    }
     return(
       <div className="container my-5 py-4">
         <form onSubmit={this.handleSubmit} className="card container py-4" id="signup">
@@ -50,36 +56,36 @@ class CreateAccount extends React.Component{
           <div className="row">
             <label htmlFor="FirstName" className="col">
               <input type="text" id="FirstName" name="FirstName" value={this.state.FirstName} 
-              placeholder="First Name" onChange={this.handleChange} className="form-control"/>
+              placeholder="First Name" onChange={this.handleChange} className="form-control" required/>
             </label>
             <label htmlFor="LastName" className="col">
               <input type="text" id="LastName" name="LastName" value={this.state.LastName} 
-              placeholder="Last Name" onChange={this.handleChange} className="form-control"/>
+              placeholder="Last Name" onChange={this.handleChange} className="form-control" required/>
             </label>
           </div>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-            placeholder="User Name" onChange={this.handleChange} className="form-control"/>
+            placeholder="User Name" onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="Password">
-            <input type="text" id="Password" name="Password" value={this.state.Password} 
-            placeholder="Password" onChange={this.handleChange} className="form-control"/>
+            <input type="password" id="Password" name="Password" value={this.state.Password} 
+            placeholder="Password" onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="Birthday" id="birthday">
             <p>Birthday:</p>
             <input type="date" name="Birthday" id="birthdayDate" className="form-control"
-            onChange={this.handleChange}/>
+            onChange={this.handleChange} required/>
             <div className="clear"></div>
           </label>
           <label htmlFor="Company" className="mt-2">
             <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
-            value={this.state.Company}/>
+            checked={this.state.Company} />
             <span className="font-weight-bold ml-2">Company Account</span>
           </label> 
           {
             this.state.Company && <Company onChange={ (event) => this.handleChange(event) }/>
           }
-          <input type="submit" value="Create" className="btn btn-success mb-3 rounded-pill"/>
+          <input type="submit" value="Create" className="btn btn-success mt-2 rounded-pill" required/>
         </form>
       </div>
     )

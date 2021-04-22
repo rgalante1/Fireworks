@@ -5,7 +5,8 @@ import {
   Route,
   Link,
   useRouteMatch,
-  useParams
+  useParams,
+  Redirect
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
@@ -18,6 +19,7 @@ import PostDisplay from './app/PostDisplay'
 import Post from './models/Post'
 import axios from 'axios';
 import DashboardPage from './app/DashboardPage';
+import { MeetingRating } from './MeetingRating';
 
 function Title() {
   return (
@@ -37,7 +39,7 @@ function UserPostRouter() {
   return (
     <Switch>
       <Route path={`${match.path}/:postId`}>
-        <UserPostRoute></UserPostRoute>
+        <UserPostRoute />
       </Route>
       <Route path={match.path}>
         <h3>Please select a post to view it.</h3>
@@ -63,7 +65,7 @@ function App () {
   const url = ec2 ? ec2_url : 'localhost'
 
 
-  return (
+    return (
     <Router>
       <Title />
       <Switch>
@@ -87,7 +89,7 @@ function App () {
           {
           //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
           }
-          <DashboardPage loggedIn={true}></DashboardPage>
+          <DashboardPage loggedIn={true}/>
         </Route>
         <Route path="/">
           <LoginPage />
