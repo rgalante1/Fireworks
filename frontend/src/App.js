@@ -87,7 +87,10 @@ function App () {
           {
           //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
           }
-          <DashboardPage loggedIn={false}></DashboardPage>
+          <DashboardPage loggedIn={true}></DashboardPage>
+        </Route>
+        <Route path="/">
+          <LoginPage />
         </Route>
       </Switch>
     </Router>

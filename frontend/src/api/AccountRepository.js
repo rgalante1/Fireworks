@@ -33,6 +33,16 @@ export class AccountsRepository {
         });
     }
 
+    getUserPass(username, password) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/login`, {username, password}, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
     createCompanyPost(companyID, title, description) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/createpost`, { companyID, title, description }, this.config)
@@ -76,4 +86,6 @@ export class AccountsRepository {
                 })
         })
     }
+
+
 }
