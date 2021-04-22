@@ -29,7 +29,7 @@ export const PostDisplay = (props) => {
                 })()}
                 <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
                 className="form-control btn btn-success rounded-pill mt-1">RSVP</button>
-                <Link to={"/" + props.post.id + "/rating"} className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link>
+                <Link to={"/post/" + props.post.id + "/rating"} className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link>
             </div>
         </div>
     );

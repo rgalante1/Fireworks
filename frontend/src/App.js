@@ -5,7 +5,8 @@ import {
   Route,
   Link,
   useRouteMatch,
-  useParams
+  useParams,
+  Redirect
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
@@ -68,9 +69,7 @@ function App () {
     <Router>
       <Title />
       <Switch>
-        <Route path="/login">
-          <LoginPage />
-        </Route>
+        <Route path={["/", "/login"]} exact component={LoginPage} />
         <Route path="/deleteaccount">
           <DeletePage />
         </Route>
