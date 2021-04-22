@@ -1,6 +1,7 @@
 import React from 'react';
 import './CreatePostPage.css';
 import { Meeting } from './Meeting';
+import { Link, Redirect } from 'react-router-dom';
 
 class CreatePost extends React.Component{
   constructor(props){
@@ -14,7 +15,8 @@ class CreatePost extends React.Component{
       loc: '',
       verified: '',
       virtual: '',
-      disabled: false
+      disabled: false,
+      submit: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,7 +40,8 @@ class CreatePost extends React.Component{
       loc: '',
       verified: '',
       virtual: '',
-      disabled: false
+      disabled: false,
+      submit: true
     });
     event.preventDefault();
   }
@@ -46,17 +49,21 @@ class CreatePost extends React.Component{
   
 
   render(){
+    const submitted = this.state.submit;
+    if(submitted){
+      return <Redirect to="/dashboard" />
+    }
     return(
       <div className="container my-5">
         <form onSubmit={this.handleSubmit} className="card container py-4" id="createPost">
           <h1 className="card-title text-center">Create Post</h1>
           <label htmlFor="title" id="title">
             <input type="text" id="title" name="title" value={this.state.title} placeholder="Title"
-            onChange={this.handleChange} className="form-control"/>
+            onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="desc" id="desc">
             <textarea rows="15" id="desc" name="desc" value={this.state.desc} placeholder="Your text here"
-            onChange={this.handleChange} className="form-control"/>
+            onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="meeting" className="mt-2">
             <input type="checkbox" name="meeting" id="meeting" onChange={this.handleChange}
@@ -65,7 +72,7 @@ class CreatePost extends React.Component{
           </label> {
             this.state.meeting && <Meeting onChange={ (event) => this.handleChange(event) }/>
           }
-          <button type="button" id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</button>
+          <Link to="/dashboard" id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
           <input type="submit" value="Create Post" id="submit" className="col btn btn-success rounded-pill mt-2"/>
         </form>
       </div>
