@@ -26,7 +26,6 @@ class CreateAccount extends React.Component{
 
   handleSubmit(event){
     alert('Account Created');
-    console.log(this.state);
     var bday = document.querySelector("#birthdayDate");
     bday.value = "";
     this.setState({
@@ -73,7 +72,7 @@ class CreateAccount extends React.Component{
           </label>
           <label htmlFor="Company" className="mt-2">
             <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
-            value={this.state.Company}/>
+            checked={this.state.Company}/>
             <span className="font-weight-bold ml-2">Company Account</span>
           </label> 
           {
