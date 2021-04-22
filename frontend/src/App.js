@@ -137,11 +137,11 @@ function App () {
         <Route path="/post">
           <UserPostRouter />
         </Route>
-        <Route>
+        <Route path="/dash">
           {
           //<PostDisplay post={new Post(1, "Example Meeting", "This is an example of a meeting", new Date(), "Caruth 224", "https://www.google.com/meet")}></PostDisplay>
           }
-          <DashboardPage loggedIn={false}></DashboardPage>
+          <DashboardPage loggedIn={true}></DashboardPage>
         </Route>
       </Switch>
     </Router>
