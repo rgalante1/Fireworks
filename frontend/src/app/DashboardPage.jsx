@@ -22,20 +22,11 @@ export const DashboardPage = (props) => {
         }
 
         const interval = setInterval(() => {
-            if (!props.loggedIn) {
-                return;
-            }
             // Load more posts
             setPosts(posts => posts.concat(new Post(posts.length, "Post " + (posts.length + 1), "Random new post", new Date(), undefined, "https://smu.edu/live")));
-        }, 5000);
+        }, 1000);
         return () => clearInterval(interval);
     }, []);
-
-    if (!props.loggedIn) {
-        return (
-            <LoginPage></LoginPage>
-        );
-    }
 
     let postDisplays = [];
 
@@ -43,7 +34,7 @@ export const DashboardPage = (props) => {
         postDisplays.push(
             <div key={i}>
                 <br></br>
-                <PostDisplay post={posts[i]} headerLink={true} />
+                <PostDisplay post={posts[i]} headerLink={true} userName={params.username}/>
             </div>
         );
     }

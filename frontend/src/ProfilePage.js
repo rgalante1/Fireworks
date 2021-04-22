@@ -154,10 +154,12 @@ export default class ProfilePage extends React.Component {
         }
         else {
             return <>
-                <div className="profilePage pb-5">
+                <div className=" pb-5">
                     <div className="titleStuff">
                         <div className="profilePic">
-                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" className="rounded-circle" height="200" width="200" />
+                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : 
+                                "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" 
+                                className="rounded-circle" height="200" width="200" />
                         </div>
                         <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
                         <h4 className="companyName text-capitalize">{this.state.CompanyName}</h4>
@@ -179,13 +181,14 @@ export default class ProfilePage extends React.Component {
                     <div className="clearfix" />
 
                     <div className="row no-gutters">
-                        <div className="col">
-                            <div className="bundleText BTLeft">
+                        <div className="col ">
+                            <div className="bundleText BTLeft profilePage">
                                 <p className="titles"><b>About Me:</b></p>
                                 <p className="info">{this.state.AboutMe}</p>
                             </div>
                         </div>
                         <div className="col">
+
                             <div className="bundleText BTRight">
                                 <p className="titles"><b >Name:</b> {this.state.FirstName + " " + this.state.LastName}</p>
                                 <p className="titles"><b >Job Title:</b> {this.state.JobTitle}</p>

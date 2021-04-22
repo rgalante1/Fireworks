@@ -12,7 +12,7 @@
   }
 
   .profilePic {
-      background: linear-gradient(to bottom, rgb(0,119,181) 50%, white 50%);
+      background: linear-gradient(to bottom, rgb(0,119,181) 50%, lightgray 50%);
   }
 
   .usernameLabel {
