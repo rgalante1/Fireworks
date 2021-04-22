@@ -6,18 +6,18 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 
 var connection = mysql.createConnection({
-  host: process.env.MYSQL_CLOUD_HOST,
-  password: process.env.MYSQL_CLOUD_PASS,
-  port: process.env.MYSQL_PORT,
-  user: process.env.MYSQL_CLOUD_USER,
-  database: process.env.MYSQL_DB
+	host: process.env.MYSQL_CLOUD_HOST,
+	password: process.env.MYSQL_CLOUD_PASS,
+	port: process.env.MYSQL_PORT,
+	user: process.env.MYSQL_CLOUD_USER,
+	database: process.env.MYSQL_DB
 });
 
 // set up some configs for express.
 const config = {
-  name: 'sample-express-app',
-  port: 8000,
-  host: '0.0.0.0',
+	name: 'sample-express-app',
+	port: 8000,
+	host: '0.0.0.0',
 };
 
 // create the express.js object
@@ -30,17 +30,18 @@ const logger = log({ console: true, file: false, label: config.name });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cors({
-  origin: '*'
+	origin: 'http://localhost:3000',
+	credentials: true
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-connection.connect(function(err) {  
-  if (err) throw err;
-  logger.info("Connected");
+connection.connect(function (err) {
+	if (err) throw err;
+	logger.info("Connected");
 });
 
 // middleware to use for all requests
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	// do logging
 	logger.info('Something is happening.');
 	next();
@@ -51,10 +52,11 @@ app.use(function(req, res, next) {
 // GET /
 
 app.get('/', (req, res) => {
-  res.status(200).send('Go to 0.0.0.0:3000.');
+	res.status(200).send('Go to 0.0.0.0:3000.');
 });
 
-//Get all users
+//Get users
+
 app.get('/users/get', function (req, res) {
 	connection.query("SELECT * FROM user", function (err, result, fields) {
 		if (err) throw err;
@@ -187,12 +189,12 @@ app.get('/friendInvites/:id', function (req, res) {
 
 //Get attendees
 app.get('/meeting/:meetingID/attendees', function (req, res) {
-  var id = req.params.meetingID;
+	var id = req.params.meetingID;
 	connection.query("select concat(firstname, ' ', lastname) as attendees from user u inner join meetingInvites mi on u.userID = mi.addresseeID inner join meeting m on mi.meetingID = m.meetingID where m.meetingID = ? and mi.accepted = 1;", id,
-  function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
+		function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
 });
 
 
@@ -200,83 +202,148 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 // POST /
 
 app.post('/login', (req, res) => {
-  
-	if(!(req.body.username && req.body.password)){
+
+	if (!(req.body.username && req.body.password)) {
+
 		res.status(400).send("Missing email or password");
 		return;
 	}
 
-	var query = "select * from user where username=\""+req.body.username+"\" and p"+
-				"assword=\""+req.body.password+"\";";
-  console.log(query);
-				
-	connection.query(query, function(err, result, fields){
-		if(err){
+	var query = "select * from user where username=\"" + req.body.username + "\" and p" +
+		"assword=\"" + req.body.password + "\";";
+
+	connection.query(query, function (err, result, fields) {
+		if (err) {
 			res.status(500).send("Failed SQL Query");
 			return;
 		}
-		
-		switch(result.length){
+
+		switch (result.length) {
 			case 0:
-				res.status(401).send("No Users Found");
-				return;
+				res.status(200).send(false);
+				break;
 			case 1:
-        res.status(200).send(result[0]);
+				res.status(200).send(true);
 				break;
 			default:
 				res.status(402).send("Too Many Users Found");
 				return;
 		}
-		
+
 	})
 })
 
 // create a company post
 app.post('/createpost', async (req, res) => {
-  var id = req.body.companyID;
-  var title = req.body.title;
-  var description = req.body.description;
-  
-  let array = [id, title, description];
-  var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`) values (?,?,?)";
-  connection.query(sql, array, function (err, result, fields) {
-      if (err) throw err;
-      res.end(JSON.stringify(result));
-  });
+	var id = req.body.companyID;
+	var title = req.body.title;
+	var description = req.body.description;
+
+	let array = [id, title, description];
+	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`) values (?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
 });
 
 // create a meeting/event
 app.post('/createmeeting', async (req, res) => {
-  var description = req.body.description || "";
-  var start = req.body.startTime;
-  var end = req.body.endTime;
-  var link = req.body.meetingLink || "";
-  var company = req.body.hostCompanyID;
-  var loc = req.body.location || "";
-  var meetingType = req.body.meetingType;
-  var eventDate = req.body.eventDate;
-  
-  let array = [description,start,end,link,company,loc,meetingType,eventDate];
-  var sql = "INSERT into `fireworks`.`meeting` (`meetingID`,`description`,`startTime`,`endTime`,`meetingLink`,`hostCompanyID`,`location`,`meetingType`,`eventDate`) values (DEFAULT,?,?,?,?,?,?,?,?)";
-  connection.query(sql, array, function (err, result, fields) {
-      if (err) throw err;
-      res.end(JSON.stringify(result));
-  });
+	var description = req.body.description || "";
+	var start = req.body.startTime;
+	var end = req.body.endTime;
+	var link = req.body.meetingLink || "";
+	var company = req.body.hostCompanyID;
+	var loc = req.body.location || "";
+	var meetingType = req.body.meetingType;
+	var eventDate = req.body.eventDate;
+
+	let array = [description, start, end, link, company, loc, meetingType, eventDate];
+	var sql = "INSERT into `fireworks`.`meeting` (`meetingID`,`description`,`startTime`,`endTime`,`meetingLink`,`hostCompanyID`,`location`,`meetingType`,`eventDate`) values (DEFAULT,?,?,?,?,?,?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
 });
 
 // DELETE /
-app.delete('/meeting/:meetingID', async (req,res) => {
-  var id = req.params.meetingID;
-  connection.query("DELETE FROM meeting WHERE meetingID = ?", meetingID, function (err, result, fields) {
-      if (err) throw err;
-      res.end(JSON.stringify(result));
-  });
+app.delete('/meeting/:meetingID', async (req, res) => {
+	var id = req.params.meetingID;
+	connection.query("DELETE FROM meeting WHERE meetingID = ?", meetingID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
 });
 
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
-  if (e) {
-    throw new Error('Internal Server Error');
-  }
-  logger.info(`${config.name} running on ${config.host}:${config.port}`);
+	if (e) {
+		throw new Error('Internal Server Error');
+	}
+	logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
+
+app.post('/createaccount', function (req, res) {
+	var FirstName = req.param('First Name');
+	var LastName = req.param('Last Name');
+	var UserName = req.param('User Name');
+	var PassWord = req.param('Password');
+	var BirthDate = req.param('Birthday');
+	var CompanyAccount = req.param('Company Account');
+	var CompanyName = req.param('Company Name');
+	var Description = req.param('Description');
+
+	/*
+	connection.query("SELECT * FROM user WHERE username = ? ", UserName, function (err, result, fields) {
+		if(result.length > 0){
+			return res.status(401).json({ UserExists: "User already exists" });
+			
+			con.release()
+			if(err) throw err;
+		}
+		
+	});
+	*/
+
+	if (CompanyAccount) {
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName, Description], function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	else {
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+
+
+});
+
+app.get('/profile/:username', (req, res) => {
+	var UserName = req.param('username');
+
+	connection.query("SELECT * FROM user WHERE username = ?", UserName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+
+});
+
+app.get('/post/:companyID', (req, res) => {
+	var CompanyID = req.param('companyID');
+
+	connection.query("SELECT * FROM post WHERE companyID = ?", CompanyID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
+

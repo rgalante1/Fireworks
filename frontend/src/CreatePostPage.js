@@ -1,5 +1,7 @@
 import React from 'react';
 import './CreatePostPage.css';
+import { Meeting } from './Meeting';
+import { Link, Redirect } from 'react-router-dom';
 
 class CreatePost extends React.Component{
   constructor(props){
@@ -7,95 +9,71 @@ class CreatePost extends React.Component{
     this.state = {
       title: '',
       desc: '',
+      meeting: false,
       date: '',
       time: '',
       loc: '',
       verified: '',
       virtual: '',
-      disabled: false
+      disabled: false,
+      submit: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleVirtual = this.handleVirtual.bind(this);
   }
   
   handleChange(event){
     const target = event.target;
-    const value = target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     this.setState({[name]: value});
   }
 
   handleSubmit(event){
     alert('Created Post');
-    var date = document.querySelector("#date");
-    date.value = "";
     this.setState({
       title: '',
       desc: '',
+      meeting: false,
       date: '',
       time: '',
       loc: '',
       verified: '',
       virtual: '',
-      disabled: false
+      disabled: false,
+      submit: true
     });
     event.preventDefault();
   }
 
-  handleVirtual(event){
-    if(!this.state.disabled){
-      this.setState({
-        disabled: true,
-        loc: 'Virtual'
-      });
-    }
-    else{
-      this.setState({
-        disabled: false,
-        loc: ''
-      });
-    }
-    this.handleChange(event);
-  }
+  
 
   render(){
+    const submitted = this.state.submit;
+    if(submitted){
+      return <Redirect to="/dashboard" />
+    }
     return(
-      <div className="createPost">
-        <h1>Create Post</h1>
-        <form onSubmit={this.handleSubmit}>
+      <div className="container my-5">
+        <form onSubmit={this.handleSubmit} className="card container py-4" id="createPost">
+          <h1 className="card-title text-center">Create Post</h1>
           <label htmlFor="title" id="title">
-          <input type="text" id="title" name="title" value={this.state.title} placeholder="Title"
-            onChange={this.handleChange}/><br/>
+            <input type="text" id="title" name="title" value={this.state.title} placeholder="Title"
+            onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="desc" id="desc">
             <textarea rows="15" id="desc" name="desc" value={this.state.desc} placeholder="Your text here"
-            onChange={this.handleChange}/><br/>
+            onChange={this.handleChange} className="form-control" required/>
           </label>
-          <label htmlFor="loc" id="loc">
-            <input type="text" id="loc" name="loc" value={this.state.loc} placeholder="Location"
-            disabled={(this.state.disabled) ? "disabled" : ""} onChange={this.handleChange}/> <br/>
-          </label>
-          <label htmlFor="date">
-            <input type="date" id="date" name="date" value={this.state.date} 
-            onChange={this.handleChange}/>
-          </label>
-          <label htmlFor="time">
-            <input type="time" id="time" name="time" value={this.state.time} 
-            onChange={this.handleChange}/><br />
-          </label>
-          <label htmlFor="virtual">
-            <input type="checkbox" id="virtual" name="virtual" value={this.state.verified} 
-            onChange={this.handleVirtual}/>
-            <span className="checkboxText">Virtual</span>
-          </label>
-          <label htmlFor="verified">
-            <input type="checkbox" id="verified" name="verified" value={this.state.verified} 
-            onChange={this.handleChange}/>
-            <span className="checkboxText">Verified Users Only</span><br/>
-          </label>
-          <button type="button" id="cancel" className="floatLeft">Cancel</button>
-          <input type="submit" value="Create Post" id="submit" className="floatRight"/>
+          <label htmlFor="meeting" className="mt-2">
+            <input type="checkbox" name="meeting" id="meeting" onChange={this.handleChange}
+            checked={this.state.meeting} />
+            <span className="font-weight-bold ml-2">Make a Meeting</span>
+          </label> {
+            this.state.meeting && <Meeting onChange={ (event) => this.handleChange(event) }/>
+          }
+          <Link to="/dashboard" id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
+          <input type="submit" value="Create Post" id="submit" className="col btn btn-success rounded-pill mt-2"/>
         </form>
       </div>
     )
