@@ -189,7 +189,7 @@ export default class ProfilePage extends React.Component {
                         </div>
                         <div className="col">
 
-                            <div className="bundleText BTRight">
+                            <div className="bundleText BTRight profilePage">
                                 <p className="titles"><b >Name:</b> {this.state.FirstName + " " + this.state.LastName}</p>
                                 <p className="titles"><b >Job Title:</b> {this.state.JobTitle}</p>
                                 <p className="titles"><b >Location:</b> {this.state.Location}</p>
