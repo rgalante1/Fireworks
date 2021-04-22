@@ -174,7 +174,7 @@ export default class ProfilePage extends React.Component {
         }
         else {
             return <>
-                        <div className="profilePage mb-5">
+                        <div className="profilePage mb-0 pb-5">
                             <div className="titleStuff">
                                 <div className="profilePic">
                                     <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" className="rounded-circle" height="200" width="200" />
@@ -198,7 +198,7 @@ export default class ProfilePage extends React.Component {
 
 
 
-                            <div className="row no-gutters">
+                            <div className="row no-gutters" id="#profileCard">
                                 <div className="col">
                                     <div className="bundleText BTLeft">
                                         <p className="titles"><b>About Me:</b></p>
