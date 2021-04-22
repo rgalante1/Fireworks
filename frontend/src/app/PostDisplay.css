@@ -1,4 +1,4 @@
-.postDisplay {
+/* .postDisplay {
     text-align: left;
     background-color: white;
     width: 50vw;
@@ -47,4 +47,9 @@
   
   button {
     background-color: darkgrey;
-  }
+  } */
+
+#post{
+  border-radius: 15px;
+  width: 50%;
+}

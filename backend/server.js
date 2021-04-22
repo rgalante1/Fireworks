@@ -28,8 +28,10 @@ const logger = log({ console: true, file: false, label: config.name });
 
 // specify middleware to use
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(cors({
-  origin: '*'
+  origin: 'http://localhost:3000',
+  credentials:true
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
@@ -50,7 +52,6 @@ app.use(function(req, res, next) {
 app.get('/', (req, res) => {
   res.status(200).send('Go to 0.0.0.0:3000.');
 });
-
 //Get users
 app.get('/users/get', function (req, res) {
 	connection.query("SELECT * FROM user", function (err, result, fields) {
@@ -78,6 +79,39 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 });
 
 // POST /
+
+app.post('/login', (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
+	if(!(req.body.username && req.body.password)){
+		res.status(400).send("Missing email or password");
+		return;
+	}
+
+	var query = "select * from user where username=\""+req.body.username+"\" and p"+
+				"assword=\""+req.body.password+"\";";
+  console.log(query);
+				
+	connection.query(query, function(err, result, fields){
+		if(err){
+			res.status(500).send("Failed SQL Query");
+			return;
+		}
+		
+		switch(result.length){
+			case 0:
+				res.status(401).send("No Users Found");
+				return;
+			case 1:
+        res.status(200).send(result[0]);
+				break;
+			default:
+				res.status(402).send("Too Many Users Found");
+				return;
+		}
+		
+	})
+})
 
 // create a company post
 app.post('/createpost', async (req, res) => {
@@ -128,3 +162,71 @@ app.listen(config.port, config.host, (e) => {
   }
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
+
+app.post('/createaccount',function (req,res){
+	var FirstName = req.param('First Name');
+	var LastName = req.param('Last Name');
+	var UserName = req.param('User Name');
+	var PassWord = req.param('Password');
+	var BirthDate = req.param('Birthday');
+	var CompanyAccount = req.param('Company Account');
+	var CompanyName = req.param('Company Name');
+	var Description = req.param('Description');
+	
+	/*
+	connection.query("SELECT * FROM user WHERE username = ? ", UserName, function (err, result, fields) {
+		if(result.length > 0){
+			return res.status(401).json({ UserExists: "User already exists" });
+			
+			con.release()
+			if(err) throw err;
+		}
+		
+	});
+	*/
+	
+	if(CompanyAccount)
+	{
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName,LastName,UserName,PassWord],  function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+		});
+		
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName,Description],  function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	else
+	{
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName,LastName,UserName,PassWord],  function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	
+	
+});
+
+app.get('/profile/:username', (req, res) => {
+	var UserName = req.param('username');
+	
+	connection.query("SELECT * FROM user WHERE username = ?", UserName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+	
+});
+
+app.get('/post/:companyID', (req, res) => {
+	var CompanyID = req.param('companyID');
+	
+	connection.query("SELECT * FROM post WHERE companyID = ?", CompanyID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
+	
+	

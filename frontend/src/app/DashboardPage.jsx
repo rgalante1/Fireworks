@@ -4,7 +4,6 @@ import Post from './../models/Post';
 import PostDisplay from './PostDisplay';
 
 export const DashboardPage = (props) => {
-    console.log(props)
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -18,13 +17,13 @@ export const DashboardPage = (props) => {
             }
             // Load more posts
             setPosts(posts => posts.concat(new Post(posts.length, "Post " + (posts.length + 1), "Random new post", new Date(), undefined, "https://smu.edu/live")));
-        }, 10000);
+        }, 2000);
         return () => clearInterval(interval);
     }, []);
 
     if (!props.loggedIn) {
         return (
-            <LoginPage history={props.history}></LoginPage>
+            <LoginPage></LoginPage>
         );
     }
 
