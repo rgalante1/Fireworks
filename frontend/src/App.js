@@ -12,7 +12,7 @@ import './App.css';
 import logoFWB from './logo.jpg';
 import LoginPage from './LoginPage.js';
 import { DeletePage } from './DeletePage.js';
-import CreatePostPage from './CreatePostPage.js';
+import { CreatePostPage } from './CreatePostPage.js';
 import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
 import {PostDisplay} from './app/PostDisplay'
@@ -62,9 +62,7 @@ function App() {
         <Route path="/createaccount">
           <CreatePage />
         </Route>
-        <Route path="/:userName/createpost">
-          <CreatePostPage />
-        </Route>
+        <Route path="/:userName/createpost" component={CreatePostPage} />
         <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage} />
         {/* <Route path="/post/:postId" exact component={PostDisplay} /> */}
         <Route path="/dashboard/:username" component={DashboardPage} />

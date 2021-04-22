@@ -14,6 +14,7 @@ export const PostDisplay = (props) => {
         <div className="postDisplay container mt-1 mb-1 py-4">
             <div className="card container py-4" id="post">
                 <h1 className="titleLogIn text-center text-center">{postHeader}</h1>
+                <Link to={"/profile/" + props.userName + "/" + props.post.username}>By {props.post.username}</Link>
                 <p >{props.post.description}</p>
                 
                 {(() => {
