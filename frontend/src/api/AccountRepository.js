@@ -33,6 +33,17 @@ export class AccountsRepository {
         });
     }
 
+    getUserInfo(username) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/${username}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting specific user!");
+                    reject(error);
+                });
+        });
+    }
+
     getUserPass(username, password) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/login`, {username, password}, this.config)
