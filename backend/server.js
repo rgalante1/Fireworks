@@ -51,7 +51,6 @@ app.use(function(req, res, next) {
 app.get('/', (req, res) => {
   res.status(200).send('Go to 0.0.0.0:3000.');
 });
-
 //Get users
 app.get('/users/get', function (req, res) {
 	connection.query("SELECT * FROM user", function (err, result, fields) {
@@ -162,3 +161,71 @@ app.listen(config.port, config.host, (e) => {
   }
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
+
+app.post('/createaccount',function (req,res){
+	var FirstName = req.param('First Name');
+	var LastName = req.param('Last Name');
+	var UserName = req.param('User Name');
+	var PassWord = req.param('Password');
+	var BirthDate = req.param('Birthday');
+	var CompanyAccount = req.param('Company Account');
+	var CompanyName = req.param('Company Name');
+	var Description = req.param('Description');
+	
+	/*
+	connection.query("SELECT * FROM user WHERE username = ? ", UserName, function (err, result, fields) {
+		if(result.length > 0){
+			return res.status(401).json({ UserExists: "User already exists" });
+			
+			con.release()
+			if(err) throw err;
+		}
+		
+	});
+	*/
+	
+	if(CompanyAccount)
+	{
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName,LastName,UserName,PassWord],  function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+		});
+		
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName,Description],  function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	else
+	{
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName,LastName,UserName,PassWord],  function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	
+	
+});
+
+app.get('/profile/:username', (req, res) => {
+	var UserName = req.param('username');
+	
+	connection.query("SELECT * FROM user WHERE username = ?", UserName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+	
+});
+
+app.get('/post/:companyID', (req, res) => {
+	var CompanyID = req.param('companyID');
+	
+	connection.query("SELECT * FROM post WHERE companyID = ?", CompanyID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
+	
+	
