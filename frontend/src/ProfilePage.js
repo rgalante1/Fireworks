@@ -10,14 +10,14 @@ export default class ProfilePage extends React.Component {
         super(props);
         this.state = {
             UserName: '',
-            RealName: 'Rani Rogan',
-            UserNameLooking: 'error',
-            CompanyName: 'rugby realty',
-            AboutMe: 'Tenebrae descendunt super terras. Media nox mox aderit. Bestiae correpunt qui cruorem appetant ut tuam vicinitatem perterreant. Et quicumque videbitur habere nullum animum qui motet, debet consistere ut canibus infernalibus obviet ne intra tegumen cadaveris conputresceret.',
-            JobTitle: 'Power Broker',
-            Location: 'Dallas, Texas',
-            PhoneNumber: '412-996-7269',
-            EmailAddress: 'srwalsh@smu.edu',
+            RealName: '',
+            UserNameLooking: '',
+            CompanyName: '',
+            AboutMe: '',
+            JobTitle: '',
+            Location: '',
+            PhoneNumber: '',
+            EmailAddress: '',
             ProfilePhotoURL: 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg',
             MessageText: 'Hello! I\'d love to schedule a meeting with you if possible. Let me know!',
 
@@ -43,7 +43,7 @@ export default class ProfilePage extends React.Component {
         http.open('HEAD', image_URL, false);
         http.send();
 
-        return http.status != 404;
+        return http.status !== 404;
     }
 
     buttonInvite(event) {
@@ -92,11 +92,6 @@ export default class ProfilePage extends React.Component {
                                 </div>
                                 <div className="modal-body overflow-auto">
                                     <form className="changeForm">
-                                        <div className="form-group">
-                                            <label htmlFor="UserName" className="labels">Username:</label><br />
-                                            <input type="form-control" className="form-control border border-secondary" id="UserName" name="UserName" value={this.state.UserName} onChange={this.handleChange} />
-                                        </div>
-
                                         <div className="form-group">
                                             <label htmlFor="RealName" className="labels">Name:</label><br />
                                             <input type="form-control" className="form-control border border-secondary" id="RealName" name="RealName" value={this.state.RealName} onChange={this.handleChange} />
@@ -230,6 +225,29 @@ export default class ProfilePage extends React.Component {
         let userPass = this.props.match.params.usernamePassed;
         if (userPass) {
             this.setState({ UserName: userPass });
+        }
+
+        if (userPass) {
+            this.accountRepo.getUserInfo(userPass).then(account => {
+                let accArray = account[0];
+                if(accArray.firstName || accArray.lastName)
+                    this.setState({ RealName: (accArray.firstName + " " + accArray.lastName) });
+                
+                if(accArray.bio)
+                    this.setState({ AboutMe: accArray.bio });
+
+                if(accArray.title)
+                    this.setState({ JobTitle: accArray.title });
+
+                if(accArray.phone)
+                    this.setState({ PhoneNumber: accArray.phone });
+
+                if(accArray.mail)
+                    this.setState({ EmailAddress: accArray.mail });
+
+                if(accArray.picture)
+                    this.setState({ ProfilePhotoURL: accArray.picture });
+            })
         }
     }
 }

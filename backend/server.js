@@ -47,12 +47,16 @@ app.use(function (req, res, next) {
 	next();
 });
 
+
+
 // GET /
 
 app.get('/', (req, res) => {
 	res.status(200).send('Go to 0.0.0.0:3000.');
 });
+
 //Get users
+
 app.get('/users/get', function (req, res) {
 	connection.query("SELECT * FROM user", function (err, result, fields) {
 		if (err) throw err;
@@ -60,13 +64,128 @@ app.get('/users/get', function (req, res) {
 	});
 });
 
+//Get users by ID
+app.get('/users/:id', function (req, res) {
+
+  var query = "SELECT * FROM user where userID =\""+req.params.id+"\"";
+
+	connection.query(query, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get all posts
+app.get('/post', function (req, res) {
+	connection.query("SELECT * FROM post", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
+
 //Get company
-app.get('/company/get', function (req, res) {
+app.get('/company', function (req, res) {
 	connection.query("SELECT * FROM company", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
+
+//Get company by ID
+app.get('/company/:id', function (req, res) {
+
+  var query = "SELECT * FROM company where companyID =\""+req.params.id+"\"";
+
+	connection.query(query, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get rating
+app.get('/rating', function (req, res) {
+	connection.query("SELECT * FROM rating", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get rating by ID
+app.get('/rating/:id', function (req, res) {
+
+  var query = "SELECT * FROM rating where ratingID =\""+req.params.id+"\"";
+
+	connection.query(query, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get friendship
+app.get('/friendship', function (req, res) {
+	connection.query("SELECT * FROM friendship", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get friendship by ID
+app.get('/friendship/:id', function (req, res) {
+
+  var query = "SELECT * FROM friendship where friendshipID =\""+req.params.id+"\"";
+
+	connection.query(query, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get meetingInvites
+app.get('/meetingInvites', function (req, res) {
+	connection.query("SELECT * FROM friendship", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get meetingInvites by ID
+app.get('/meetingInvites/:id', function (req, res) {
+
+  var query = "SELECT * FROM meetingInvites where inviteID =\""+req.params.id+"\"";
+
+	connection.query(query, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get friendInvites
+app.get('/friendInvites', function (req, res) {
+	connection.query("SELECT * FROM friendInvites", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get friendInvites by ID
+app.get('/friendInvites/:id', function (req, res) {
+
+  var query = "SELECT * FROM friendInvites where inviteID =\""+req.params.id+"\"";
+
+	connection.query(query, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 
 //Get attendees
 app.get('/meeting/:meetingID/attendees', function (req, res) {
@@ -78,10 +197,14 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 		});
 });
 
+
+
 // POST /
 
 app.post('/login', (req, res) => {
+
 	if (!(req.body.username && req.body.password)) {
+
 		res.status(400).send("Missing email or password");
 		return;
 	}
