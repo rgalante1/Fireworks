@@ -3,7 +3,7 @@ import './CreatePostPage.css';
 import { Meeting } from './Meeting';
 import { Link, Redirect } from 'react-router-dom';
 
-class CreatePost extends React.Component{
+export class CreatePostPage extends React.Component{
   constructor(props){
     super(props);
     this.state = {
@@ -16,44 +16,38 @@ class CreatePost extends React.Component{
       verified: '',
       virtual: '',
       disabled: false,
-      submit: false
+      submit: false,
+      user: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  handleChange(event){
+  handleChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({[name]: value});
+    const value = target.value;
+    const name = target.name
+    this.setState({ [name]: value });
   }
 
-  handleSubmit(event){
-    alert('Created Post');
+  handleSubmit(event) {
+    alert('Created Review');
     this.setState({
-      title: '',
-      desc: '',
-      meeting: false,
-      date: '',
-      time: '',
-      loc: '',
-      verified: '',
-      virtual: '',
-      disabled: false,
+      Title: 'Example Title',
+      MeetingDesc: 'Example Description',
+      Rating: '',
+      RatingDesc: '',
       submit: true
     });
     event.preventDefault();
   }
 
-  
-
-  render(){
+  render() {
     const submitted = this.state.submit;
     if(submitted){
-      return <Redirect to="/dashboard" />
+      return <Redirect to={"/dashboard/" + this.state.user} />
     }
-    return(
+    return (<>
       <div className="container my-5">
         <form onSubmit={this.handleSubmit} className="card container py-4" id="createPost">
           <h1 className="card-title text-center">Create Post</h1>
@@ -72,20 +66,17 @@ class CreatePost extends React.Component{
           </label> {
             this.state.meeting && <Meeting onChange={ (event) => this.handleChange(event) }/>
           }
-          <Link to="/dashboard" id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
+          <Link to={"/dashboard/" + this.state.user} id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
           <input type="submit" value="Create Post" id="submit" className="col btn btn-success rounded-pill mt-2"/>
         </form>
       </div>
+      </>
     )
   }
+  componentDidMount() {
+    let userName = this.props.match.params.userName;
+    if(userName){
+      this.setState({user: userName});
+    }
+  }
 }
-
-function CreatePostPage(){
-  return(
-    <div>
-      <CreatePost />
-    </div>
-  )
-}
-
-export default CreatePostPage;

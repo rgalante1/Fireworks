@@ -23,7 +23,7 @@ export const DashboardPage = (props) => {
 
         const interval = setInterval(() => {
             // Load more posts
-            setPosts(posts => posts.concat(new Post(posts.length, "Post " + (posts.length + 1), "Random new post", new Date(), undefined, "https://smu.edu/live")));
+            setPosts(posts => posts.concat(new Post(posts.length, "Post " + (posts.length + 1), "Random new post", new Date(), undefined, "https://smu.edu/live", "medusa")));
         }, 10000);
         return () => clearInterval(interval);
     }, []);

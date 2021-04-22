@@ -40,11 +40,11 @@ export class DeletePage extends React.Component{
           <p className="text-center">Warning: this action is permanent</p>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-            placeholder="User Name" onChange={this.handleChange} className="form-control"/>
+            placeholder="User Name" onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
-            placeholder="Password" onChange={this.handleChange} className="form-control"/>
+            placeholder="Password" onChange={this.handleChange} className="form-control" required/>
           </label>
           <Link to={"/dashboard/" + this.state.user} type="button" id="cancel" 
           className="form-control btn btn-secondary rounded-pill mt-2">Cancel</Link>
