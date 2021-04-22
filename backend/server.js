@@ -150,7 +150,7 @@ app.post('/createaccount',function (req,res){
 	});
 	*/
 	
-	if(CompanyAccount == "selected")
+	if(CompanyAccount)
 	{
 		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName,LastName,UserName,PassWord],  function (err, result, fields) {
 		if (err) throw err;
