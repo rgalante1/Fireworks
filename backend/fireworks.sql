@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`meeting` (
   `location` VARCHAR(45) NULL,
   `meetingType` VARCHAR(45) NULL,
   `eventDate` DATE NULL,
+  `title` VARCHAR(255) NULL,
   PRIMARY KEY (`meetingID`),
   UNIQUE INDEX `meetingID_UNIQUE` (`meetingID` ASC) VISIBLE,
   INDEX `hostCompanyID_idx` (`hostCompanyID` ASC) VISIBLE,

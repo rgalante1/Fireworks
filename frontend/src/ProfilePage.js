@@ -2,6 +2,7 @@ import './ProfilePage.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccountsRepository } from './api/AccountRepository'
+import { friendRequest } from './models/friendRequest'
 
 export default class ProfilePage extends React.Component {
     accountRepo = new AccountsRepository();
@@ -21,8 +22,8 @@ export default class ProfilePage extends React.Component {
             EmailAddress: '',
             ProfilePhotoURL: 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg',
             MessageText: 'Hello! I\'d love to schedule a meeting with you if possible. Let me know!',
-            friendRequests: []
-
+            friendRequests: [],
+            tempUser: 'error',
         }
         this.handleChange = this.handleChange.bind(this);
         this.buttonEdit = this.buttonEdit.bind(this);
@@ -165,14 +166,13 @@ export default class ProfilePage extends React.Component {
                                         this.state.friendRequests && this.state.friendRequests.map((x, i) =>
                                             <div className="card m-3" key={i}>
                                                 <div className="card-body">
+                                                    {/*console.log(x)*/}
+                                                    {/*console.log(x.senderUsername)*/}
                                                     <p>Accepted: {x.accepted}</p>
                                                     <p>addresseeID: {x.addresseeID}</p>
-                                                    Note to self when I come back to this: You will need to do the API calls for this stuff before the render.
-                                                    Because of this, you will need to set up all the information in a friendReview object that you can then do here.
-                                                    Do it similarly to the Product objects we had in the Store HW4.
                                                     <p>dateSent: {x.dateSent}</p>
                                                     <p>inviteID: {x.inviteID}</p>
-                                                    <p>senderID: {x.senderID}</p>
+                                                    <p>sender: {x.senderUsername}</p>
                                                 </div>
                                             </div>
                                         )
@@ -306,7 +306,16 @@ export default class ProfilePage extends React.Component {
 
             this.accountRepo.getAllFriendInvites().then(invites => {
                 let inviteList = invites.data;
-                this.setState({ friendRequests: inviteList })
+                let tempArray = [];
+
+                for(var index = 0; index < inviteList.length; index++){
+                    this.accountRepo.getUserByID(inviteList[index].senderID).then(result => {
+                        this.setState({ tempUser: (result[0].firstName + result[0].lastName) });
+                    })
+                    tempArray.push(new friendRequest(inviteList[index].accepted, inviteList[index].addresseeID, inviteList[index].dateSent, inviteList[index].inviteID, inviteList[index].senderID, this.state.tempUser));
+                }
+
+                this.setState({ friendRequests: tempArray })
             }
             )
         }
