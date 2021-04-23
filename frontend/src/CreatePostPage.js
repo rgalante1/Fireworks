@@ -2,8 +2,13 @@ import React from 'react';
 import './CreatePostPage.css';
 import { Meeting } from './Meeting';
 import { Link, Redirect } from 'react-router-dom';
+import { PostsRepository } from './api/PostRepository'
+import { AccountsRepository } from './api/AccountRepository';
 
 export class CreatePostPage extends React.Component{
+  postRepo = new PostsRepository();
+  accountRepo = new AccountsRepository();
+
   constructor(props){
     super(props);
     this.state = {
@@ -17,7 +22,8 @@ export class CreatePostPage extends React.Component{
       virtual: '',
       disabled: false,
       submit: false,
-      user: ''
+      user: '',
+      company: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,12 +38,9 @@ export class CreatePostPage extends React.Component{
 
   handleSubmit(event) {
     alert('Created Review');
-    this.setState({
-      Title: 'Example Title',
-      MeetingDesc: 'Example Description',
-      Rating: '',
-      RatingDesc: '',
-      submit: true
+    this.postRepo.createPost(this.state.company, this.state.title, this.state.desc).then( x=>{ 
+      console.log("done");
+      this.setState({submit: true})
     });
     event.preventDefault();
   }
@@ -78,5 +81,10 @@ export class CreatePostPage extends React.Component{
     if(userName){
       this.setState({user: userName});
     }
+    this.accountRepo.getCompany("Amazon").then(company => {
+      let compData = company[0];
+      console.log(compData);
+      this.setState({company: compData.companyID})
+    });
   }
 }

@@ -118,7 +118,25 @@ export class AccountsRepository {
         })
     }
 
-    
+    getCompany(companyName){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/company/byName/${companyName}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting company id");
+                    reject(error);
+                })
+        })
+    }
 
-
+    getCompanyByID(companyID){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/company/${companyID}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting company from id");
+                    reject(error);
+                })
+        })
+    }
 }

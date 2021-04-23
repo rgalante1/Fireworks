@@ -12,21 +12,25 @@ import {
     Redirect
   } from "react-router-dom";
 import { PostsRepository } from '../api/PostRepository';
+import { AccountsRepository } from '../api/AccountRepository';
 
 export const DashboardPage = (props) => {
-    const [posts, setPosts] = useState();
+    const [posts, setPosts] = useState([]);
     const params = useParams();
     const postRepo = new PostsRepository();
+    const accountRepo = new AccountsRepository();
     const postDisplays = [];
     useEffect(() => {
-        if(!posts){
+        if(posts.length == 0){
             postRepo.getPosts().then((x,i) => {
                 x.map(postDB => {
-                    let p = new Post(1, postDB.title, postDB.description);
-                    postDisplays.push(p);
-                })
-                console.log(postDisplays);
-                setPosts(postDisplays);
+                    accountRepo.getCompanyByID(postDB.companyID).then( account =>
+                        {
+                            let companyName = account[0].companyName;
+                            setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, postDB.description, companyName)));
+                        }
+                    )
+                });
             });
         }
     });
