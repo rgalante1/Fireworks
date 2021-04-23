@@ -434,3 +434,67 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	});
 });
 
+app.get('/allposts', function (req, res) {
+	var companyName = req.body.request;
+	//console.log("First log");
+	//console.log(companyName);
+	
+	var query = "SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName ='" + companyName;
+	
+	//console.log("Second log");
+	//console.log(query);
+	
+	connection.query("SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+app.post('/meeting/:meetingID/rating', function (req, res) {
+	var Rating = req.body.rating;
+	var RatingDescription = req.body.ratingDescription;
+	var meetingID = req.body.meetingID;
+	var Name = req.body.Name;
+	
+	//console.log("First log");
+	//console.log(Rating);
+	//console.log(RatingDescription);
+	//console.log(meetingID);
+	//console.log(Name);
+	
+	var query = "INSERT INTO rating (`meeting`, `name`, `description`, `rating`) VALUES" + meetingID + Name + RatingDescription + Rating; 
+	
+	//console.log("Second log");
+	//console.log(query);
+	
+	let array = [meetingID, Name, RatingDescription ,Rating];
+	
+	connection.query("INSERT INTO rating (`meeting`, `name`, `description`, `rating`) VALUES(?,?,?, ?) ", array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+app.get('/post/:postID', function (req, res) {
+	var postid = req.body.postID;
+	
+	var query = "SELECT * FROM post where post.companyID" + postid;
+
+	connection.query("SELECT * FROM post where post.companyID = ?", postid,  function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+app.get('/user/:username/userType', function (req, res) {
+	var UserName = req.body.username;
+	
+	var query = "SELECT userType FROM user where username = " + UserName;
+
+	connection.query("SELECT userType FROM user where username = ?", UserName,  function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
