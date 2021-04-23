@@ -326,17 +326,7 @@ app.post('/createaccount', function (req, res) {
 
 });
 
-app.get('/profile/:username', (req, res) => {
-	var UserName = req.param('username');
-
-	connection.query("SELECT * FROM user WHERE username = ?", UserName, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-
-});
-
-app.get('/post/:companyID', (req, res) => {
+app.get('/post/:companyID', function (req, res) {
 	var CompanyID = req.param('companyID');
 
 	connection.query("SELECT * FROM post WHERE companyID = ?", CompanyID, function (err, result, fields) {
@@ -345,5 +335,88 @@ app.get('/post/:companyID', (req, res) => {
 	});
 });
 
+app.get('/profile/:username', function (req, res) {
+	var UserName = req.param('username');
+	//console.log("First log inside username");
+	//console.log(UserName); 
+	
+	connection.query("SELECT * FROM user WHERE username = ?", UserName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
 
+});
+
+
+app.get('/profile/:username/friendrequests', function (req, res) {
+	var UserName = req.body.request;
+	//console.log("First log");
+	//console.log(UserName);
+	
+	var query = "SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username ='" + UserName + "' AND accepted = 0"
+	
+	//console.log("Second log");
+	//console.log(query);
+	
+	connection.query("SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username = ? AND accepted = 0", UserName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+app.get('/profile/:username/requestcheck', function (req, res)  {
+	var useraddressee = req.body.useraddressee;
+	console.log("Inside requestcheck");
+	console.log(useraddressee);
+	var usersender = req.body.usersender;
+	console.log(usersender);
+	
+	connection.query("SELECT * FROM user u1 INNER JOIN friendInvites fi on (u1.userID  = fi.addresseeID) OR (u1.userID = fi.senderID) INNER JOIN  user u2 on (u2.userID = fi.senderID) OR (u2.userID = fi.addresseeID)where u1.username = ? AND u2.username = ? ", [useraddressee, usersender] , function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+	
+});
+
+app.put('/profile/:username/togglerequest', function(req, res) {
+	var InviteID = req.body.inviteID
+	
+	connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID , function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+app.post('/profile/:username/friendship', async (req, res) => {
+	var useraddressee = req.body.useraddressee;
+	var usersender = req.body.usersender
+	
+
+	let array = [useraddressee, usersender];
+	
+	connection.query("INSERT INTO friendship (`user1ID`, `user2ID`, `dateFriended`) SELECT u1.userID, u2.userID, CURDATE() FROM user u1 CROSS JOIN user u2 WHERE u1.username = ? AND u2.username = ?", array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+	
+});
+
+app.put('/profile/:username/changeinfo', function(req, res) {
+	var UserName = req.body.username;
+	
+	var FirstName = req.body.firstName;
+	var LastName = req.body.lastName;
+	var AboutME = req.body.aboutMe;
+	var jobTitle = req.body.jobTitle;
+	var Location = req.body.location;
+	var PhoneNumber = req.body.phoneNumber;
+	var EmailAddress = req.body.emailAddress;
+	var ProfilePhotoURL = req.body.profilePhotoURL;
+	
+	let array = [UserName, FirstName, LastName,AboutME,jobTitle,Location,PhoneNumber,EmailAddress,ProfilePhotoURL ];
+	connection.query("UPDATE user SET FirstName = ?, LastName = ?, AboutME = ?, jobTitle = ?, Location = ?, PhoneNumber = ?, EmailAddress = ?, ProfilePhotoURL = ? WHERE username = ?", array , function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
 
