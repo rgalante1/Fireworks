@@ -1,5 +1,5 @@
 class Post {
-    constructor(id, title, description, date, location, meetingLink, username) {
+    constructor(id, title, description, date="" , location="", meetingLink="", username="") {
         this.id = id;
         this.title = title;
         this.description = description;

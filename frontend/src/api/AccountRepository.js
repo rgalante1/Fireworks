@@ -10,7 +10,6 @@ export class AccountsRepository {
         withCredentials: true
     };
 
-
     getUsers() {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/users/get`, this.config)
