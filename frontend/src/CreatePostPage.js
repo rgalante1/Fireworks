@@ -81,7 +81,7 @@ export class CreatePostPage extends React.Component{
     if(userName){
       this.setState({user: userName});
     }
-    this.accountRepo.getCompany("Amazon").then(company => {
+    this.accountRepo.getCompany(userName).then(company => {
       let compData = company[0];
       console.log(compData);
       this.setState({company: compData.companyID})

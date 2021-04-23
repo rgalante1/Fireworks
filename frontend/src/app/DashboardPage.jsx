@@ -35,17 +35,6 @@ export const DashboardPage = (props) => {
         }
     });
 
-    // for (let i in posts) {
-    //     postDisplays.push(
-    //         <div key={i}>
-    //             <br></br>
-    //             <PostDisplay post={posts[i]} headerLink={true} userName={params.username}/>
-    //         </div>
-    //     );
-    // }
-
-    // postDisplays.reverse();
-
     if (!posts) {
         return <>
             <div className="colorBlue pb-5">
