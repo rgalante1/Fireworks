@@ -27,26 +27,26 @@ export const DashboardPage = (props) => {
                     accountRepo.getCompanyByID(postDB.companyID).then( account =>
                         {
                             let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, postDB.description, companyName)));
+                            setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, postDB.description, "", "", "", companyName)));
                         }
                     )
                 });
             });
+            postRepo.getMeetings().then((x,i) =>{
+                x.map(meetDB => {
+                    accountRepo.getCompanyByID(meetDB.companyID).then( account =>
+                        {
+                            let companyName = account[0].companyName;
+                            setPosts(posts => posts.concat(new Post(meetDB.companyID, `Meeting by ${companyName}`, 
+                            meetDB.description, meetDB.eventDate, meetDB.location, "", companyName)));
+                        }
+                    )
+                });
+            })
         }
     });
 
-    // for (let i in posts) {
-    //     postDisplays.push(
-    //         <div key={i}>
-    //             <br></br>
-    //             <PostDisplay post={posts[i]} headerLink={true} userName={params.username}/>
-    //         </div>
-    //     );
-    // }
-
-    // postDisplays.reverse();
-
-    if (!posts) {
+    if (posts.length == 0) {
         return <>
             <div className="colorBlue pb-5">
                 <Link to={"/profile/" + params.username + "/" + params.username} className="btn btn-info float-right mr-3">Profile</Link>
