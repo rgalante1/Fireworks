@@ -85,27 +85,15 @@ export class AccountsRepository {
         });
     }
 
-    // createCompanyPost(companyID, title, description) {
-    //     return new Promise((resolve, reject) => {
-    //         axios.post(`${this.url}/createpost`, { companyID, title, description }, this.config)
-    //             .then(x => resolve(x.data))
-    //             .catch(error => {
-    //                 alert("Error creating company post!");
-    //                 reject(error);
-    //             });
-    //     });
-    // }
-
-    // createMeeting(description, startTime, endTime, meetingLink, hostCompanyID, location, meetingType, eventDate) {
-    //     return new Promise((resolve, reject) => {
-    //         axios.post(`${this.url}/createmeeting`, { description, startTime, endTime, meetingLink, hostCompanyID, location, meetingType, eventDate }, this.config)
-    //             .then(x => resolve(x.data))
-    //             .catch(error => {
-    //                 alert("Error creating meeting!");
-    //                 reject(error);
-    //             });
-    //     });
-    // }
+    getFriendRequests(username) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/${username}/friendrequests`, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
 
     updateAccount(id, account) {
         return new Promise((resolve, reject) => {

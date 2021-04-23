@@ -304,16 +304,16 @@ export default class ProfilePage extends React.Component {
                 }
             })
 
-            this.accountRepo.getAllFriendInvites().then(invites => {
+            this.accountRepo.getFriendRequests(userPass).then(invites => {
                 let inviteList = invites.data;
-                let tempArray = [];
+                console.log(inviteList);
 
-                for(var index = 0; index < inviteList.length; index++){
-                    this.accountRepo.getUserByID(inviteList[index].senderID).then(result => {
-                        this.setState({ tempUser: (result[0].firstName + result[0].lastName) });
-                    })
-                    tempArray.push(new friendRequest(inviteList[index].accepted, inviteList[index].addresseeID, inviteList[index].dateSent, inviteList[index].inviteID, inviteList[index].senderID, this.state.tempUser));
-                }
+                let tempArray = [];
+                for(var index = 0; index < inviteList.length; index++)
+                    tempArray.push(new friendRequest(inviteList[index].accepted, 
+                        inviteList[index].addresseeID, inviteList[index].dateSent, 
+                        inviteList[index].inviteID, inviteList[index].senderID, 
+                        (inviteList[index].firstName + " " + inviteList[index].lastName)));
 
                 this.setState({ friendRequests: tempArray })
             }

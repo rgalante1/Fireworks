@@ -477,16 +477,11 @@ app.get('/profile/:username', function (req, res) {
 
 
 app.get('/profile/:username/friendrequests', function (req, res) {
-	var UserName = req.body.request;
-	//console.log("First log");
-	//console.log(UserName);
+	var UserName = req.param('username');
 	
 	var query = "SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username ='" + UserName + "' AND accepted = 0"
 	
-	//console.log("Second log");
-	//console.log(query);
-	
-	connection.query("SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username = ? AND accepted = 0", UserName, function (err, result, fields) {
+	connection.query("SELECT * FROM user AS u INNER JOIN friendInvites AS fi on u.userID = fi.addresseeID WHERE username = ? AND fi.accepted = 0", UserName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -494,10 +489,7 @@ app.get('/profile/:username/friendrequests', function (req, res) {
 
 app.get('/profile/:username/requestcheck', function (req, res)  {
 	var useraddressee = req.body.useraddressee;
-	console.log("Inside requestcheck");
-	console.log(useraddressee);
 	var usersender = req.body.usersender;
-	console.log(usersender);
 	
 	connection.query("SELECT * FROM user u1 INNER JOIN friendInvites fi on (u1.userID  = fi.addresseeID) OR (u1.userID = fi.senderID) INNER JOIN  user u2 on (u2.userID = fi.senderID) OR (u2.userID = fi.addresseeID)where u1.username = ? AND u2.username = ? ", [useraddressee, usersender] , function (err, result, fields) {
 		if (err) throw err;
