@@ -22,6 +22,17 @@ export class AccountsRepository {
         })
     }
 
+    getPosts() {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/post`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting all users!");
+                    reject(error);
+                });
+        })
+    }
+
     getUserByID(id) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/users/${id}`, this.config)

@@ -21,11 +21,13 @@ export default class ProfilePage extends React.Component {
             EmailAddress: '',
             ProfilePhotoURL: 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg',
             MessageText: 'Hello! I\'d love to schedule a meeting with you if possible. Let me know!',
+            friendRequests: []
 
         }
         this.handleChange = this.handleChange.bind(this);
         this.buttonEdit = this.buttonEdit.bind(this);
         this.imageExists = this.imageExists.bind(this);
+        this.buttonFriendsList = this.buttonFriendsList.bind(this);
     }
 
     handleChange(event) {
@@ -146,6 +148,54 @@ export default class ProfilePage extends React.Component {
         }
     }
 
+    buttonFriendsList(props) {
+        if (this.state.UserName === this.state.UserNameLooking) {
+            return (
+                <div className="wrapper">
+                    <button type="button" className="btn btn-info buttonEdit" data-toggle="modal" data-target="#friendsListModal">Friend Requests</button>
+
+                    <div className="modal fade" id="friendsListModal" tabIndex="-1" role="dialog">
+                        <div className="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Current Pending Friend Requests:</h5>
+                                </div>
+                                <div className="modal-body overflow-auto">
+                                    {
+                                        this.state.friendRequests && this.state.friendRequests.map((x, i) =>
+                                            <div className="card m-3" key={i}>
+                                                <div className="card-body">
+                                                    <p>Accepted: {x.accepted}</p>
+                                                    <p>addresseeID: {x.addresseeID}</p>
+                                                    Note to self when I come back to this: You will need to do the API calls for this stuff before the render.
+                                                    Because of this, you will need to set up all the information in a friendReview object that you can then do here.
+                                                    Do it similarly to the Product objects we had in the Store HW4.
+                                                    <p>dateSent: {x.dateSent}</p>
+                                                    <p>inviteID: {x.inviteID}</p>
+                                                    <p>senderID: {x.senderID}</p>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" className="btn btn-success" data-dismiss="modal">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+
+        }
+        else {
+            return (
+                <button type="button" className="btn btn-info buttonEdit" data-toggle="modal" disabled data-target="#changeInfoModal">Friend Requests</button>
+            )
+        }
+    }
+
     render() {
         if (this.state.UserName === "") {
             return <>
@@ -157,8 +207,8 @@ export default class ProfilePage extends React.Component {
                 <div className=" pb-5">
                     <div className="titleStuff">
                         <div className="profilePic">
-                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : 
-                                "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" 
+                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL :
+                                "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR"
                                 className="rounded-circle" height="200" width="200" />
                         </div>
                         <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
@@ -168,12 +218,25 @@ export default class ProfilePage extends React.Component {
                     <div className="row">
                         <div className="col">
                             <div className="m-2">
-                                <Link to={"/dashboard/" + this.state.UserNameLooking} className="btn btn-primary buttonLink">Back to Dashboard</Link>
+                                <Link to={"/dashboard/" + this.state.UserNameLooking} className="btn btn-primary buttonLink">Return to Dash</Link>
                             </div>
                         </div>
                         <div className="col">
                             <div className="m-2">
                                 {this.buttonEdit()}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            <div className="m-2">
+                                <Link to={"/" + this.state.UserNameLooking + "/deleteaccount"} className="btn btn-danger buttonLink">Delete Account</Link>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="m-2">
+                                {this.buttonFriendsList()}
                             </div>
                         </div>
                     </div>
@@ -240,6 +303,12 @@ export default class ProfilePage extends React.Component {
                         this.setState({ ProfilePhotoURL: accArray.picture });
                 }
             })
+
+            this.accountRepo.getAllFriendInvites().then(invites => {
+                let inviteList = invites.data;
+                this.setState({ friendRequests: inviteList })
+            }
+            )
         }
     }
 }
