@@ -166,12 +166,7 @@ export default class ProfilePage extends React.Component {
                                         this.state.friendRequests && this.state.friendRequests.map((x, i) =>
                                             <div className="card m-3" key={i}>
                                                 <div className="card-body">
-                                                    {/*console.log(x)*/}
-                                                    {/*console.log(x.senderUsername)*/}
-                                                    <p>Accepted: {x.accepted}</p>
-                                                    <p>addresseeID: {x.addresseeID}</p>
                                                     <p>dateSent: {x.dateSent}</p>
-                                                    <p>inviteID: {x.inviteID}</p>
                                                     <p>sender: {x.senderUsername}</p>
                                                 </div>
                                             </div>
