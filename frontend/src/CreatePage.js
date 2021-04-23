@@ -28,8 +28,7 @@ class CreateAccount extends React.Component{
 
   handleSubmit(event){
     alert('Account Created');
-    var bday = document.querySelector("#birthdayDate");
-    bday.value = "";
+    
     this.setState({
       login: true
     });

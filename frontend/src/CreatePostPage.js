@@ -38,10 +38,18 @@ export class CreatePostPage extends React.Component{
 
   handleSubmit(event) {
     alert('Created Review');
-    this.postRepo.createPost(this.state.company, this.state.title, this.state.desc).then( x=>{ 
-      console.log("done");
-      this.setState({submit: true})
-    });
+    if(!this.state.meeting){
+      this.postRepo.createPost(this.state.company, this.state.title, this.state.desc).then( x=>{ 
+        this.setState({submit: true})
+      });
+    }
+    else{
+      this.postRepo.createMeeting(this.state.desc, this.state.time, "", this.state.company, 
+      this.state.loc, this.state.virtual, this.state.date).then(x=>{
+        alert("done");
+        this.setState({submit: true});
+      })
+    }
     event.preventDefault();
   }
 

@@ -55,6 +55,15 @@ app.get('/', (req, res) => {
 	res.status(200).send('Go to 0.0.0.0:3000.');
 });
 
+
+// get meetings 
+app.get('/meetings', function (req, res) {
+	connection.query("SELECT * FROM meeting", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 //Get users
 
 app.get('/users/get', function (req, res) {
