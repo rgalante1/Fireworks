@@ -313,9 +313,10 @@ app.post('/createmeeting', async (req, res) => {
 	var loc = req.body.location || "";
 	var meetingType = req.body.meetingType;
 	var eventDate = req.body.eventDate;
+  var title = req.body.title;
 
-	let array = [description, start, end, link, company, loc, meetingType, eventDate];
-	var sql = "INSERT into `fireworks`.`meeting` (`meetingID`,`description`,`startTime`,`endTime`,`meetingLink`,`hostCompanyID`,`location`,`meetingType`,`eventDate`) values (DEFAULT,?,?,?,?,?,?,?,?)";
+	let array = [description, start, end, link, company, loc, meetingType, eventDate,title];
+	var sql = "INSERT into `fireworks`.`meeting` (`meetingID`,`description`,`startTime`,`endTime`,`meetingLink`,`hostCompanyID`,`location`,`meetingType`,`eventDate`,title) values (DEFAULT,?,?,?,?,?,?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
