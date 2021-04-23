@@ -5,15 +5,15 @@ import './PostDisplay.css';
 export const PostDisplay = (props) => {
     const dateOptions = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'America/Chicago' };
     let postHeader = <h1>{props.post.title}</h1>;
-
-    if (props.headerLink) {
-        postHeader = <Link to={"/post/" + props.post.id} style={{textDecoration: 'inherit', color: 'inherit'}}>{postHeader}</Link>;
-    }
+    // if (props.headerLink) {
+    //     postHeader = <Link to={"/post/" + props.post.id} style={{textDecoration: 'inherit', color: 'inherit'}}>{postHeader}</Link>;
+    // }
 
     return (
         <div className="postDisplay container mt-1 mb-1 py-4">
             <div className="card container py-4" id="post">
                 <h1 className="titleLogIn text-center text-center">{postHeader}</h1>
+                <Link to={"/profile/" + props.userName + "/" + props.post.username}>By {props.post.username}</Link>
                 <p >{props.post.description}</p>
                 
                 {(() => {
@@ -29,7 +29,7 @@ export const PostDisplay = (props) => {
                 })()}
                 <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
                 className="form-control btn btn-success rounded-pill mt-1">RSVP</button>
-                <Link to={"/post/" + props.post.id + "/rating"} className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link>
+                <Link to={"/post/" + props.post.id + "/rating/" + props.userName} className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link>
             </div>
         </div>
     );

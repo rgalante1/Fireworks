@@ -31,14 +31,6 @@ class CreateAccount extends React.Component{
     var bday = document.querySelector("#birthdayDate");
     bday.value = "";
     this.setState({
-      FirstName: '',
-      LastName: '',
-      UserName: '',
-      Password: '',
-      Birthday: '',
-      Company: false,
-      CompanyName: '',
-      CompanyDesc: '',
       login: true
     });
     event.preventDefault();
@@ -47,7 +39,7 @@ class CreateAccount extends React.Component{
   render(){
     const login = this.state.login;
     if(login){
-      return <Redirect  to={{pathname: "/dashboard", state: { loggedIn: true }}} />
+      return <Redirect  to={{pathname: "/dashboard/" + this.state.UserName}} />
     }
     return(
       <div className="container my-5 py-4">

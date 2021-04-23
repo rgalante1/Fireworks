@@ -2,8 +2,13 @@ import React from 'react';
 import './CreatePostPage.css';
 import { Meeting } from './Meeting';
 import { Link, Redirect } from 'react-router-dom';
+import { PostsRepository } from './api/PostRepository'
+import { AccountsRepository } from './api/AccountRepository';
 
-class CreatePost extends React.Component{
+export class CreatePostPage extends React.Component{
+  postRepo = new PostsRepository();
+  accountRepo = new AccountsRepository();
+
   constructor(props){
     super(props);
     this.state = {
@@ -16,44 +21,36 @@ class CreatePost extends React.Component{
       verified: '',
       virtual: '',
       disabled: false,
-      submit: false
+      submit: false,
+      user: '',
+      company: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  handleChange(event){
+  handleChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({[name]: value});
+    const value = target.value;
+    const name = target.name
+    this.setState({ [name]: value });
   }
 
-  handleSubmit(event){
-    alert('Created Post');
-    this.setState({
-      title: '',
-      desc: '',
-      meeting: false,
-      date: '',
-      time: '',
-      loc: '',
-      verified: '',
-      virtual: '',
-      disabled: false,
-      submit: true
+  handleSubmit(event) {
+    alert('Created Review');
+    this.postRepo.createPost(this.state.company, this.state.title, this.state.desc).then( x=>{ 
+      console.log("done");
+      this.setState({submit: true})
     });
     event.preventDefault();
   }
 
-  
-
-  render(){
+  render() {
     const submitted = this.state.submit;
     if(submitted){
-      return <Redirect to="/dashboard" />
+      return <Redirect to={"/dashboard/" + this.state.user} />
     }
-    return(
+    return (<>
       <div className="container my-5">
         <form onSubmit={this.handleSubmit} className="card container py-4" id="createPost">
           <h1 className="card-title text-center">Create Post</h1>
@@ -72,20 +69,22 @@ class CreatePost extends React.Component{
           </label> {
             this.state.meeting && <Meeting onChange={ (event) => this.handleChange(event) }/>
           }
-          <Link to="/dashboard" id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
+          <Link to={"/dashboard/" + this.state.user} id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
           <input type="submit" value="Create Post" id="submit" className="col btn btn-success rounded-pill mt-2"/>
         </form>
       </div>
+      </>
     )
   }
+  componentDidMount() {
+    let userName = this.props.match.params.userName;
+    if(userName){
+      this.setState({user: userName});
+    }
+    this.accountRepo.getCompany("Amazon").then(company => {
+      let compData = company[0];
+      console.log(compData);
+      this.setState({company: compData.companyID})
+    });
+  }
 }
-
-function CreatePostPage(){
-  return(
-    <div>
-      <CreatePost />
-    </div>
-  )
-}
-
-export default CreatePostPage;

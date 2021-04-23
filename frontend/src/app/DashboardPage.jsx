@@ -11,49 +11,46 @@ import {
     useParams,
     Redirect
   } from "react-router-dom";
+import { PostsRepository } from '../api/PostRepository';
+import { AccountsRepository } from '../api/AccountRepository';
 
 export const DashboardPage = (props) => {
     const [posts, setPosts] = useState([]);
     const params = useParams();
-
+    const postRepo = new PostsRepository();
+    const accountRepo = new AccountsRepository();
+    const postDisplays = [];
     useEffect(() => {
-        if (props.loggedIn) {
-            // Load posts
+        if(posts.length == 0){
+            postRepo.getPosts().then((x,i) => {
+                x.map(postDB => {
+                    accountRepo.getCompanyByID(postDB.companyID).then( account =>
+                        {
+                            let companyName = account[0].companyName;
+                            setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, postDB.description, companyName)));
+                        }
+                    )
+                });
+            });
         }
+    });
 
-        const interval = setInterval(() => {
-            if (!props.loggedIn) {
-                return;
-            }
-            // Load more posts
-            setPosts(posts => posts.concat(new Post(posts.length, "Post " + (posts.length + 1), "Random new post", new Date(), undefined, "https://smu.edu/live")));
-        }, 5000);
-        return () => clearInterval(interval);
-    }, []);
+    // for (let i in posts) {
+    //     postDisplays.push(
+    //         <div key={i}>
+    //             <br></br>
+    //             <PostDisplay post={posts[i]} headerLink={true} userName={params.username}/>
+    //         </div>
+    //     );
+    // }
 
-    if (!props.loggedIn) {
-        return (
-            <LoginPage></LoginPage>
-        );
-    }
+    // postDisplays.reverse();
 
-    let postDisplays = [];
-
-    for (let i in posts) {
-        postDisplays.push(
-            <div key={i}>
-                <br></br>
-                <PostDisplay post={posts[i]} headerLink={true} />
-            </div>
-        );
-    }
-
-    postDisplays.reverse();
-
-    if (posts.length === 0) {
+    if (!posts) {
         return <>
             <div className="colorBlue pb-5">
                 <Link to={"/profile/" + params.username + "/" + params.username} className="btn btn-info float-right mr-3">Profile</Link>
+                <Link to={"/" + params.username + "/createpost"} className="btn btn-success float-right mr-3">Create Post</Link>
             </div>
             <div className="clear-fix" />
             <div className="dashboardPage">
@@ -65,10 +62,13 @@ export const DashboardPage = (props) => {
         return <>
             <div className="colorBlue pb-5">
                 <Link to={"/profile/" + params.username + "/" + params.username} className="btn btn-info float-right mr-3">Profile</Link>
+                <Link to={"/" + params.username + "/createpost"} className="btn btn-success float-right mr-3">Create Post</Link>
             </div>
             <div className="clear-fix" />
             <div className="dashboardPage">
-                {postDisplays}
+                {posts.map(x => 
+                    <PostDisplay post={x} headerLink={true} userName={params.username}/>
+                )}
             </div>
         </>
     }

@@ -1,12 +1,15 @@
 import React from 'react';
 import './DeletePage.css';
+import { Link, Redirect } from 'react-router-dom';
 
-class DeleteAccount extends React.Component{
+export class DeletePage extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       UserName: '',
       Password: '',
+      user: '',
+      deleted: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,10 +24,15 @@ class DeleteAccount extends React.Component{
 
   handleSubmit(event){
     alert('Account Deleted');
+    this.setState({deleted: true});
     event.preventDefault();
   }
 
   render(){
+    const deleted = this.state.deleted;
+    if(deleted){
+      return <Redirect to="/login"/>
+    }
     return(
       <div className="container my-5">
         <form onSubmit={this.handleSubmit} className="container card py-4" id="deletePage">
@@ -32,27 +40,24 @@ class DeleteAccount extends React.Component{
           <p className="text-center">Warning: this action is permanent</p>
           <label htmlFor="UserName">
             <input type="text" id="UserName" name="UserName" value={this.state.UserName} 
-            placeholder="User Name" onChange={this.handleChange} className="form-control"/>
+            placeholder="User Name" onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="Password">
             <input type="text" id="Password" name="Password" value={this.state.Password} 
-            placeholder="Password" onChange={this.handleChange} className="form-control"/>
+            placeholder="Password" onChange={this.handleChange} className="form-control" required/>
           </label>
-          <button type="button" id="cancel"  onClick={() => alert('Cancel')} 
-          className="form-control btn btn-secondary rounded-pill mt-2">Cancel</button>
+          <Link to={"/dashboard/" + this.state.user} type="button" id="cancel" 
+          className="form-control btn btn-secondary rounded-pill mt-2">Cancel</Link>
           <input type="submit" id="delete" value="Delete" className="form-control btn btn-danger rounded-pill mt-2"/>
         </form>
       </div>
     )
   }
-}
 
-function DeletePage(){
-  return(
-    <div>
-      <DeleteAccount />
-    </div>
-  )
+  componentDidMount() {
+    let userName = this.props.match.params.userName;
+    if (userName) {
+      this.setState({ user: userName });
+    }
+  }
 }
-
-export default DeletePage;

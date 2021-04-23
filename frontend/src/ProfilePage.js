@@ -10,7 +10,8 @@ export default class ProfilePage extends React.Component {
         super(props);
         this.state = {
             UserName: '',
-            RealName: '',
+            FirstName: '',
+            LastName: '',
             UserNameLooking: '',
             CompanyName: '',
             AboutMe: '',
@@ -20,12 +21,13 @@ export default class ProfilePage extends React.Component {
             EmailAddress: '',
             ProfilePhotoURL: 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg',
             MessageText: 'Hello! I\'d love to schedule a meeting with you if possible. Let me know!',
+            friendRequests: []
 
         }
         this.handleChange = this.handleChange.bind(this);
         this.buttonEdit = this.buttonEdit.bind(this);
-        this.buttonInvite = this.buttonInvite.bind(this);
         this.imageExists = this.imageExists.bind(this);
+        this.buttonFriendsList = this.buttonFriendsList.bind(this);
     }
 
     handleChange(event) {
@@ -46,38 +48,6 @@ export default class ProfilePage extends React.Component {
         return http.status !== 404;
     }
 
-    buttonInvite(event) {
-        if (this.state.UserName !== this.state.UserNameLooking) {
-            return (
-                <div className="wrapper">
-                    <button type="button" className="btn btn-success buttonInvite" id="invitebutton" data-toggle="modal" data-target="#exampleModal">Friend Request</button>
-
-                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div className="modal-dialog modal-sm" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h3 className="modal-title" id="exampleModalLabel">Friend invite sent!</h3>
-                                </div>
-                                <div className="modal-body">
-                                    <p className="modal-title" id="exampleModalLabel">Check back later to see if they accept or decline.</p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-        else {
-            return (
-                <button type="button" className="btn btn-success buttonInvite" id="invitebutton" data-toggle="modal" data-target="#exampleModal" disabled>Friend Request</button>
-            )
-        }
-
-    }
-
     buttonEdit(props) {
         if (this.state.UserName === this.state.UserNameLooking) {
             return (
@@ -93,8 +63,13 @@ export default class ProfilePage extends React.Component {
                                 <div className="modal-body overflow-auto">
                                     <form className="changeForm">
                                         <div className="form-group">
-                                            <label htmlFor="RealName" className="labels">Name:</label><br />
-                                            <input type="form-control" className="form-control border border-secondary" id="RealName" name="RealName" value={this.state.RealName} onChange={this.handleChange} />
+                                            <label htmlFor="FirstName" className="labels">First Name:</label><br />
+                                            <input type="form-control" className="form-control border border-secondary" id="FirstName" name="FirstName" value={this.state.FirstName} onChange={this.handleChange} />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="LastName" className="labels">Last Name:</label><br />
+                                            <input type="form-control" className="form-control border border-secondary" id="LastName" name="LastName" value={this.state.LastName} onChange={this.handleChange} />
                                         </div>
 
                                         <div className="form-group">
@@ -150,7 +125,73 @@ export default class ProfilePage extends React.Component {
         }
         else {
             return (
-                <button type="button" className="btn btn-secondary buttonEdit" disabled>Edit Information</button>
+                <div className="wrapper">
+                    <button type="button" className="btn btn-success buttonEdit" id="invitebutton" data-toggle="modal" data-target="#exampleModal">Friend Request</button>
+
+                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog modal-sm" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h3 className="modal-title" id="exampleModalLabel">Friend invite sent!</h3>
+                                </div>
+                                <div className="modal-body">
+                                    <p className="modal-title" id="exampleModalLabel">Check back later to see if they accept or decline.</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    buttonFriendsList(props) {
+        if (this.state.UserName === this.state.UserNameLooking) {
+            return (
+                <div className="wrapper">
+                    <button type="button" className="btn btn-info buttonEdit" data-toggle="modal" data-target="#friendsListModal">Friend Requests</button>
+
+                    <div className="modal fade" id="friendsListModal" tabIndex="-1" role="dialog">
+                        <div className="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Current Pending Friend Requests:</h5>
+                                </div>
+                                <div className="modal-body overflow-auto">
+                                    {
+                                        this.state.friendRequests && this.state.friendRequests.map((x, i) =>
+                                            <div className="card m-3" key={i}>
+                                                <div className="card-body">
+                                                    <p>Accepted: {x.accepted}</p>
+                                                    <p>addresseeID: {x.addresseeID}</p>
+                                                    Note to self when I come back to this: You will need to do the API calls for this stuff before the render.
+                                                    Because of this, you will need to set up all the information in a friendReview object that you can then do here.
+                                                    Do it similarly to the Product objects we had in the Store HW4.
+                                                    <p>dateSent: {x.dateSent}</p>
+                                                    <p>inviteID: {x.inviteID}</p>
+                                                    <p>senderID: {x.senderID}</p>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" className="btn btn-success" data-dismiss="modal">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+
+        }
+        else {
+            return (
+                <button type="button" className="btn btn-info buttonEdit" data-toggle="modal" disabled data-target="#changeInfoModal">Friend Requests</button>
             )
         }
     }
@@ -161,17 +202,14 @@ export default class ProfilePage extends React.Component {
                 <h3 className="text-center mt-5">Loading...</h3>
             </>
         }
-        else if (this.state.UserName === "usrnotfounderror") {
-            return <>
-                <h3 className="text-center mt-5">We are recording an error finding the user. Please go back and try again.</h3>
-            </>
-        }
         else {
             return <>
-                <div className="profilePage pb-5">
+                <div className=" pb-5">
                     <div className="titleStuff">
                         <div className="profilePic">
-                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" className="rounded-circle" height="200" width="200" />
+                            <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL :
+                                "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR"
+                                className="rounded-circle" height="200" width="200" />
                         </div>
                         <h2 className="usernameLabel font-weight-bold text-capitalize">{this.state.UserName}</h2>
                         <h4 className="companyName text-capitalize">{this.state.CompanyName}</h4>
@@ -179,29 +217,43 @@ export default class ProfilePage extends React.Component {
 
                     <div className="row">
                         <div className="col">
-                            <div className="buttonStuff">
-                                {this.buttonInvite()}
+                            <div className="m-2">
+                                <Link to={"/dashboard/" + this.state.UserNameLooking} className="btn btn-primary buttonLink">Return to Dash</Link>
                             </div>
                         </div>
                         <div className="col">
-                            <div className="buttonStuff">
+                            <div className="m-2">
                                 {this.buttonEdit()}
                             </div>
                         </div>
                     </div>
 
+                    <div className="row">
+                        <div className="col">
+                            <div className="m-2">
+                                <Link to={"/" + this.state.UserNameLooking + "/deleteaccount"} className="btn btn-danger buttonLink">Delete Account</Link>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="m-2">
+                                {this.buttonFriendsList()}
+                            </div>
+                        </div>
+                    </div>
 
+                    <div className="clearfix" />
 
                     <div className="row no-gutters">
-                        <div className="col">
-                            <div className="bundleText BTLeft">
+                        <div className="col ">
+                            <div className="bundleText BTLeft profilePage">
                                 <p className="titles"><b>About Me:</b></p>
                                 <p className="info">{this.state.AboutMe}</p>
                             </div>
                         </div>
                         <div className="col">
-                            <div className="bundleText BTRight">
-                                <p className="titles"><b >Name:</b> {this.state.RealName}</p>
+
+                            <div className="bundleText BTRight profilePage">
+                                <p className="titles"><b >Name:</b> {this.state.FirstName + " " + this.state.LastName}</p>
                                 <p className="titles"><b >Job Title:</b> {this.state.JobTitle}</p>
                                 <p className="titles"><b >Location:</b> {this.state.Location}</p>
                                 <p className="titles"><b >Phone:</b> {this.state.PhoneNumber}</p>
@@ -228,24 +280,35 @@ export default class ProfilePage extends React.Component {
         if (userPass) {
             this.accountRepo.getUserInfo(userPass).then(account => {
                 let accArray = account[0];
-                if(accArray.firstName || accArray.lastName)
-                    this.setState({ RealName: (accArray.firstName + " " + accArray.lastName) });
-                
-                if(accArray.bio)
-                    this.setState({ AboutMe: accArray.bio });
+                if (accArray) {
+                    if (accArray.firstName)
+                        this.setState({ FirstName: accArray.firstName });
 
-                if(accArray.title)
-                    this.setState({ JobTitle: accArray.title });
+                    if (accArray.lastName)
+                        this.setState({ LastName: accArray.lastName });
 
-                if(accArray.phone)
-                    this.setState({ PhoneNumber: accArray.phone });
+                    if (accArray.bio)
+                        this.setState({ AboutMe: accArray.bio });
 
-                if(accArray.mail)
-                    this.setState({ EmailAddress: accArray.mail });
+                    if (accArray.title)
+                        this.setState({ JobTitle: accArray.title });
 
-                if(accArray.picture)
-                    this.setState({ ProfilePhotoURL: accArray.picture });
+                    if (accArray.phone)
+                        this.setState({ PhoneNumber: accArray.phone });
+
+                    if (accArray.mail)
+                        this.setState({ EmailAddress: accArray.mail });
+
+                    if (accArray.picture)
+                        this.setState({ ProfilePhotoURL: accArray.picture });
+                }
             })
+
+            this.accountRepo.getAllFriendInvites().then(invites => {
+                let inviteList = invites.data;
+                this.setState({ friendRequests: inviteList })
+            }
+            )
         }
     }
 }
