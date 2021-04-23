@@ -1,11 +1,12 @@
 class Post {
-    constructor(id, title, description, date, location, meetingLink, username) {
+    constructor(id, title, description, username="") {
+        // date="" , location="", meetingLink="",
         this.id = id;
         this.title = title;
         this.description = description;
-        this.date = date;
-        this.location = location;
-        this.meetingLink = meetingLink;
+        // this.date = date;
+        // this.location = location;
+        // this.meetingLink = meetingLink;
         this.username = username
     }
 }

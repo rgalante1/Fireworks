@@ -5,7 +5,6 @@ import './PostDisplay.css';
 export const PostDisplay = (props) => {
     const dateOptions = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'America/Chicago' };
     let postHeader = <h1>{props.post.title}</h1>;
-
     // if (props.headerLink) {
     //     postHeader = <Link to={"/post/" + props.post.id} style={{textDecoration: 'inherit', color: 'inherit'}}>{postHeader}</Link>;
     // }

@@ -64,6 +64,7 @@ app.get('/users/get', function (req, res) {
 	});
 });
 
+
 //Get users by ID
 app.get('/users/:id', function (req, res) {
 
@@ -105,6 +106,18 @@ app.get('/company/:id', function (req, res) {
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
+
+//Get company by name
+app.get('/company/byName/:companyName', function (req, res) {
+
+	var query = "SELECT companyID FROM company where companyName =\""+req.params.companyName+"\"";
+  
+	  connection.query(query, function (err, result, fields) {
+  
+		  if (err) throw err;
+		  res.end(JSON.stringify(result)); // Result in JSON format
+	  });
+  });
 
 //Get rating
 app.get('/rating', function (req, res) {
