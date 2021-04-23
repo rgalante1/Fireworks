@@ -56,6 +56,88 @@ app.get('/', (req, res) => {
 });
 
 
+//get a post by postID
+app.get('/post/:postID', function (req, res) {
+	var postid =  req.param('postID');
+	
+	var query = "SELECT * FROM post where post.companyID" + postid;
+
+	connection.query("SELECT * FROM post where post.companyID = ?", postid,  function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//get a specific user's type of access
+app.get('/user/:username/userType', function (req, res) {
+	var UserName = req.param('username');
+	
+	var query = "SELECT userType FROM user where username = " + UserName;
+
+	connection.query("SELECT userType FROM user where username = ?", UserName,  function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
+//get a post buy company ID
+app.get('/post/:companyID', function (req, res) {
+	var CompanyID = req.param('companyID');
+
+	connection.query("SELECT * FROM post WHERE companyID = ?", CompanyID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//get a profile by username
+app.get('/profile/:username', function (req, res) {
+	var UserName = req.param('username');
+	//console.log("First log inside username");
+	//console.log(UserName); 
+	
+	connection.query("SELECT * FROM user WHERE username = ?", UserName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+
+});
+
+//see a user friend requests
+app.get('/profile/:username/friendrequests', function (req, res) {
+	var UserName = req.param('request');
+	//console.log("First log");
+	//console.log(UserName);
+	
+	var query = "SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeIDINNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = '" + UserName;
+	
+	//console.log("Second log");
+	//console.log(query);
+	
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? ;", UserName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//see if a user has a friend request
+app.get('/profile/:username/requestcheck', function (req, res)  {
+	var useraddressee = req.param('useraddressee');
+	console.log("Inside requestcheck");
+	//console.log(useraddressee);
+	var usersender = req.param('usersender');
+	//console.log(usersender);
+	
+	connection.query("SELECT * FROM user u1 INNER JOIN friendInvites fi on (u1.userID  = fi.addresseeID) OR (u1.userID = fi.senderID) INNER JOIN  user u2 on (u2.userID = fi.senderID) OR (u2.userID = fi.addresseeID)where u1.username = ? AND u2.username = ? ", [useraddressee, usersender] , function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+	
+});
+
 // get meetings 
 app.get('/meetings', function (req, res) {
 	connection.query("SELECT * FROM meeting", function (err, result, fields) {
@@ -209,6 +291,22 @@ app.get('/friendInvites/:id', function (req, res) {
 	});
 });
 
+//get back all posts
+app.get('/allposts', function (req, res) {
+	var companyName =  req.param('request');
+	//console.log("First log");
+	//console.log(companyName);
+	
+	var query = "SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName ='" + companyName;
+	
+	//console.log("Second log");
+	//console.log(query);
+	
+	connection.query("SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
 
 //Get attendees
 app.get('/meeting/:meetingID/attendees', function (req, res) {
@@ -220,9 +318,126 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 		});
 });
 
+// PUT 
+
+//update a friend request for a user
+app.put('/profile/:username/togglerequest', function(req, res) {
+	var InviteID = req.body.inviteID
+	
+	connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID , function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
+//eddit info for a specific user
+app.put('/profile/:username/changeinfo', function(req, res) {
+	var UserName = req.body.username;
+	
+	var FirstName = req.body.firstName;
+	var LastName = req.body.lastName;
+	var AboutME = req.body.aboutMe;
+	var jobTitle = req.body.jobTitle;
+	var Location = req.body.location;
+	var PhoneNumber = req.body.phoneNumber;
+	var EmailAddress = req.body.emailAddress;
+	var ProfilePhotoURL = req.body.profilePhotoURL;
+	
+	let array = [UserName, FirstName, LastName,AboutME,jobTitle,Location,PhoneNumber,EmailAddress,ProfilePhotoURL ];
+	connection.query("UPDATE user SET FirstName = ?, LastName = ?, AboutME = ?, jobTitle = ?, Location = ?, PhoneNumber = ?, EmailAddress = ?, ProfilePhotoURL = ? WHERE username = ?", array , function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
 
 
 // POST /
+
+//insert a friendship between two users
+app.post('/profile/:username/friendship', async (req, res) => {
+	var useraddressee = req.body.useraddressee;
+	var usersender = req.body.usersender
+	
+
+	let array = [useraddressee, usersender];
+	
+	connection.query("INSERT INTO friendship (`user1ID`, `user2ID`, `dateFriended`) SELECT u1.userID, u2.userID, CURDATE() FROM user u1 CROSS JOIN user u2 WHERE u1.username = ? AND u2.username = ?", array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+	
+});
+
+//inset a new meeting
+app.post('/meeting/:meetingID/rating', function (req, res) {
+	var Rating = req.body.rating;
+	var RatingDescription = req.body.ratingDescription;
+	var meetingID = req.body.meetingID;
+	var Name = req.body.Name;
+	
+	//console.log("First log");
+	//console.log(Rating);
+	//console.log(RatingDescription);
+	//console.log(meetingID);
+	//console.log(Name);
+	
+	var query = "INSERT INTO rating (`meeting`, `name`, `description`, `rating`) VALUES" + meetingID + Name + RatingDescription + Rating; 
+	
+	//console.log("Second log");
+	//console.log(query);
+	
+	let array = [meetingID, Name, RatingDescription ,Rating];
+	
+	connection.query("INSERT INTO rating (`meeting`, `name`, `description`, `rating`) VALUES(?,?,?, ?) ", array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Create account 
+app.post('/createaccount', function (req, res) {
+	var FirstName = req.param('First Name');
+	var LastName = req.param('Last Name');
+	var UserName = req.param('User Name');
+	var PassWord = req.param('Password');
+	var BirthDate = req.param('Birthday');
+	var CompanyAccount = req.param('Company Account');
+	var CompanyName = req.param('Company Name');
+	var Description = req.param('Description');
+
+	/*
+	connection.query("SELECT * FROM user WHERE username = ? ", UserName, function (err, result, fields) {
+		if(result.length > 0){
+			return res.status(401).json({ UserExists: "User already exists" });
+			
+			con.release()
+			if(err) throw err;
+		}
+		
+	});
+	*/
+
+	if (CompanyAccount) {
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName, Description], function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	else {
+		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+
+
+});
 
 app.post('/login', (req, res) => {
 
@@ -411,204 +626,5 @@ app.listen(config.port, config.host, (e) => {
 	logger.info(`${config.name} running on ${config.host}:${config.port}`);
 });
 
-app.post('/createaccount', function (req, res) {
-	var FirstName = req.param('First Name');
-	var LastName = req.param('Last Name');
-	var UserName = req.param('User Name');
-	var PassWord = req.param('Password');
-	var BirthDate = req.param('Birthday');
-	var CompanyAccount = req.param('Company Account');
-	var CompanyName = req.param('Company Name');
-	var Description = req.param('Description');
-
-	/*
-	connection.query("SELECT * FROM user WHERE username = ? ", UserName, function (err, result, fields) {
-		if(result.length > 0){
-			return res.status(401).json({ UserExists: "User already exists" });
-			
-			con.release()
-			if(err) throw err;
-		}
-		
-	});
-	*/
-
-	if (CompanyAccount) {
-		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-
-		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName, Description], function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-	}
-	else {
-		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-	}
 
 
-});
-
-app.get('/post/:companyID', function (req, res) {
-	var CompanyID = req.param('companyID');
-
-	connection.query("SELECT * FROM post WHERE companyID = ?", CompanyID, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-app.get('/profile/:username', function (req, res) {
-	var UserName = req.param('username');
-	//console.log("First log inside username");
-	//console.log(UserName); 
-	
-	connection.query("SELECT * FROM user WHERE username = ?", UserName, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-
-});
-
-
-app.get('/profile/:username/friendrequests', function (req, res) {
-	var UserName = req.body.request;
-	//console.log("First log");
-	//console.log(UserName);
-	
-	var query = "SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username ='" + UserName + "' AND accepted = 0"
-	
-	//console.log("Second log");
-	//console.log(query);
-	
-	connection.query("SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username = ? AND accepted = 0", UserName, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-app.get('/profile/:username/requestcheck', function (req, res)  {
-	var useraddressee = req.body.useraddressee;
-	console.log("Inside requestcheck");
-	console.log(useraddressee);
-	var usersender = req.body.usersender;
-	console.log(usersender);
-	
-	connection.query("SELECT * FROM user u1 INNER JOIN friendInvites fi on (u1.userID  = fi.addresseeID) OR (u1.userID = fi.senderID) INNER JOIN  user u2 on (u2.userID = fi.senderID) OR (u2.userID = fi.addresseeID)where u1.username = ? AND u2.username = ? ", [useraddressee, usersender] , function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-	
-});
-
-app.put('/profile/:username/togglerequest', function(req, res) {
-	var InviteID = req.body.inviteID
-	
-	connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID , function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-app.post('/profile/:username/friendship', async (req, res) => {
-	var useraddressee = req.body.useraddressee;
-	var usersender = req.body.usersender
-	
-
-	let array = [useraddressee, usersender];
-	
-	connection.query("INSERT INTO friendship (`user1ID`, `user2ID`, `dateFriended`) SELECT u1.userID, u2.userID, CURDATE() FROM user u1 CROSS JOIN user u2 WHERE u1.username = ? AND u2.username = ?", array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-	
-});
-
-app.put('/profile/:username/changeinfo', function(req, res) {
-	var UserName = req.body.username;
-	
-	var FirstName = req.body.firstName;
-	var LastName = req.body.lastName;
-	var AboutME = req.body.aboutMe;
-	var jobTitle = req.body.jobTitle;
-	var Location = req.body.location;
-	var PhoneNumber = req.body.phoneNumber;
-	var EmailAddress = req.body.emailAddress;
-	var ProfilePhotoURL = req.body.profilePhotoURL;
-	
-	let array = [UserName, FirstName, LastName,AboutME,jobTitle,Location,PhoneNumber,EmailAddress,ProfilePhotoURL ];
-	connection.query("UPDATE user SET FirstName = ?, LastName = ?, AboutME = ?, jobTitle = ?, Location = ?, PhoneNumber = ?, EmailAddress = ?, ProfilePhotoURL = ? WHERE username = ?", array , function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-app.get('/allposts', function (req, res) {
-	var companyName = req.body.request;
-	//console.log("First log");
-	//console.log(companyName);
-	
-	var query = "SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName ='" + companyName;
-	
-	//console.log("Second log");
-	//console.log(query);
-	
-	connection.query("SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-app.post('/meeting/:meetingID/rating', function (req, res) {
-	var Rating = req.body.rating;
-	var RatingDescription = req.body.ratingDescription;
-	var meetingID = req.body.meetingID;
-	var Name = req.body.Name;
-	
-	//console.log("First log");
-	//console.log(Rating);
-	//console.log(RatingDescription);
-	//console.log(meetingID);
-	//console.log(Name);
-	
-	var query = "INSERT INTO rating (`meeting`, `name`, `description`, `rating`) VALUES" + meetingID + Name + RatingDescription + Rating; 
-	
-	//console.log("Second log");
-	//console.log(query);
-	
-	let array = [meetingID, Name, RatingDescription ,Rating];
-	
-	connection.query("INSERT INTO rating (`meeting`, `name`, `description`, `rating`) VALUES(?,?,?, ?) ", array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-app.get('/post/:postID', function (req, res) {
-	var postid = req.body.postID;
-	
-	var query = "SELECT * FROM post where post.companyID" + postid;
-
-	connection.query("SELECT * FROM post where post.companyID = ?", postid,  function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-app.get('/user/:username/userType', function (req, res) {
-	var UserName = req.body.username;
-	
-	var query = "SELECT userType FROM user where username = " + UserName;
-
-	connection.query("SELECT userType FROM user where username = ?", UserName,  function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
