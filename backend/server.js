@@ -256,6 +256,21 @@ app.post('/login', (req, res) => {
 	})
 })
 
+// create a company 
+app.post('/createCompany', async (req, res) => {
+	var id = req.body.companyID;
+	var companyName = req.body.companyName;
+  var field = req.body.field;
+	var description = req.body.description;
+
+	let array = [id, companyName , field, description];
+	var sql = "INSERT into `fireworks`.`company` (`companyID`,`companyName`,field,`description`) values (?,?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
 // create a company post
 app.post('/createpost', async (req, res) => {
 	var id = req.body.companyID;
@@ -269,6 +284,47 @@ app.post('/createpost', async (req, res) => {
 		res.end(JSON.stringify(result));
 	});
 });
+
+// create a rating
+app.post('/createRating', async (req, res) => {
+	var id = req.body.ratingID;
+	var meeting = req.body.meeting;
+  var name = req.body.name;
+  var description = req.body.description;
+  var rating = req.body.rating;
+
+	let array = [id,meeting,name,description,rating];
+	var sql = "INSERT into `fireworks`.`rating` (`ratingID`,`meeting`,name,`description`,rating) values (?,?,?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+//create new user
+app.post('/createUser', async (req, res) => {
+	
+
+  var userID = req.body.userID;
+  var username  = req.body.username;
+  var password = req.body.password;
+  var firstName = req.body.firstname;
+  var lastName = req.body.lastName;
+  var phone = req.body.phone;
+  var userType = req.body.userType;
+  var mail = req.body.mail;
+  var employerID = req.body.employerID;
+
+
+	let array = [userID,username,password,firstName,lastName,phone,userType,mail,employerID];
+	var sql = "INSERT into `fireworks`.`user` (`userID`,`username`,`password`,`firstName`,`lastName`,`phone`,`userType`,`mail`,`employerID`) values (?,?,?,?,?,?,?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+
 
 // create a meeting/event
 app.post('/createmeeting', async (req, res) => {
@@ -288,6 +344,54 @@ app.post('/createmeeting', async (req, res) => {
 		res.end(JSON.stringify(result));
 	});
 });
+
+// create a friendship
+app.post('/createFriendship', async (req, res) => {
+	var id = req.body.friendshipID;
+	var user1ID = req.body.user1ID;
+  var user2ID = req.body.user2ID;
+  var dateFriended = req.body.dateFriended;
+
+	let array = [id, user1ID,user2ID,dateFriended];
+	var sql = "INSERT into `fireworks`.`friendship` (`friendshipID`,`user1ID`,user2ID,dateFriended) values (?,?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+// create a meetingInvites
+app.post('/createMeetingInvites', async (req, res) => {
+	var id = req.body.inviteID;
+	var addresseeID = req.body.addresseeID;
+  var meetingID = req.body.meetingID;
+  var dateSent = req.body.dateSent;
+  var accepted = req.body.accepted;
+
+	let array = [id, addresseeID, meetingID,dateSent,accepted];
+	var sql = "INSERT into `fireworks`.`meetingInvites` (inviteID,addresseeID,meetingID,dateSent,accepted) values (?,?,?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+// create a friendInvites
+app.post('/createFriendInvites', async (req, res) => {
+	var id = req.body.addresseeID;
+  var senderID = req.body.senderID;
+  var dateSent = req.body.dateSent;
+  var accepted = req.body.accepted;
+  var inviteID = req.body.inviteID;
+
+	let array = [id,senderID,dateSent,accepted,inviteID];
+	var sql = "INSERT into `fireworks`.`friendInvites` (addresseeID,senderID,dateSent,accepted,inviteID) values (?,?,?,?,?)";
+	connection.query(sql, array, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
 
 // DELETE /
 app.delete('/meeting/:meetingID', async (req, res) => {
