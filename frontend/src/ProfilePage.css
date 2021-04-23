@@ -1,3 +1,7 @@
+.profilePage{
+    background-color: white;
+}
+
 .center-cropped {
     width: 12.5%;
     height: 12.5%;
@@ -8,7 +12,7 @@
   }
 
   .profilePic {
-      background: linear-gradient(to bottom, rgb(0,119,181) 50%, white 50%);
+      background: linear-gradient(to bottom, rgb(0,119,181) 50%, lightgray 50%);
   }
 
   .usernameLabel {
@@ -53,11 +57,7 @@
     padding-bottom: 5px;
 }
 
-.buttonStuff {
-    margin: 1.5%;
-}
-
-.buttonInvite {
+.buttonLink {
     float: right;
 }
 
@@ -71,11 +71,6 @@
 
 .changeForm {
     margin: 0 2.5% 0 2.5%;
-}
-
-.inputs {
-    padding: 2.5%;
-    width: 95%;
 }
 
 .AboutMeTxt {
@@ -93,4 +88,9 @@
 .form-group {
     padding-right: 0;
     margin-right: 0;
+}
+
+.no-resize {
+    min-height: 50px;
+    min-width: 50px;
 }
