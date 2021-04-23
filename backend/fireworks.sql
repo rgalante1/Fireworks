@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`post` (
   `companyID` INT NOT NULL,
   `title` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
+  `date` DATE NULL,
   INDEX `companyID_idx` (`companyID` ASC) VISIBLE,
   CONSTRAINT `companyID`
     FOREIGN KEY (`companyID`)

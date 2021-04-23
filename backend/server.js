@@ -253,9 +253,10 @@ app.post('/createpost', async (req, res) => {
 	var id = req.body.companyID;
 	var title = req.body.title;
 	var description = req.body.description;
+  var date = req.body.date;
 
-	let array = [id, title, description];
-	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`) values (?,?,?)";
+	let array = [id, title, description,date];
+	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`,date) values (?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
