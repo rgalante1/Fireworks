@@ -63,7 +63,7 @@ function App() {
           <CreatePage />
         </Route>
         <Route path="/:userName/createpost" component={CreatePostPage} />
-        <Route path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage} />
+        <Route exact path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage} />
         {/* <Route path="/post/:postId" exact component={PostDisplay} /> */}
         <Route path="/dashboard/:username" component={DashboardPage} />
 
