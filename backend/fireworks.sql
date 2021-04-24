@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`user` (
   `userType` INT NULL,
   `mail` VARCHAR(45) NULL,
   `employerID` INT NULL,
-  `picture` VARCHAR(100) NULL,
+  `picture` VARCHAR(500) NULL,
   `bio` VARCHAR(500) NULL,
   `title` VARCHAR(100) NULL,
   `location` VARCHAR(100),

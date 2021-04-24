@@ -109,24 +109,19 @@ app.get('/profile/:username', function (req, res) {
 //see a user friend requests
 app.get('/profile/:username/friendrequests', function (req, res) {
 	var UserName = req.param('username');
-	//console.log("First log");
-	//console.log(UserName);
 
 	var query = "SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeIDINNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = '" + UserName;
 
-	//console.log("Second log");
-	//console.log(query);
-
-	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 0;", UserName, function (err, result, fields) {
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 0", UserName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
 
 //see if a user has a friend request
-app.get('/profile/:username/requestcheck', function (req, res) {
+app.get('/profile/requestcheck/:useraddressee/:usersender', function (req, res) {
 	var useraddressee = req.param('useraddressee');
-	console.log("Inside requestcheck");
+	//console.log("Inside requestcheck");
 	//console.log(useraddressee);
 	var usersender = req.param('usersender');
 	//console.log(usersender);
@@ -342,6 +337,8 @@ app.put('/profile/:username/changeinfo', function (req, res) {
 	var PhoneNumber = req.body.phoneNumber;
 	var EmailAddress = req.body.emailAddress;
 	var ProfilePhotoURL = req.body.profilePhotoURL;
+
+	console.log(title);
 
 	let array = [FirstName, LastName, bio, title, PhoneNumber, EmailAddress, ProfilePhotoURL, UserName];
 	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array, function (err, result, fields) {
@@ -599,11 +596,10 @@ app.post('/createFriendInvites', async (req, res) => {
 	var id = req.body.addresseeID;
 	var senderID = req.body.senderID;
 	var dateSent = req.body.dateSent;
-	var accepted = req.body.accepted;
-	var inviteID = req.body.inviteID;
+	var accepted = 0;
 
-	let array = [id, senderID, dateSent, accepted, inviteID];
-	var sql = "INSERT into `fireworks`.`friendInvites` (addresseeID,senderID,dateSent,accepted,inviteID) values (?,?,?,?,?)";
+	let array = [id, senderID, dateSent, accepted];
+	var sql = "INSERT into `fireworks`.`friendInvites` (addresseeID,senderID,dateSent,accepted) values (?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
