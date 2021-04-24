@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`user` (
   `picture` VARCHAR(100) NULL,
   `bio` VARCHAR(500) NULL,
   `title` VARCHAR(100) NULL,
+  `location` VARCHAR(100),
   PRIMARY KEY (`userID`),
   UNIQUE INDEX `userID_UNIQUE` (`userID` ASC) VISIBLE,
   INDEX `employerID_idx` (`employerID` ASC) VISIBLE,
