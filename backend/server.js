@@ -117,7 +117,7 @@ app.get('/profile/:username/friendrequests', function (req, res) {
 	//console.log("Second log");
 	//console.log(query);
 	
-	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? ;", UserName, function (err, result, fields) {
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? ANND accepted = 0;", UserName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -333,22 +333,24 @@ app.put('/profile/:username/togglerequest', function(req, res) {
 
 //eddit info for a specific user
 app.put('/profile/:username/changeinfo', function(req, res) {
-	var UserName = req.body.username;
 	
+	var UserName = req.body.username;
+	var Password = req.body.password;
 	var FirstName = req.body.firstName;
 	var LastName = req.body.lastName;
-	var AboutME = req.body.aboutMe;
-	var jobTitle = req.body.jobTitle;
-	var Location = req.body.location;
-	var PhoneNumber = req.body.phoneNumber;
-	var EmailAddress = req.body.emailAddress;
-	var ProfilePhotoURL = req.body.profilePhotoURL;
+	var Phone = req.body.phone;
+	var Mail = req.body.mail;
+	var Picture = req.body.picture;
+	var Bio = req.body.bio;
+	var Title = req.body.title;
 	
-	let array = [UserName, FirstName, LastName,AboutME,jobTitle,Location,PhoneNumber,EmailAddress,ProfilePhotoURL ];
-	connection.query("UPDATE user SET FirstName = ?, LastName = ?, AboutME = ?, jobTitle = ?, Location = ?, PhoneNumber = ?, EmailAddress = ?, ProfilePhotoURL = ? WHERE username = ?", array , function (err, result, fields) {
+	
+	let array = [UserName, Password, FirstName, LastName , Phone, Mail ,Picture,Bio,Title ];
+	connection.query("UPDATE user SET username = ?, password = ?, firstName = ?, lastName = ?, phone = ?, mail = ?, picture = ?, bio = ?, title = ? WHERE username = ?", array , function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
+	
 });
 
 
@@ -356,6 +358,7 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 
 //insert a friendship between two users
 app.post('/profile/:username/friendship', async (req, res) => {
+	
 	var useraddressee = req.body.useraddressee;
 	var usersender = req.body.usersender
 	
@@ -393,6 +396,7 @@ app.post('/meeting/:meetingID/rating', function (req, res) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
+	
 });
 
 //Create account 
