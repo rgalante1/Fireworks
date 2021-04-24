@@ -19,11 +19,16 @@ export const PostDisplay = (props) => {
                 <Link to={"/profile/" + props.userName + "/" + props.post.username}>By {props.post.username}</Link>
                 <p >{props.post.description}</p>
                 {
-                    props.post.location && <p>{props.post.location}</p>
+                    props.post.location && <p>Meeting Location: {props.post.location}</p>
                 }
-                { props.postmeetingLink && <p>{props.post.meetingLink}</p>}
-                {   props.post.date &&
-                    <p className="text-secondary">{format(props.post.date)}</p>
+                { 
+                    props.postmeetingLink && <p>{props.post.meetingLink}</p>
+                }
+                {   
+                    props.post.date && <p>Meeting Date: {format(props.post.date)}</p>
+                }
+                {
+                    props.post.postDate && <p className="text-secondary">{props.post.postDate}</p>
                 }
                 <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
                 className="form-control btn btn-success rounded-pill mt-1">RSVP</button>

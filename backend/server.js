@@ -108,7 +108,7 @@ app.get('/profile/:username', function (req, res) {
 
 //see a user friend requests
 app.get('/profile/:username/friendrequests', function (req, res) {
-	var UserName = req.param('request');
+	var UserName = req.param('username');
 	//console.log("First log");
 	//console.log(UserName);
 	
@@ -337,15 +337,15 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	
 	var FirstName = req.body.firstName;
 	var LastName = req.body.lastName;
-	var AboutME = req.body.aboutMe;
-	var jobTitle = req.body.jobTitle;
+	var bio = req.body.bio;
+	var title = req.body.title;
 	var Location = req.body.location;
 	var PhoneNumber = req.body.phoneNumber;
 	var EmailAddress = req.body.emailAddress;
 	var ProfilePhotoURL = req.body.profilePhotoURL;
 	
-	let array = [UserName, FirstName, LastName,AboutME,jobTitle,Location,PhoneNumber,EmailAddress,ProfilePhotoURL ];
-	connection.query("UPDATE user SET FirstName = ?, LastName = ?, AboutME = ?, jobTitle = ?, Location = ?, PhoneNumber = ?, EmailAddress = ?, ProfilePhotoURL = ? WHERE username = ?", array , function (err, result, fields) {
+	let array = [FirstName, LastName, bio, title, PhoneNumber, EmailAddress, ProfilePhotoURL, UserName];
+	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array , function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -491,10 +491,10 @@ app.post('/createpost', async (req, res) => {
 	var id = req.body.companyID;
 	var title = req.body.title;
 	var description = req.body.description;
-  var date = req.body.date;
+  	var date = req.body.date;
 
-	let array = [id, title, description,date];
-	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`,date) values (?,?,?,?)";
+	let array = [id, title, description];
+	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`) values (?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));

@@ -37,7 +37,7 @@ export class CreatePostPage extends React.Component{
 
   handleSubmit(event) {
     if(!this.state.meeting){
-      this.postRepo.createPost(this.state.company, this.state.title, this.state.desc).then( x=>{ 
+      this.postRepo.createPost(this.state.company, this.state.title, this.state.desc, new Date()).then( x=>{ 
         this.setState({submit: true})
       });
     }

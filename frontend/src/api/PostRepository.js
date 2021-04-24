@@ -21,12 +21,13 @@ export class PostsRepository {
         })
     }
 
-    createPost(companyID, title, description){
+    createPost(companyID, title, description, date){
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/createpost`, {
                 "companyID": companyID,
                 "title": title,
-                "description": description
+                "description": description,
+                "date": ""
             }, this.config)
             .then(x => resolve(x.data))
             .catch(error => {

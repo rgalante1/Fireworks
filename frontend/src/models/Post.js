@@ -7,7 +7,7 @@ class Post {
         this.location = location;
         this.meetingLink = meetingLink;
         this.username = username;
-        this.postDate = postDate
+        this.postDate = postDate;
     }
 }
 
