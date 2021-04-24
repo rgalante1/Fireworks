@@ -9,7 +9,7 @@ const hideActiveModal = () => {
     const fade = document.getElementsByClassName('modal-backdrop show')[0];
     modal.className = modal.className.replace('show', '');
     fade.className = fade.className.replace('show', '');
-  };
+};
 
 export default class ProfilePage extends React.Component {
     accountRepo = new AccountsRepository();
@@ -18,9 +18,14 @@ export default class ProfilePage extends React.Component {
         super(props);
         this.state = {
             UserName: '',
+            UserID: '',
+
             FirstName: '',
             LastName: '',
+
             UserNameLooking: '',
+            UserLookingID: '',
+
             CompanyName: '',
             AboutMe: '',
             JobTitle: '',
@@ -31,18 +36,29 @@ export default class ProfilePage extends React.Component {
             MessageText: 'Hello! I\'d love to schedule a meeting with you if possible. Let me know!',
             friendRequests: [],
             tempUser: 'error',
+            friendsAlready: false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.buttonEdit = this.buttonEdit.bind(this);
         this.imageExists = this.imageExists.bind(this);
         this.buttonFriendsList = this.buttonFriendsList.bind(this);
         this.saveChanges = this.saveChanges.bind(this);
+        this.postFriendRequest = this.postFriendRequest.bind(this);
+        this.initializeProfile = this.initializeProfile.bind(this);
     }
 
-    saveChanges(event){
-        this.accountRepo.updateProfile(this.state.UserName, this.state.FirstName, 
-            this.state.LastName, this.state.AboutMe, this.state.JobTitle, 
-            this.state.Location, this.state.PhoneNumber, this.state.EmailAddress, 
+    postFriendRequest() {
+        console.log(this.state.UserID);
+        console.log(this.state.UserLookingID);
+        this.accountRepo.createFriendInvite(this.state.UserID, this.state.UserLookingID, (new Date()).toISOString()).then(
+            this.setState({ friendsAlready: true })
+        );
+    }
+
+    saveChanges(event) {
+        this.accountRepo.updateProfile(this.state.UserName, this.state.FirstName,
+            this.state.LastName, this.state.AboutMe, this.state.JobTitle,
+            this.state.Location, this.state.PhoneNumber, this.state.EmailAddress,
             this.state.ProfilePhotoURL);
     }
 
@@ -143,27 +159,52 @@ export default class ProfilePage extends React.Component {
 
         }
         else {
-            return (
-                <div className="wrapper">
-                    <button type="button" className="btn btn-success buttonEdit" id="invitebutton" data-toggle="modal" data-target="#exampleModal">Friend Request</button>
+            if (!this.state.friendsAlready) {
+                return (
+                    <div className="wrapper">
+                        <button type="button" className="btn btn-success buttonEdit" id="invitebutton" data-toggle="modal" data-target="#exampleModal" onClick={this.postFriendRequest}>Friend Request</button>
 
-                    <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div className="modal-dialog modal-sm" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h3 className="modal-title" id="exampleModalLabel">Friend invite sent!</h3>
-                                </div>
-                                <div className="modal-body">
-                                    <p className="modal-title" id="exampleModalLabel">Check back later to see if they accept or decline.</p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal-dialog modal-sm" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h3 className="modal-title" id="exampleModalLabel">Friend invite sent!</h3>
+                                    </div>
+                                    <div className="modal-body">
+                                        <p className="modal-title" id="exampleModalLabel">Check back later to see if they accept or decline.</p>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )
+                )
+            }
+            else {
+                return (
+                    <div className="wrapper">
+                        <button type="button" className="btn btn-success buttonEdit" id="invitebutton" data-toggle="modal" data-target="#exampleModal">Friend Request</button>
+
+                        <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal-dialog modal-sm" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h3 className="modal-title" id="exampleModalLabel">Uh oh!</h3>
+                                    </div>
+                                    <div className="modal-body">
+                                        <p className="modal-title" id="exampleModalLabel">According to our records you are already friends with this user, or you already have a pending friend request (either them to you or you to them).</p>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         }
     }
 
@@ -195,7 +236,7 @@ export default class ProfilePage extends React.Component {
                                                             <div className="col-md-8">
                                                                 <div className="row">
                                                                     <div className="col-md-6">
-                                                                        <div className="well" data-dismiss="modal"><h4 className="pt-3 pb-2">{x.senderName}</h4></div>
+                                                                        <div className="well"><h4 className="pt-3 pb-2">{x.senderName}</h4></div>
                                                                     </div>
                                                                     <div className="col-md-6">
                                                                         <div className="well"><button type="button" className="btn btn-success w-50 float-right mb-3" >Accept</button></div>
@@ -220,7 +261,6 @@ export default class ProfilePage extends React.Component {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-success" data-dismiss="modal">Save Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -306,21 +346,31 @@ export default class ProfilePage extends React.Component {
         }
     }
 
-    componentDidMount() {
-        let userLook = this.props.match.params.usernameLooking;
+    initializeProfile(userNameLookParam, userNamePassParam) {
+        let userLook = userNameLookParam;
         if (userLook) {
             this.setState({ UserNameLooking: userLook });
+
+            this.accountRepo.getUserInfo(userLook).then(account => {
+                let accArray = account[0];
+                if (accArray) {
+                    if (accArray.userID)
+                        this.setState({ UserLookingID: accArray.userID });
+                }
+            })
         }
 
-        let userPass = this.props.match.params.usernamePassed;
+        let userPass = userNamePassParam;
+
         if (userPass) {
             this.setState({ UserName: userPass });
-        }
 
-        if (userPass) {
             this.accountRepo.getUserInfo(userPass).then(account => {
                 let accArray = account[0];
                 if (accArray) {
+                    if (accArray.userID)
+                        this.setState({ UserID: accArray.userID });
+
                     if (accArray.firstName)
                         this.setState({ FirstName: accArray.firstName });
 
@@ -344,75 +394,49 @@ export default class ProfilePage extends React.Component {
                 }
             })
 
-            this.accountRepo.getFriendRequests(userPass).then(invites => {
-                let inviteList = invites.data;
 
-                let tempArray = [];
-                for (var index = 0; index < inviteList.length; index++)
-                    tempArray.push(new friendRequest(inviteList[index].accepted,
-                        inviteList[index].addresseeID, inviteList[index].dateSent,
-                        inviteList[index].inviteID,
-                        (inviteList[index].firstName + " " + inviteList[index].lastName), inviteList[index].username));
-
-                this.setState({ friendRequests: tempArray })
-            }
-            )
-        }
-    }
-
-    componentDidUpdate (prevProps, prevState) {
-        if (prevProps.match.params.usernamePassed !== this.props.match.params.usernamePassed) {
-            let userLook = this.props.match.params.usernameLooking;
-            if (userLook) {
-                this.setState({ UserNameLooking: userLook });
-            }
-
-            let userPass = this.props.match.params.usernamePassed;
-            if (userPass) {
-                this.setState({ UserName: userPass });
-            }
-
-            if (userPass) {
-                this.accountRepo.getUserInfo(userPass).then(account => {
-                    let accArray = account[0];
-                    if (accArray) {
-                        if (accArray.firstName)
-                            this.setState({ FirstName: accArray.firstName });
-
-                        if (accArray.lastName)
-                            this.setState({ LastName: accArray.lastName });
-
-                        if (accArray.bio)
-                            this.setState({ AboutMe: accArray.bio });
-
-                        if (accArray.title)
-                            this.setState({ JobTitle: accArray.title });
-
-                        if (accArray.phone)
-                            this.setState({ PhoneNumber: accArray.phone });
-
-                        if (accArray.mail)
-                            this.setState({ EmailAddress: accArray.mail });
-
-                        if (accArray.picture)
-                            this.setState({ ProfilePhotoURL: accArray.picture });
-                    }
-                })
-
+            if (userPass === userLook) {
                 this.accountRepo.getFriendRequests(userPass).then(invites => {
                     let inviteList = invites.data;
+                    console.log(invites);
 
-                    let tempArray = [];
-                    for (var index = 0; index < inviteList.length; index++)
-                        tempArray.push(new friendRequest(inviteList[index].accepted,
-                            inviteList[index].addresseeID, inviteList[index].dateSent,
-                            inviteList[index].inviteID,
-                            (inviteList[index].firstName + " " + inviteList[index].lastName), inviteList[index].username));
+                    if (invites.data) {
+                        let tempArray = [];
+                        for (var index = 0; index < inviteList.length; index++)
+                            tempArray.push(new friendRequest(inviteList[index].accepted,
+                                inviteList[index].addresseeID, inviteList[index].dateSent,
+                                inviteList[index].inviteID,
+                                (inviteList[index].firstName + " " + inviteList[index].lastName), inviteList[index].username));
 
-                    this.setState({ friendRequests: tempArray })
+                        this.setState({ friendRequests: tempArray })
+                    }
                 }
                 )
             }
+        }
+
+        if (userPass !== userLook) {
+            this.accountRepo.getFriendRequestExistance(userPass, userLook).then(invite => {
+                if (invite) {
+                    this.setState({ friendsAlready: true });
+                }
+            })
+
+            this.accountRepo.getFriendRequestExistance(userLook, userPass).then(invite => {
+                if (invite) {
+                    this.setState({ friendsAlready: true });
+                }
+            })
+        }
+    }
+
+    componentDidMount() {
+        this.initializeProfile(this.props.match.params.usernameLooking, this.props.match.params.usernamePassed);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.match.params.usernamePassed !== this.props.match.params.usernamePassed) {
+            this.initializeProfile(this.props.match.params.usernameLooking, this.props.match.params.usernamePassed);
         }
     }
 }
