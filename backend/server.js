@@ -347,23 +347,9 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	var Title = req.body.title;
 	
 	
-	let array = [UserName, Password, FirstName, LastName , Phone, Mail ,Picture,Bio,Title ];
+	let array = [UserName ,Password ,FirstName ,LastName ,Phone ,Mail , Picture, Bio, Title ];
 	connection.query("UPDATE user SET username = ?, password = ?, firstName = ?, lastName = ?, phone = ?, mail = ?, picture = ?, bio = ?, title = ? WHERE username = ?", array , function (err, result, fields) {
-=======
-app.put('/profile/:username/changeinfo', function (req, res) {
-	var UserName = req.body.username;
-	var FirstName = req.body.firstName;
-	var LastName = req.body.lastName;
-	var bio = req.body.bio;
-	var title = req.body.title;
-	var Location = req.body.location;
-	var PhoneNumber = req.body.phoneNumber;
-	var EmailAddress = req.body.emailAddress;
-	var ProfilePhotoURL = req.body.profilePhotoURL;
-
-	let array = [FirstName, LastName, bio, title, PhoneNumber, EmailAddress, ProfilePhotoURL, UserName];
-	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array, function (err, result, fields) {
->>>>>>> 7193ae05a00998cdcba688b6563670005100f19c
+		
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
