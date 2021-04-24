@@ -108,7 +108,7 @@ app.get('/profile/:username', function (req, res) {
 
 //see a user friend requests
 app.get('/profile/:username/friendrequests', function (req, res) {
-	var UserName = req.param('request');
+	var UserName = req.param('username');
 	//console.log("First log");
 	//console.log(UserName);
 	
@@ -117,7 +117,7 @@ app.get('/profile/:username/friendrequests', function (req, res) {
 	//console.log("Second log");
 	//console.log(query);
 	
-	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? ;", UserName, function (err, result, fields) {
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 0;", UserName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -334,7 +334,6 @@ app.put('/profile/:username/togglerequest', function(req, res) {
 //eddit info for a specific user
 app.put('/profile/:username/changeinfo', function(req, res) {
 	var UserName = req.body.username;
-	
 	var FirstName = req.body.firstName;
 	var LastName = req.body.lastName;
 	var AboutME = req.body.aboutMe;

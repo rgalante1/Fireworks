@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 import { AccountsRepository } from './api/AccountRepository'
 import { friendRequest } from './models/friendRequest'
 
+const hideActiveModal = () => {
+    const modal = document.getElementsByClassName('modal show')[0];
+    const fade = document.getElementsByClassName('modal-backdrop show')[0];
+    modal.className = modal.className.replace('show', '');
+    fade.className = fade.className.replace('show', '');
+  };
+
 export default class ProfilePage extends React.Component {
     accountRepo = new AccountsRepository();
 
@@ -29,6 +36,15 @@ export default class ProfilePage extends React.Component {
         this.buttonEdit = this.buttonEdit.bind(this);
         this.imageExists = this.imageExists.bind(this);
         this.buttonFriendsList = this.buttonFriendsList.bind(this);
+        this.saveChanges = this.saveChanges.bind(this);
+    }
+
+    saveChanges(event){
+        alert("sending");
+        this.accountRepo.updateProfile(this.state.UserName, this.state.FirstName, 
+            this.state.LastName, this.state.AboutMe, this.state.JobTitle, 
+            this.state.Location, this.state.PhoneNumber, this.state.EmailAddress, 
+            this.state.ProfilePhotoURL);
     }
 
     handleChange(event) {
@@ -41,12 +57,15 @@ export default class ProfilePage extends React.Component {
     }
 
     imageExists(image_URL) {
-        var http = new XMLHttpRequest();
+        if (image_URL) {
+            var http = new XMLHttpRequest();
 
-        http.open('HEAD', image_URL, false);
-        http.send();
+            http.open('HEAD', image_URL, false);
+            http.send();
 
-        return http.status !== 404;
+            return http.status !== 404;
+        }
+        return false;
     }
 
     buttonEdit(props) {
@@ -161,21 +180,48 @@ export default class ProfilePage extends React.Component {
                                 <div className="modal-header">
                                     <h5 className="modal-title" id="exampleModalLabel">Current Pending Friend Requests:</h5>
                                 </div>
-                                <div className="modal-body overflow-auto">
+                                <div className="modal-body bg-light overflow-auto">
                                     {
                                         this.state.friendRequests && this.state.friendRequests.map((x, i) =>
                                             <div className="card m-3" key={i}>
                                                 <div className="card-body">
-                                                    <p>dateSent: {x.dateSent}</p>
-                                                    <p>sender: {x.senderUsername}</p>
+                                                    <div className="container">
+                                                        <div className="row">
+                                                            <div className="col-md-4">
+                                                                <div className="well"><img src={this.imageExists(x.picture) ? x.picture :
+                                                                    "https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"} alt="ERROR"
+                                                                    className="rounded-circle w-50 h-50" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-8">
+                                                                <div className="row">
+                                                                    <div className="col-md-6">
+                                                                        <div className="well" data-dismiss="modal"><h4 className="pt-3 pb-2">{x.senderName}</h4></div>
+                                                                    </div>
+                                                                    <div className="col-md-6">
+                                                                        <div className="well"><button type="button" className="btn btn-success w-50 float-right mb-3" >Accept</button></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="row">
+                                                                    <div className="col-md-6">
+                                                                        <div className="well"><h5 className="pt-2 text-secondary">Sent: {x.dateSent}</h5></div>
+                                                                    </div>
+                                                                    <div className="col-md-6">
+                                                                        <div className="well"><button type="button" className="btn btn-danger w-50 float-right">Decline</button></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="clearfix" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         )
                                     }
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" className="btn btn-success" data-dismiss="modal">Save Changes</button>
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" className="btn btn-success" onClick={this.saveChanges}>Save Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -301,18 +347,73 @@ export default class ProfilePage extends React.Component {
 
             this.accountRepo.getFriendRequests(userPass).then(invites => {
                 let inviteList = invites.data;
-                console.log(inviteList);
 
                 let tempArray = [];
-                for(var index = 0; index < inviteList.length; index++)
-                    tempArray.push(new friendRequest(inviteList[index].accepted, 
-                        inviteList[index].addresseeID, inviteList[index].dateSent, 
-                        inviteList[index].inviteID, inviteList[index].senderID, 
-                        (inviteList[index].firstName + " " + inviteList[index].lastName)));
+                for (var index = 0; index < inviteList.length; index++)
+                    tempArray.push(new friendRequest(inviteList[index].accepted,
+                        inviteList[index].addresseeID, inviteList[index].dateSent,
+                        inviteList[index].inviteID,
+                        (inviteList[index].firstName + " " + inviteList[index].lastName), inviteList[index].username));
 
                 this.setState({ friendRequests: tempArray })
             }
             )
+        }
+    }
+
+    componentDidUpdate (prevProps, prevState) {
+        if (prevProps.match.params.usernamePassed !== this.props.match.params.usernamePassed) {
+            let userLook = this.props.match.params.usernameLooking;
+            if (userLook) {
+                this.setState({ UserNameLooking: userLook });
+            }
+
+            let userPass = this.props.match.params.usernamePassed;
+            if (userPass) {
+                this.setState({ UserName: userPass });
+            }
+
+            if (userPass) {
+                this.accountRepo.getUserInfo(userPass).then(account => {
+                    let accArray = account[0];
+                    if (accArray) {
+                        if (accArray.firstName)
+                            this.setState({ FirstName: accArray.firstName });
+
+                        if (accArray.lastName)
+                            this.setState({ LastName: accArray.lastName });
+
+                        if (accArray.bio)
+                            this.setState({ AboutMe: accArray.bio });
+
+                        if (accArray.title)
+                            this.setState({ JobTitle: accArray.title });
+
+                        if (accArray.phone)
+                            this.setState({ PhoneNumber: accArray.phone });
+
+                        if (accArray.mail)
+                            this.setState({ EmailAddress: accArray.mail });
+
+                        if (accArray.picture)
+                            this.setState({ ProfilePhotoURL: accArray.picture });
+                    }
+                })
+
+                this.accountRepo.getFriendRequests(userPass).then(invites => {
+                    let inviteList = invites.data;
+
+                    let tempArray = [];
+                    for (var index = 0; index < inviteList.length; index++)
+                        tempArray.push(new friendRequest(inviteList[index].accepted,
+                            inviteList[index].addresseeID, inviteList[index].dateSent,
+                            inviteList[index].inviteID,
+                            (inviteList[index].firstName + " " + inviteList[index].lastName), inviteList[index].username));
+
+                    this.setState({ friendRequests: tempArray })
+                }
+                )
+            }
         }
     }
 }

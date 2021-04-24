@@ -106,6 +106,17 @@ export class AccountsRepository {
         });
     }
 
+    updateProfile(username, firstName, lastName, aboutMe, jobTitle, location, phoneNumber, emailAddress, profilePhotoURL){
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/profile/${username}/changeinfo`, {username, firstName, lastName, aboutMe, jobTitle, location, phoneNumber, emailAddress, profilePhotoURL}, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error updating profile!");
+                    reject(error);
+                });
+        });
+    }
+
     deleteMeeting(meetingID) {
         return new Promise((resolve, reject) => {
             axios.delete(`${this.url}/meeting/${meetingID}`, this.config)
