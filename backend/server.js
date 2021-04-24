@@ -101,14 +101,18 @@ app.get('/profile/:username', function (req, res) {
 //see a user friend requests
 app.get('/profile/:username/friendrequests', function (req, res) {
 	var UserName = req.param('username');
-	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 0;", UserName, function (err, result, fields) {
+
+	var query = "SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeIDINNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = '" + UserName;
+
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 0", UserName, function (err, result, fields) {
+
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
 
 //see if a user has a friend request
-app.get('/profile/:username/requestcheck', function (req, res) {
+app.get('/profile/requestcheck/:useraddressee/:usersender', function (req, res) {
 	var useraddressee = req.param('useraddressee');
 	var usersender = req.param('usersender');
 
@@ -226,7 +230,6 @@ app.get('/friendship/:id', function (req, res) {
 	});
 });
 
-
 //Get meetingInvites
 app.get('/meetingInvites', function (req, res) {
 	connection.query("SELECT * FROM friendship", function (err, result, fields) {
@@ -285,6 +288,47 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 		});
 });
 
+//Filter by location, Date and meetingType
+app.get('/dashboard/filter', function (req, res) {
+	var FilterOpt = req.param('filteropt');
+	var SearchOpt = req.param('searchopt');
+	
+	console.log('First log');
+	console.log(FilterOpt);
+	console.log('Second log');
+	console.log(SearchOpt);
+	
+	if(FilterOpt == 1)
+	{
+		
+	connection.query("SELECT * FROM meeting where location IS NOT NULL order by location", 
+		function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+		
+	}
+	else if(FilterOpt == 2)
+	{
+		connection.query("Select * From meeting where eventDate = ? AND eventDate IS NOT NULL order by eventDate", SearchOpt, 
+		function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	else
+	{
+		connection.query("SELECT * FROM meeting where meetingType = ? AND meetingType IS NOT NULL order by meetingType", SearchOpt, 
+		function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+		
+	}
+	
+
+});
+
 // PUT 
 
 //update a friend request for a user
@@ -299,7 +343,8 @@ app.put('/profile/:username/togglerequest', function (req, res) {
 
 
 //eddit info for a specific user
-app.put('/profile/:username/changeinfo', function (req, res) {
+app.put('/profile/:username/changeinfo', function(req, res) {
+	
 	var UserName = req.body.username;
 	var FirstName = req.body.firstName;
 	var LastName = req.body.lastName;
@@ -309,15 +354,16 @@ app.put('/profile/:username/changeinfo', function (req, res) {
 	var PhoneNumber = req.body.phoneNumber;
 	var EmailAddress = req.body.emailAddress;
 	var ProfilePhotoURL = req.body.profilePhotoURL;
-	
+
+	console.log(title);
+
 	let array = [FirstName, LastName, bio, title, PhoneNumber, EmailAddress, ProfilePhotoURL, UserName];
-	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array , function (err, result, fields) {
+	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array, function (err, result, fields) {
+
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
-
-
 
 // POST /
 
@@ -541,11 +587,10 @@ app.post('/createFriendInvites', async (req, res) => {
 	var id = req.body.addresseeID;
 	var senderID = req.body.senderID;
 	var dateSent = req.body.dateSent;
-	var accepted = req.body.accepted;
-	var inviteID = req.body.inviteID;
+	var accepted = 0;
 
-	let array = [id, senderID, dateSent, accepted, inviteID];
-	var sql = "INSERT into `fireworks`.`friendInvites` (addresseeID,senderID,dateSent,accepted,inviteID) values (?,?,?,?,?)";
+	let array = [id, senderID, dateSent, accepted];
+	var sql = "INSERT into `fireworks`.`friendInvites` (addresseeID,senderID,dateSent,accepted) values (?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
@@ -553,10 +598,22 @@ app.post('/createFriendInvites', async (req, res) => {
 });
 
 
+
 // DELETE /
 app.delete('/meeting/:meetingID', async (req, res) => {
 	var id = req.params.meetingID;
 	connection.query("DELETE FROM meeting WHERE meetingID = ?", meetingID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.delete('/profile/:username/deleteFR', async (req, res) => {
+	var id = req.param('InviteID');
+	console.log('First log');
+	console.log(id);  
+	
+	connection.query("DELETE FROM friendInvites WHERE inviteID = ?", id, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
 	});

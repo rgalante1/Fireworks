@@ -147,4 +147,26 @@ export class AccountsRepository {
                 })
         })
     }
+
+    getFriendRequestExistance(useraddressee, usersender){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/requestcheck/${useraddressee}/${usersender}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting friend request (specific)");
+                    reject(error);
+                })
+        })
+    }
+
+    createFriendInvite(addresseeID, senderID, dateSent){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/createFriendInvites`, {addresseeID, senderID, dateSent}, this.config)
+            .then(x => resolve(x.data))
+            .catch(error => {
+                alert("Error creating friendRequest");
+                reject(error);
+            });
+        })
+    }
 }

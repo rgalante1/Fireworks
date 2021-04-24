@@ -56,7 +56,7 @@ export const DashboardPage = (props) => {
         });
     });
 
-    const handleSearch = () => {
+    const handleSearch = (data) => {
         setSearch(!search);
     }
 
