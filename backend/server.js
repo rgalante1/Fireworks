@@ -318,6 +318,47 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 		});
 });
 
+//Filter by location, Date and meetingType
+app.get('/dashboard/filter', function (req, res) {
+	var FilterOpt = req.param('filteropt');
+	var SearchOpt = req.param('searchopt');
+	
+	console.log('First log');
+	console.log(FilterOpt);
+	console.log('Second log');
+	console.log(SearchOpt);
+	
+	if(FilterOpt == 1)
+	{
+		
+	connection.query("SELECT * FROM meeting where location IS NOT NULL order by location", 
+		function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+		
+	}
+	else if(FilterOpt == 2)
+	{
+		connection.query("Select * From meeting where eventDate = ? AND eventDate IS NOT NULL order by eventDate", SearchOpt, 
+		function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+	}
+	else
+	{
+		connection.query("SELECT * FROM meeting where meetingType = ? AND meetingType IS NOT NULL order by meetingType", SearchOpt, 
+		function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result)); // Result in JSON format
+		});
+		
+	}
+	
+
+});
+
 // PUT 
 
 //update a friend request for a user
