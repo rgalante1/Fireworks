@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`user` (
   `picture` VARCHAR(100) NULL,
   `bio` VARCHAR(500) NULL,
   `title` VARCHAR(100) NULL,
+  `location` VARCHAR(100),
   PRIMARY KEY (`userID`),
   UNIQUE INDEX `userID_UNIQUE` (`userID` ASC) VISIBLE,
   INDEX `employerID_idx` (`employerID` ASC) VISIBLE,
@@ -87,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`post` (
   `companyID` INT NOT NULL,
   `title` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
+  `date` DATE NULL,
   INDEX `companyID_idx` (`companyID` ASC) VISIBLE,
   CONSTRAINT `companyID`
     FOREIGN KEY (`companyID`)

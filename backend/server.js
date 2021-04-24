@@ -491,9 +491,10 @@ app.post('/createpost', async (req, res) => {
 	var id = req.body.companyID;
 	var title = req.body.title;
 	var description = req.body.description;
+  var date = req.body.date;
 
-	let array = [id, title, description];
-	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`) values (?,?,?)";
+	let array = [id, title, description,date];
+	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`,date) values (?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
@@ -519,20 +520,21 @@ app.post('/createRating', async (req, res) => {
 //create new user
 app.post('/createUser', async (req, res) => {
 
+  var userID = req.body.userID;
+  var username  = req.body.username;
+  var password = req.body.password;
+  var firstName = req.body.firstname;
+  var lastName = req.body.lastName;
+  var phone = req.body.phone;
+  var userType = req.body.userType;
+  var mail = req.body.mail;
+  var employerID = req.body.employerID;
+  var location = req.body.location;
 
-	var userID = req.body.userID;
-	var username = req.body.username;
-	var password = req.body.password;
-	var firstName = req.body.firstname;
-	var lastName = req.body.lastName;
-	var phone = req.body.phone;
-	var userType = req.body.userType;
-	var mail = req.body.mail;
-	var employerID = req.body.employerID;
 
+	let array = [userID,username,password,firstName,lastName,phone,userType,mail,employerID,location];
+	var sql = "INSERT into `fireworks`.`user` (`userID`,`username`,`password`,`firstName`,`lastName`,`phone`,`userType`,`mail`,`employerID`,location) values (?,?,?,?,?,?,?,?,?,?)";
 
-	let array = [userID, username, password, firstName, lastName, phone, userType, mail, employerID];
-	var sql = "INSERT into `fireworks`.`user` (`userID`,`username`,`password`,`firstName`,`lastName`,`phone`,`userType`,`mail`,`employerID`) values (?,?,?,?,?,?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
