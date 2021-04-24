@@ -36,7 +36,7 @@ export class PostsRepository {
         })
     }
     
-    createMeeting(description, time, meetingLink, hostCompanyID, location, meetingType, eventDate) {
+    createMeeting(description, time, meetingLink, hostCompanyID, location, meetingType, eventDate, title) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/createmeeting`, {
                 "description": description,
@@ -46,7 +46,8 @@ export class PostsRepository {
                 "hostCompanyID": hostCompanyID,
                 "location": location,
                 "meetingType": meetingType,
-                "eventDate": eventDate
+                "eventDate": eventDate,
+                "title": title
             }, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
@@ -58,7 +59,7 @@ export class PostsRepository {
 
     getMeetings(){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/post`, this.config)
+            axios.get(`${this.url}/meetings`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error getting posts");

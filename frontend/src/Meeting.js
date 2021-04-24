@@ -8,7 +8,6 @@ export class Meeting extends React.Component{
             date: '',
             time: '',
             loc: '',
-            verified: '',
             virtual: '',
             disabled: false
         }
@@ -59,11 +58,6 @@ export class Meeting extends React.Component{
             <input type="checkbox" id="virtual" name="virtual" value={this.state.verified} 
             onChange={this.handleVirtual} className="form-check-input" />
             <span className="checkboxText">Virtual</span>
-          </label>
-          <label htmlFor="verified" className="form-check">
-            <input type="checkbox" id="verified" name="verified" value={this.state.verified} 
-            onChange={this.handleChange} className="form-check-input" />
-            <span className="checkboxText">Verified Users Only</span>
           </label>
         </>);
     }

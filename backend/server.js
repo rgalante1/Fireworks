@@ -336,7 +336,7 @@ app.post('/createmeeting', async (req, res) => {
 	var loc = req.body.location || "";
 	var meetingType = req.body.meetingType;
 	var eventDate = req.body.eventDate;
-  var title = req.body.title;
+  	var title = req.body.title;
 
 	let array = [description, start, end, link, company, loc, meetingType, eventDate,title];
 	var sql = "INSERT into `fireworks`.`meeting` (`meetingID`,`description`,`startTime`,`endTime`,`meetingLink`,`hostCompanyID`,`location`,`meetingType`,`eventDate`,title) values (DEFAULT,?,?,?,?,?,?,?,?,?)";
@@ -477,16 +477,9 @@ app.get('/profile/:username', function (req, res) {
 
 
 app.get('/profile/:username/friendrequests', function (req, res) {
-	var UserName = req.body.request;
-	//console.log("First log");
-	//console.log(UserName);
-	
-	var query = "SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username ='" + UserName + "' AND accepted = 0"
-	
-	//console.log("Second log");
-	//console.log(query);
-	
-	connection.query("SELECT * FROM user u INNER JOIN friendInvites fi on u.userID = fi.addresseeID WHERE username = ? AND accepted = 0", UserName, function (err, result, fields) {
+	var UserName = req.param('username');
+	connection.query("SELECT * FROM user AS u INNER JOIN friendInvites AS fi on u.userID = fi.addresseeID WHERE username = ? AND fi.accepted = 0", 
+	UserName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});

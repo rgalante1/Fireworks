@@ -4,31 +4,26 @@ import './PostDisplay.css';
 
 export const PostDisplay = (props) => {
     const dateOptions = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'America/Chicago' };
-    let postHeader = <h1>{props.post.title}</h1>;
-
+    let format = (dateSent)=>{
+        let dateYear = dateSent.substring(0, 4);
+        let dateMonth = dateSent.substring(5, 7);
+        let dateDay = dateSent.substring(8, 10);
+        return dateMonth + "/" + dateDay + "/" + dateYear;
+    }
     return (
         <div className="postDisplay container mt-1 mb-1 py-4">
             <div className="card container py-4" id="post">
+                {props.post.title ? 
                 <h1 className="titleLogIn text-center text-center">{props.post.title}</h1>
+                : <h1 className="titleLogIn text-center text-center">Meeting by {props.post.username}</h1>}
                 <Link to={"/profile/" + props.userName + "/" + props.post.username}>By {props.post.username}</Link>
                 <p >{props.post.description}</p>
-                
-                {(() => {
-                    if (props.post.location) {
-                        return <p className="postLocation">{props.post.location}</p>
-                    }
-                })()}
                 {
                     props.post.location && <p>{props.post.location}</p>
                 }
-                {(() => {
-                    if (props.post.meetingLink) {
-                        return <p><a href={props.post.meetingLink} className="postMeetingLink" target="_blank" rel="noopener noreferrer">{props.post.meetingLink}</a></p>
-                    }
-                })()}
+                { props.postmeetingLink && <p>{props.post.meetingLink}</p>}
                 {   props.post.date &&
-                    <p className="postTimeDate text-secondary">
-                    {new Intl.DateTimeFormat('en-US', dateOptions).format(props.post.date)}</p>
+                    <p className="text-secondary">{format(props.post.date)}</p>
                 }
                 <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
                 className="form-control btn btn-success rounded-pill mt-1">RSVP</button>

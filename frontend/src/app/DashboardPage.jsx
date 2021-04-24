@@ -20,6 +20,7 @@ export const DashboardPage = (props) => {
     const postRepo = new PostsRepository();
     const accountRepo = new AccountsRepository();
     const postDisplays = [];
+
     useEffect(() => {
         if(posts.length == 0){
             postRepo.getPosts().then((x,i) => {
@@ -34,11 +35,14 @@ export const DashboardPage = (props) => {
             });
             postRepo.getMeetings().then((x,i) =>{
                 x.map(meetDB => {
-                    accountRepo.getCompanyByID(meetDB.companyID).then( account =>
+                    accountRepo.getCompanyByID(meetDB.hostCompanyID).then( account =>
                         {
-                            let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(meetDB.companyID, `Meeting by ${companyName}`, 
-                            meetDB.description, meetDB.eventDate, meetDB.location, "", companyName)));
+                            if(account.length != 0){
+                                console.log(meetDB);
+                                let companyName = account[0].companyName;
+                                setPosts(posts => posts.concat(new Post(meetDB.companyID, meetDB.Title, 
+                                meetDB.description, meetDB.eventDate, meetDB.location, "", companyName)));
+                            }
                         }
                     )
                 });
