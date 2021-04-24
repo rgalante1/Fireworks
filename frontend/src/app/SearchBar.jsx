@@ -44,7 +44,7 @@ export class SearchBar extends React.Component{
                             </select>
                         </span>
                     </ul>
-                    {this.state.postType == "Events" && <>
+                    {this.state.postType === "Events" && <>
                         <ul className="row">
                             <span className="col-1">Event Type:</span>
                             <span className="mr-2">

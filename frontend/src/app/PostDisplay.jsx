@@ -10,7 +10,7 @@ export const PostDisplay = (props) => {
         return dateMonth + "/" + dateDay + "/" + dateYear;
     }
     return (
-        <div className="postDisplay container mt-1 mb-1 py-4">
+        <div className="postDisplay container mt-1 mb-1 py-4" key={props.id}>
             <div className="card container py-4" id="post">
                 {props.post.title ? 
                 <h1 className="titleLogIn text-center text-center">{props.post.title}</h1>
@@ -31,7 +31,7 @@ export const PostDisplay = (props) => {
                     props.post.postDate && <p className="text-secondary">{props.post.postDate}</p>
                 }
                 {
-                    props.post.type == "meeting" && <>
+                    props.post.type === "meeting" && <>
                     <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
                         className="form-control btn btn-success rounded-pill mt-1">RSVP</button>
                     <Link to={"/post/" + props.post.id + "/rating/" + props.userName} 
