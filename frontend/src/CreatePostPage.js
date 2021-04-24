@@ -22,7 +22,8 @@ export class CreatePostPage extends React.Component{
       disabled: false,
       submit: false,
       user: '',
-      company: ''
+      company: '',
+      link: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,7 +43,7 @@ export class CreatePostPage extends React.Component{
       });
     }
     else{
-      this.postRepo.createMeeting(this.state.desc, this.state.time, "", this.state.company, 
+      this.postRepo.createMeeting(this.state.desc, this.state.time, this.state.link, this.state.company, 
       this.state.loc, this.state.virtual, this.state.date, this.state.title).then(x=>{
         alert("done");
         this.setState({submit: true});

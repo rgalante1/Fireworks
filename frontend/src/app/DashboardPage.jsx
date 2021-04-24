@@ -5,9 +5,11 @@ import PostDisplay from './PostDisplay';
 import {Link, useParams} from "react-router-dom";
 import { PostsRepository } from '../api/PostRepository';
 import { AccountsRepository } from '../api/AccountRepository';
+import { SearchBar } from './SearchBar';
 
 export const DashboardPage = (props) => {
     const [posts, setPosts] = useState([]);
+    const [search, setSearch] = useState(false);
     const params = useParams();
     const postRepo = new PostsRepository();
     const accountRepo = new AccountsRepository();
@@ -19,7 +21,8 @@ export const DashboardPage = (props) => {
                     accountRepo.getCompanyByID(postDB.companyID).then( account =>
                         {
                             let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, postDB.description, "", "", "", companyName, postDB.date)));
+                            setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, 
+                                postDB.description, "", "", "", companyName, postDB.date, "post")));
                         }
                     )
                 });
@@ -31,8 +34,9 @@ export const DashboardPage = (props) => {
                             if(account.length != 0){
                                 console.log(meetDB);
                                 let companyName = account[0].companyName;
-                                setPosts(posts => posts.concat(new Post(meetDB.companyID, meetDB.Title, 
-                                meetDB.description, meetDB.eventDate, meetDB.location, "", companyName, "")));
+                                setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
+                                meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
+                                companyName, "", "meeting")));
                             }
                         }
                     )
@@ -41,12 +45,40 @@ export const DashboardPage = (props) => {
         }
     });
 
+    const [type, setType] = useState();
+    useEffect(() =>{
+        if(!type)
+            accountRepo.getCompany(params.username).then(data =>{
+            if(data.length != 0){
+                setType("company");
+            }
+            else{
+                setType("user");
+            }
+        });
+    });
+
+    const handleSearch = () => {
+        setSearch(!search);
+    }
+
     if (posts.length == 0) {
         return <>
             <div className="colorBlue pb-5">
-                <Link to={"/profile/" + params.username + "/" + params.username} className="btn btn-info float-right mr-3">Profile</Link>
-                <Link to={"/" + params.username + "/createpost"} className="btn btn-success float-right mr-3">Create Post</Link>
+                <button className="btn btn-success float-left ml-3" onClick={handleSearch}>Search Posts & Events</button>
+            {
+                type == "company" ? 
+                    <Link to={"/" + params.username + "/createpost"} 
+                    className="btn btn-success float-right mr-3">Create Post</Link>
+                :
+                    <Link to={"/profile/" + params.username + "/" + params.username} 
+                    className="btn btn-info float-right mr-3">Profile</Link>
+
+            }
             </div>
+            {
+                search && <SearchBar onSearch={() => setSearch(false)}/>
+            }
             <div className="clear-fix" />
             <div className="dashboardPage">
                 <br></br>
@@ -56,8 +88,16 @@ export const DashboardPage = (props) => {
     } else {
         return <>
             <div className="colorBlue pb-5">
-                <Link to={"/profile/" + params.username + "/" + params.username} className="btn btn-info float-right mr-3">Profile</Link>
-                <Link to={"/" + params.username + "/createpost"} className="btn btn-success float-right mr-3">Create Post</Link>
+                <button className="btn btn-success float-left ml-3">Search</button>
+            {
+                type == "company" ? 
+                    <Link to={"/" + params.username + "/createpost"} 
+                    className="btn btn-success float-right mr-3">Create Post</Link>
+
+                :
+                    <Link to={"/profile/" + params.username + "/" + params.username} 
+                    className="btn btn-info float-right mr-3">Profile</Link>
+            }
             </div>
             <div className="clear-fix" />
             <div className="dashboardPage">

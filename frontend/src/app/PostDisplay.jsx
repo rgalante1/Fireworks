@@ -15,13 +15,14 @@ export const PostDisplay = (props) => {
                 {props.post.title ? 
                 <h1 className="titleLogIn text-center text-center">{props.post.title}</h1>
                 : <h1 className="titleLogIn text-center text-center">Meeting by {props.post.username}</h1>}
-                <Link to={"/profile/" + props.userName + "/" + props.post.username}>By {props.post.username}</Link>
+                <p className="text-secondary">By {props.post.username}</p>
                 <p >{props.post.description}</p>
                 {
                     props.post.location && <p>Meeting Location: {props.post.location}</p>
                 }
                 { 
-                    props.postmeetingLink && <p>{props.post.meetingLink}</p>
+                    props.post.meetingLink && <p>Meeting Link: <a href={props.post.meetingLink}>
+                        {props.post.meetingLink}</a></p>
                 }
                 {   
                     props.post.date && <p>Meeting Date: {format(props.post.date)}</p>
@@ -29,9 +30,13 @@ export const PostDisplay = (props) => {
                 {
                     props.post.postDate && <p className="text-secondary">{props.post.postDate}</p>
                 }
-                <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
-                className="form-control btn btn-success rounded-pill mt-1">RSVP</button>
-                <Link to={"/post/" + props.post.id + "/rating/" + props.userName} className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link>
+                {
+                    props.post.type == "meeting" && <>
+                    <button type="button" id="rsvp" onClick={() => alert('RSVP to Post ' + props.post.id)}
+                        className="form-control btn btn-success rounded-pill mt-1">RSVP</button>
+                    <Link to={"/post/" + props.post.id + "/rating/" + props.userName} 
+                        className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link></>
+                }
             </div>
         </div>
     );

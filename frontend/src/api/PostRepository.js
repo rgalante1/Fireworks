@@ -15,7 +15,6 @@ export class PostsRepository {
             axios.get(`${this.url}/post`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
-                    alert("Error getting posts");
                     reject(error);
                 });
         })
@@ -63,7 +62,6 @@ export class PostsRepository {
             axios.get(`${this.url}/meetings`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
-                    alert("Error getting posts");
                     reject(error);
                 });
         })

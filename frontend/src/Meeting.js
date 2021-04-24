@@ -9,7 +9,8 @@ export class Meeting extends React.Component{
             time: '',
             loc: '',
             virtual: '',
-            disabled: false
+            disabled: false,
+            link: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleVirtual = this.handleVirtual.bind(this);
@@ -59,6 +60,13 @@ export class Meeting extends React.Component{
             onChange={this.handleVirtual} className="form-check-input" />
             <span className="checkboxText">Virtual</span>
           </label>
+          {
+            this.state.virtual &&
+            <label htmlFor="link">
+              <input type="text" id="link" name="link" value={this.state.link} 
+              onChange={this.handleChange} className="form-control" placeholder="Meeting Link" required/>
+            </label>
+          }
         </>);
     }
 } 
