@@ -117,7 +117,7 @@ app.get('/profile/:username/friendrequests', function (req, res) {
 	//console.log("Second log");
 	//console.log(query);
 
-	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 0;", UserName, function (err, result, fields) {
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 0", UserName, function (err, result, fields) {
 		
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -127,7 +127,7 @@ app.get('/profile/:username/friendrequests', function (req, res) {
 //see if a user has a friend request
 app.get('/profile/:username/requestcheck', function (req, res) {
 	var useraddressee = req.param('useraddressee');
-	console.log("Inside requestcheck");
+	//console.log("Inside requestcheck");
 	//console.log(useraddressee);
 	var usersender = req.param('usersender');
 	//console.log(usersender);
@@ -251,7 +251,6 @@ app.get('/friendship/:id', function (req, res) {
 	});
 });
 
-
 //Get meetingInvites
 app.get('/meetingInvites', function (req, res) {
 	connection.query("SELECT * FROM friendship", function (err, result, fields) {
@@ -333,7 +332,6 @@ app.put('/profile/:username/togglerequest', function (req, res) {
 
 
 //eddit info for a specific user
-<<<<<<< HEAD
 app.put('/profile/:username/changeinfo', function(req, res) {
 	
 	var UserName = req.body.username;
@@ -355,8 +353,6 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	});
 	
 });
-
-
 
 // POST /
 
@@ -619,10 +615,22 @@ app.post('/createFriendInvites', async (req, res) => {
 });
 
 
+
 // DELETE /
 app.delete('/meeting/:meetingID', async (req, res) => {
 	var id = req.params.meetingID;
 	connection.query("DELETE FROM meeting WHERE meetingID = ?", meetingID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.delete('/profile/:username/deleteFR', async (req, res) => {
+	var id = req.param('InviteID');
+	console.log('First log');
+	console.log(id);  
+	
+	connection.query("DELETE FROM friendInvites WHERE inviteID = ?", id, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
 	});
