@@ -40,7 +40,6 @@ export default class ProfilePage extends React.Component {
     }
 
     saveChanges(event){
-        alert("sending");
         this.accountRepo.updateProfile(this.state.UserName, this.state.FirstName, 
             this.state.LastName, this.state.AboutMe, this.state.JobTitle, 
             this.state.Location, this.state.PhoneNumber, this.state.EmailAddress, 
@@ -134,7 +133,7 @@ export default class ProfilePage extends React.Component {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" className="btn btn-success" data-dismiss="modal">Save Changes</button>
+                                    <button type="button" className="btn btn-success" data-dismiss="modal" onClick={this.saveChanges}>Save Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -221,7 +220,7 @@ export default class ProfilePage extends React.Component {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-success" onClick={this.saveChanges}>Save Changes</button>
+                                    <button type="button" className="btn btn-success" data-dismiss="modal">Save Changes</button>
                                 </div>
                             </div>
                         </div>

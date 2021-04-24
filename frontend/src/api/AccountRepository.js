@@ -106,9 +106,9 @@ export class AccountsRepository {
         });
     }
 
-    updateProfile(username, firstName, lastName, aboutMe, jobTitle, location, phoneNumber, emailAddress, profilePhotoURL){
+    updateProfile(username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL){
         return new Promise((resolve, reject) => {
-            axios.put(`${this.url}/profile/${username}/changeinfo`, {username, firstName, lastName, aboutMe, jobTitle, location, phoneNumber, emailAddress, profilePhotoURL}, this.config)
+            axios.put(`${this.url}/profile/${username}/changeinfo`, {username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL}, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error updating profile!");
