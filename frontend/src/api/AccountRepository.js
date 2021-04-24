@@ -95,6 +95,48 @@ export class AccountsRepository {
         });
     }
 
+    getAcceptedAddressee(username){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/${username}/acceptedrequestsAddressee`, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    getAcceptedSender(username){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/${username}/acceptedrequestsSender`, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    getFriendRequestExistance(useraddressee, usersender){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/requestcheck/${useraddressee}/${usersender}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting friend request (specific)");
+                    reject(error);
+                })
+        })
+    }
+
+    createFriendInvite(addresseeID, senderID, dateSent){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/createFriendInvites`, {addresseeID, senderID, dateSent}, this.config)
+            .then(x => resolve(x.data))
+            .catch(error => {
+                alert("Error creating friendRequest");
+                reject(error);
+            });
+        })
+    }
+
     updateAccount(id, account) {
         return new Promise((resolve, reject) => {
             axios.put(`${this.url}/${id}`, account, this.config)
@@ -112,6 +154,17 @@ export class AccountsRepository {
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error updating profile!");
+                    reject(error);
+                });
+        });
+    }
+
+    toggleRequest(inviteID){
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/profile/togglerequest`, inviteID, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error updating invite!");
                     reject(error);
                 });
         });
@@ -147,28 +200,6 @@ export class AccountsRepository {
                     alert("Error getting company from id");
                     reject(error);
                 })
-        })
-    }
-
-    getFriendRequestExistance(useraddressee, usersender){
-        return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/profile/requestcheck/${useraddressee}/${usersender}`, this.config)
-                .then(x => resolve(x.data))
-                .catch(error => {
-                    alert("Error getting friend request (specific)");
-                    reject(error);
-                })
-        })
-    }
-
-    createFriendInvite(addresseeID, senderID, dateSent){
-        return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/createFriendInvites`, {addresseeID, senderID, dateSent}, this.config)
-            .then(x => resolve(x.data))
-            .catch(error => {
-                alert("Error creating friendRequest");
-                reject(error);
-            });
         })
     }
 }
