@@ -2,15 +2,7 @@ import React, { useEffect, useState } from 'react';
 import LoginPage from '../LoginPage';
 import Post from './../models/Post';
 import PostDisplay from './PostDisplay';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-    useParams,
-    Redirect
-  } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { PostsRepository } from '../api/PostRepository';
 import { AccountsRepository } from '../api/AccountRepository';
 
@@ -19,7 +11,6 @@ export const DashboardPage = (props) => {
     const params = useParams();
     const postRepo = new PostsRepository();
     const accountRepo = new AccountsRepository();
-    const postDisplays = [];
 
     useEffect(() => {
         if(posts.length == 0){

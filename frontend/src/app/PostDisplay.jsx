@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import './PostDisplay.css';
 
 export const PostDisplay = (props) => {
-    const dateOptions = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true, timeZone: 'America/Chicago' };
     let format = (dateSent)=>{
         let dateYear = dateSent.substring(0, 4);
         let dateMonth = dateSent.substring(5, 7);

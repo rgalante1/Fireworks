@@ -4,9 +4,7 @@ import {
   Switch,
   Route,
   Link,
-  useRouteMatch,
-  useParams,
-  Redirect
+  useParams
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
