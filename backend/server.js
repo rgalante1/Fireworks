@@ -530,10 +530,11 @@ app.post('/createUser', async (req, res) => {
   var userType = req.body.userType;
   var mail = req.body.mail;
   var employerID = req.body.employerID;
+  var location = req.body.location;
 
 
-	let array = [userID,username,password,firstName,lastName,phone,userType,mail,employerID];
-	var sql = "INSERT into `fireworks`.`user` (`userID`,`username`,`password`,`firstName`,`lastName`,`phone`,`userType`,`mail`,`employerID`) values (?,?,?,?,?,?,?,?,?)";
+	let array = [userID,username,password,firstName,lastName,phone,userType,mail,employerID,location];
+	var sql = "INSERT into `fireworks`.`user` (`userID`,`username`,`password`,`firstName`,`lastName`,`phone`,`userType`,`mail`,`employerID`,location) values (?,?,?,?,?,?,?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
