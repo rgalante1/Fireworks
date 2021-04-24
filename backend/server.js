@@ -342,7 +342,7 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 // PUT 
 
 //update a friend request for a user
-app.put('/profile/togglerequest', function (req, res) {
+app.put('/profile/:username/togglerequest', function (req, res) {
 	var InviteID = req.body.inviteID
 
 	connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID, function (err, result, fields) {
