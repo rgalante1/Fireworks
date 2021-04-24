@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useRouteMatch,
-  useParams,
-  Redirect
+  Link
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
@@ -15,9 +12,6 @@ import { DeletePage } from './DeletePage.js';
 import { CreatePostPage } from './CreatePostPage.js';
 import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
-import {PostDisplay} from './app/PostDisplay'
-import Post from './models/Post'
-import axios from 'axios';
 import DashboardPage from './app/DashboardPage';
 import { MeetingRating } from './MeetingRating';
 
@@ -29,26 +23,14 @@ function Title() {
   )
 }
 
-function UserProfileRoute() {
-  const { usernamePassed } = useParams();
-  return ProfilePage({ usernameLooking: "Kryptsm", usernamePassed: usernamePassed });
-}
-
-function UserPostRoute() {
-  const { postId } = useParams();
-  return (
-    <PostDisplay post={new Post(postId, "Specific Post", "This is a specific post.", new Date("2020-04-01"), "Junkins 303", postId % 2 === 0 ? "https://smu.edu/live" : undefined)}></PostDisplay>
-  );
-}
-
 // React functional component
 function App() {
   // ENTER YOUR EC2 PUBLIC IP/URL HERE
-  const ec2_url = ''
+  //const ec2_url = ''
   // CHANGE THIS TO TRUE IF HOSTING ON EC2, MAKE SURE TO ADD IP/URL ABOVE
-  const ec2 = false;
+  //const ec2 = false;
   // USE localhost OR ec2_url ACCORDING TO ENVIRONMENT
-  const url = ec2 ? ec2_url : 'localhost'
+  //const url = ec2 ? ec2_url : 'localhost'
 
 
   return (

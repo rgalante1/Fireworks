@@ -119,6 +119,32 @@ app.get('/profile/:username/friendrequests', function (req, res) {
 	});
 });
 
+//see a user friend requests that are accepted
+app.get('/profile/:username/acceptedrequestsAddressee', function (req, res) {
+	var UserName = req.param('username');
+
+	var query = "SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeIDINNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = '" + UserName;
+
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 1", UserName, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//see a user friend requests that are accepted where they were the sender
+app.get('/profile/:username/acceptedrequestsSender', function (req, res) {
+	var UserName = req.param('username');
+
+	var query = "SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeIDINNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = '" + UserName;
+
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.senderID INNER JOIN user u2 on fi.addresseeID = u2.userID WHERE u1.username = ? AND fi.accepted = 1", UserName, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 //see if a user has a friend request
 app.get('/profile/requestcheck/:useraddressee/:usersender', function (req, res) {
 	var useraddressee = req.param('useraddressee');
@@ -316,7 +342,7 @@ app.get('/meeting/:meetingID/attendees', function (req, res) {
 // PUT 
 
 //update a friend request for a user
-app.put('/profile/:username/togglerequest', function (req, res) {
+app.put('/profile/togglerequest', function (req, res) {
 	var InviteID = req.body.inviteID
 
 	connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID, function (err, result, fields) {

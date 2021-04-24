@@ -4,13 +4,6 @@ import { Link } from 'react-router-dom';
 import { AccountsRepository } from './api/AccountRepository'
 import { friendRequest } from './models/friendRequest'
 
-const hideActiveModal = () => {
-    const modal = document.getElementsByClassName('modal show')[0];
-    const fade = document.getElementsByClassName('modal-backdrop show')[0];
-    modal.className = modal.className.replace('show', '');
-    fade.className = fade.className.replace('show', '');
-};
-
 export default class ProfilePage extends React.Component {
     accountRepo = new AccountsRepository();
 
@@ -33,11 +26,13 @@ export default class ProfilePage extends React.Component {
             PhoneNumber: '',
             EmailAddress: '',
             ProfilePhotoURL: 'https://retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg',
-            MessageText: 'Hello! I\'d love to schedule a meeting with you if possible. Let me know!',
             friendRequests: [],
             tempUser: 'error',
             friendsAlready: false,
+            currentFriends: []
         }
+        this.baseState = this.state;
+
         this.handleChange = this.handleChange.bind(this);
         this.buttonEdit = this.buttonEdit.bind(this);
         this.imageExists = this.imageExists.bind(this);
@@ -45,11 +40,17 @@ export default class ProfilePage extends React.Component {
         this.saveChanges = this.saveChanges.bind(this);
         this.postFriendRequest = this.postFriendRequest.bind(this);
         this.initializeProfile = this.initializeProfile.bind(this);
+        this.toggleRequest = this.toggleRequest.bind(this);
+    }
+
+    toggleRequest(inviteID) {
+        console.log(inviteID);
+        this.accountRepo.toggleRequest(inviteID).then(res => {
+            console.log("do stuff")
+        })
     }
 
     postFriendRequest() {
-        console.log(this.state.UserID);
-        console.log(this.state.UserLookingID);
         this.accountRepo.createFriendInvite(this.state.UserID, this.state.UserLookingID, (new Date()).toISOString()).then(
             this.setState({ friendsAlready: true })
         );
@@ -73,12 +74,7 @@ export default class ProfilePage extends React.Component {
 
     imageExists(image_URL) {
         if (image_URL) {
-            var http = new XMLHttpRequest();
-
-            http.open('HEAD', image_URL, false);
-            http.send();
-
-            return http.status !== 404;
+            return(image_URL.match(/\.(jpeg|jpg|gif|png)$/) != null);
         }
         return false;
     }
@@ -222,6 +218,9 @@ export default class ProfilePage extends React.Component {
                                 </div>
                                 <div className="modal-body bg-light overflow-auto">
                                     {
+                                        (this.state.friendRequests.length === 0) && <p>You have no pending friend requests!</p>
+                                    }
+                                    {
                                         this.state.friendRequests && this.state.friendRequests.map((x, i) =>
                                             <div className="card m-3" key={i}>
                                                 <div className="card-body">
@@ -239,7 +238,7 @@ export default class ProfilePage extends React.Component {
                                                                         <div className="well"><h4 className="pt-3 pb-2">{x.senderName}</h4></div>
                                                                     </div>
                                                                     <div className="col-md-6">
-                                                                        <div className="well"><button type="button" className="btn btn-success w-50 float-right mb-3" >Accept</button></div>
+                                                                        <div className="well"><button type="button" className="btn btn-success w-50 float-right mb-3" onClick={() => this.toggleRequest(x.inviteID)}>Accept</button></div>
                                                                     </div>
                                                                 </div>
                                                                 <div className="row">
@@ -277,7 +276,7 @@ export default class ProfilePage extends React.Component {
     }
 
     render() {
-        if (this.state.UserName === "") {
+        if (this.state.UserName === '') {
             return <>
                 <h3 className="text-center mt-5">Loading...</h3>
             </>
@@ -308,18 +307,25 @@ export default class ProfilePage extends React.Component {
                         </div>
                     </div>
 
-                    <div className="row">
-                        <div className="col">
-                            <div className="m-2">
-                                <Link to={"/" + this.state.UserNameLooking + "/deleteaccount"} className="btn btn-danger buttonLink">Delete Account</Link>
-                            </div>
-                        </div>
-                        <div className="col">
-                            <div className="m-2">
-                                {this.buttonFriendsList()}
-                            </div>
-                        </div>
-                    </div>
+                    {
+                        (this.state.UserName === this.state.UserNameLooking) && (
+                            <div className="row">
+                                <div className="col">
+                                    <div className="m-2">
+
+                                        <Link to={"/" + this.state.UserNameLooking + "/deleteaccount"} className="btn btn-danger buttonLink">Delete Account</Link>
+                                    </div>
+                                </div>
+                                <div className="col">
+                                    <div className="m-2">
+                                        {
+                                            (this.state.UserName === this.state.UserNameLooking) && this.buttonFriendsList()
+                                        }
+                                    </div>
+                                </div>
+                            </div>)
+                    }
+
 
                     <div className="clearfix" />
 
@@ -338,6 +344,39 @@ export default class ProfilePage extends React.Component {
                                 <p className="titles"><b >Location:</b> {this.state.Location}</p>
                                 <p className="titles"><b >Phone:</b> {this.state.PhoneNumber}</p>
                                 <p className="titles"><b >Email:</b> {this.state.EmailAddress}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-50 mx-auto mt-3">
+                        <div className="card">
+                            <div className="card-header bg-dark text-white">
+                                Friends List:
+                            </div>
+                            <div className="card-body bg-light">
+                                {
+                                    this.state.currentFriends && this.state.currentFriends.map((x, i) =>
+                                        <div className="card m-3" key={i}>
+                                            <div className="card-body">
+                                                <div className="container">
+                                                    <div className="row">
+                                                        <div className="col">
+                                                            <div className="well"><h4 className="mb-0 pb-0 mt-2">{x.senderName}</h4></div>
+                                                        </div>
+                                                        <div className="col">
+                                                            {
+                                                                (this.state.UserName === this.state.UserNameLooking) && <div className="well"><button type="button" className="btn btn-danger w-75 float-right">Remove Friend</button></div>
+                                                            }
+                                                        </div>
+                                                        <div className="col">
+                                                            <div className="well"><Link to={"/profile/" + this.state.UserNameLooking + "/" + x.senderUsername} type="button" className="btn btn-success w-75 float-right">View Profile</Link></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="clearfix" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
@@ -398,7 +437,6 @@ export default class ProfilePage extends React.Component {
             if (userPass === userLook) {
                 this.accountRepo.getFriendRequests(userPass).then(invites => {
                     let inviteList = invites.data;
-                    console.log(invites);
 
                     if (invites.data) {
                         let tempArray = [];
@@ -413,6 +451,38 @@ export default class ProfilePage extends React.Component {
                 }
                 )
             }
+
+            this.accountRepo.getAcceptedAddressee(userPass).then(req => {
+                let friendList = req.data;
+                if (friendList) {
+                    let tempArray = [];
+                    for (var index = 0; index < friendList.length; index++)
+                        tempArray.push(new friendRequest(friendList[index].accepted,
+                            friendList[index].addresseeID, friendList[index].dateSent,
+                            friendList[index].inviteID,
+                            (friendList[index].firstName + " " + friendList[index].lastName), friendList[index].username));
+
+                    this.setState(prevState => ({
+                        currentFriends: prevState.currentFriends.concat(tempArray)
+                    }));
+                }
+            })
+
+            this.accountRepo.getAcceptedSender(userPass).then(req => {
+                let friendList = req.data;
+                if (friendList) {
+                    let tempArray = [];
+                    for (var index = 0; index < friendList.length; index++)
+                        tempArray.push(new friendRequest(friendList[index].accepted,
+                            friendList[index].addresseeID, friendList[index].dateSent,
+                            friendList[index].inviteID,
+                            (friendList[index].firstName + " " + friendList[index].lastName), friendList[index].username));
+
+                    this.setState(prevState => ({
+                        currentFriends: prevState.currentFriends.concat(tempArray)
+                    }));
+                }
+            })
         }
 
         if (userPass !== userLook) {
@@ -436,6 +506,7 @@ export default class ProfilePage extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.match.params.usernamePassed !== this.props.match.params.usernamePassed) {
+            this.setState(this.baseState);
             this.initializeProfile(this.props.match.params.usernameLooking, this.props.match.params.usernamePassed);
         }
     }
