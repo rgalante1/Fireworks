@@ -78,7 +78,7 @@ class CreateAccount extends React.Component {
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="username" />
 
-              <input type="text" id="inputLogin" name="Password" placeholder={this.state.Password}
+              <input type="password" id="inputLogin" name="Password" placeholder={this.state.Password}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}

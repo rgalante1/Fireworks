@@ -95,6 +95,48 @@ export class AccountsRepository {
         });
     }
 
+    getAcceptedAddressee(username){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/${username}/acceptedrequestsAddressee`, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    getAcceptedSender(username){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/${username}/acceptedrequestsSender`, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    getFriendRequestExistance(useraddressee, usersender){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/requestcheck/${useraddressee}/${usersender}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error getting friend request (specific)");
+                    reject(error);
+                })
+        })
+    }
+
+    createFriendInvite(addresseeID, senderID, dateSent){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/createFriendInvites`, {addresseeID, senderID, dateSent}, this.config)
+            .then(x => resolve(x.data))
+            .catch(error => {
+                alert("Error creating friendRequest");
+                reject(error);
+            });
+        })
+    }
+
     updateAccount(id, account) {
         return new Promise((resolve, reject) => {
             axios.put(`${this.url}/${id}`, account, this.config)
@@ -106,9 +148,33 @@ export class AccountsRepository {
         });
     }
 
-    updateProfile(username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL){
+    updateRequest(inviteID) {
         return new Promise((resolve, reject) => {
-            axios.put(`${this.url}/profile/${username}/changeinfo`, {username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL}, this.config)
+            axios.put(`${this.url}/profile/${inviteID}/togglerequest`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error updating request!");
+                    reject(error);
+                });
+        });
+    }
+
+    deleteRequest(inviteID) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/profile/${inviteID}/deleteFR`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error deleting request!");
+                    reject(error);
+                });
+        });
+    }
+
+    
+
+    updateProfile(username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL, companyName){
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/profile/${username}/changeinfo`, {username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL, companyName}, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error updating profile!");
@@ -145,28 +211,6 @@ export class AccountsRepository {
                 .catch(error => {
                     reject(error);
                 })
-        })
-    }
-
-    getFriendRequestExistance(useraddressee, usersender){
-        return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/profile/requestcheck/${useraddressee}/${usersender}`, this.config)
-                .then(x => resolve(x.data))
-                .catch(error => {
-                    alert("Error getting friend request (specific)");
-                    reject(error);
-                })
-        })
-    }
-
-    createFriendInvite(addresseeID, senderID, dateSent){
-        return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/createFriendInvites`, {addresseeID, senderID, dateSent}, this.config)
-            .then(x => resolve(x.data))
-            .catch(error => {
-                alert("Error creating friendRequest");
-                reject(error);
-            });
         })
     }
 }

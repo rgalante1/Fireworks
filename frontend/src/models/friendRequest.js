@@ -1,5 +1,5 @@
 export class friendRequest{
-    constructor(accepted, addresseeID, dateSent, inviteID, senderName, senderUsername){
+    constructor(accepted, addresseeID, dateSent, inviteID, senderName, senderUsername, profilePhotoURL){
         this.accepted = accepted;
         this.addresseeID = addresseeID;
 
@@ -12,6 +12,8 @@ export class friendRequest{
 
         this.senderName = senderName;
         this.senderUsername = senderUsername;
+
+        this.profilePhotoURL = profilePhotoURL;
 
     }
 }

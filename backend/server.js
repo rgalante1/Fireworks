@@ -111,6 +111,32 @@ app.get('/profile/:username/friendrequests', function (req, res) {
 	});
 });
 
+//see a user friend requests that are accepted
+app.get('/profile/:username/acceptedrequestsAddressee', function (req, res) {
+	var UserName = req.param('username');
+
+	var query = "SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeIDINNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = '" + UserName;
+
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeID INNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = ? AND fi.accepted = 1", UserName, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//see a user friend requests that are accepted where they were the sender
+app.get('/profile/:username/acceptedrequestsSender', function (req, res) {
+	var UserName = req.param('username');
+
+	var query = "SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.addresseeIDINNER JOIN user u2 on fi.senderID = u2.userID WHERE u1.username = '" + UserName;
+
+	connection.query("SELECT fi.*, u2.* FROM user u1 INNER JOIN friendInvites fi on u1.userID = fi.senderID INNER JOIN user u2 on fi.addresseeID = u2.userID WHERE u1.username = ? AND fi.accepted = 1", UserName, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 //see if a user has a friend request
 app.get('/profile/requestcheck/:useraddressee/:usersender', function (req, res) {
 	var useraddressee = req.param('useraddressee');
@@ -293,10 +319,10 @@ app.get('/dashboard/filter', function (req, res) {
 	var FilterOpt = req.param('filteropt');
 	var SearchOpt = req.param('searchopt');
 	
-	console.log('First log');
-	console.log(FilterOpt);
-	console.log('Second log');
-	console.log(SearchOpt);
+	//console.log('First log');
+	//console.log(FilterOpt);
+	//console.log('Second log');
+	//console.log(SearchOpt);
 	
 	if(FilterOpt == 1)
 	{
@@ -332,13 +358,13 @@ app.get('/dashboard/filter', function (req, res) {
 // PUT 
 
 //update a friend request for a user
-app.put('/profile/:username/togglerequest', function (req, res) {
-	var InviteID = req.body.inviteID
+app.put('/profile/:inviteID/togglerequest', function (req, res) {
+    var InviteID = req.params.inviteID;
 
-	connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
+    connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID, function (err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result)); // Result in JSON format
+    });
 });
 
 
@@ -354,11 +380,10 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	var PhoneNumber = req.body.phoneNumber;
 	var EmailAddress = req.body.emailAddress;
 	var ProfilePhotoURL = req.body.profilePhotoURL;
+	var companyname = req.body.companyName;
 
-	console.log(title);
-
-	let array = [FirstName, LastName, bio, title, PhoneNumber, EmailAddress, ProfilePhotoURL, UserName];
-	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array, function (err, result, fields) {
+	let array = [FirstName, LastName, bio, title, Location, PhoneNumber, EmailAddress, ProfilePhotoURL, companyname, UserName];
+	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, location = ?, phone = ?, mail = ?, picture = ?, companyName = ? WHERE username = ?", array, function (err, result, fields) {
 
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -481,8 +506,8 @@ app.post('/createpost', async (req, res) => {
 	var description = req.body.description;
   	var date = req.body.date;
 
-	let array = [id, title, description];
-	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`) values (?,?,?)";
+	let array = [id, title, description,date];
+	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`,`date`) values (?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
@@ -608,10 +633,8 @@ app.delete('/meeting/:meetingID', async (req, res) => {
 	});
 });
 
-app.delete('/profile/:username/deleteFR', async (req, res) => {
-	var id = req.param('InviteID');
-	console.log('First log');
-	console.log(id);  
+app.delete('/profile/:inviteID/deleteFR', async (req, res) => {
+	var id = req.params.inviteID;
 	
 	connection.query("DELETE FROM friendInvites WHERE inviteID = ?", id, function (err, result, fields) {
 		if (err) throw err;
