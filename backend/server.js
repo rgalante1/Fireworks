@@ -318,10 +318,10 @@ app.get('/dashboard/filter', function (req, res) {
 	var FilterOpt = req.param('filteropt');
 	var SearchOpt = req.param('searchopt');
 	
-	console.log('First log');
-	console.log(FilterOpt);
-	console.log('Second log');
-	console.log(SearchOpt);
+	//console.log('First log');
+	//console.log(FilterOpt);
+	//console.log('Second log');
+	//console.log(SearchOpt);
 	
 	if(FilterOpt == 1)
 	{
@@ -662,6 +662,7 @@ app.delete('/meeting/:meetingID', async (req, res) => {
 	});
 });
 
+//delete a friend request
 app.delete('/profile/:username/deleteFR', async (req, res) => {
 	var id = req.param('InviteID');
 	console.log('First log');
