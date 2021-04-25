@@ -318,12 +318,12 @@ app.get('/allposts', function (req, res) {
 	//console.log("First log");
 	//console.log(companyName);
 
-	var query = "SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName ='" + companyName;
+	var query = "SELECT p.title as postTitle, p.description as postDescript, m2.* FROM post p INNER JOIN company c on p.companyID = c.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = '" + companyName;
 
 	//console.log("Second log");
 	//console.log(query);
 
-	connection.query("SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
+	connection.query("SELECT p.title as postTitle, p.description as postDescript, m2.* FROM post p INNER JOIN company c on p.companyID = c.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
