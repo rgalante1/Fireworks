@@ -283,8 +283,21 @@ INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, 
 
 COMMIT;
 
+START TRANSACTION;
+USE `fireworks`;
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 7,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 5,'2021-02-11', 1);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 1,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 2,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 3,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (4, 6,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (8, 6,'2021-02-11', 1);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (1, 7,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (2, 7,'2021-02-11', 1);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (1, 5,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (2, 5,'2021-02-11', 1);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (1, 3,'2021-02-11', 0);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (1, 4,'2021-02-11', 1);
 
-
- `rating`) VALUES (DEFAULT, 4, 'Rory Mcilroy', 'Informative', '4');
 
 COMMIT;

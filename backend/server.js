@@ -380,6 +380,20 @@ app.get('/dashboard/filter', function (req, res) {
 
 });
 
+//search for a specific user by username, first name or lastname
+app.get('/profile/:username/search', function (req, res) {
+	//var name = req.param('name');
+	var Name = req.params.name
+	var query = "SELECT * FROM user where username =" + Name + " OR firstName = " + Name + " OR lastName = " + Name;
+
+	connection.query("SELECT * FROM user where username = ? OR firstName = ? OR lastName = ?", [Name, Name, Name] , function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+
 // PUT 
 
 //update a friend request for a user
