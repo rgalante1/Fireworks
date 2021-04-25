@@ -297,8 +297,15 @@ app.get('/friendInvites/:id', function (req, res) {
 //get back all posts
 app.get('/allposts', function (req, res) {
 	var companyName = req.param('request');
+	//console.log("First log");
+	//console.log(companyName);
 
-	connection.query("SELECT p.*, m2.* FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
+	var query = "SELECT p.title as postTitle, p.description as postDescript, m2.* FROM post p INNER JOIN company c on p.companyID = c.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = '" + companyName;
+
+	//console.log("Second log");
+	//console.log(query);
+
+	connection.query("SELECT p.title as postTitle, p.description as postDescript, m2.* FROM post p INNER JOIN company c on p.companyID = c.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -354,6 +361,20 @@ app.get('/dashboard/filter', function (req, res) {
 	
 
 });
+
+//search for a specific user by username, first name or lastname
+app.get('/profile/:username/search', function (req, res) {
+	//var name = req.param('name');
+	var Name = req.params.name
+	var query = "SELECT * FROM user where username =" + Name + " OR firstName = " + Name + " OR lastName = " + Name;
+
+	connection.query("SELECT * FROM user where username = ? OR firstName = ? OR lastName = ?", [Name, Name, Name] , function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 
 // PUT 
 
@@ -633,6 +654,8 @@ app.delete('/meeting/:meetingID', async (req, res) => {
 	});
 });
 
+
+//delete a friend request
 app.delete('/profile/:inviteID/deleteFR', async (req, res) => {
 	var id = req.params.inviteID;
 	
