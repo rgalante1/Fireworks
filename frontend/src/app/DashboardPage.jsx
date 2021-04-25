@@ -17,7 +17,7 @@ export const DashboardPage = (props) => {
     const accountRepo = new AccountsRepository();
 
     useEffect(() => {
-        if(refresh || (posts.length === 0 && search === false && myPosts === false)){
+        if((posts.length === 0 && search === false && myPosts === false)){
             if(refresh){
                 setRefresh(false);
                 setMyPosts(false);
@@ -41,9 +41,9 @@ export const DashboardPage = (props) => {
                         {
                             if(account.length !== 0){
                                 let companyName = account[0].companyName;
-                                setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
+                                setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.title, 
                                 meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
-                                companyName, "", "meeting", meetDB.meetingType, meetDB.startTime, meetDB.meetingID)));
+                                companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                             }
                         }
                     )
@@ -85,7 +85,7 @@ export const DashboardPage = (props) => {
                     {
                         if(account.length !== 0){
                             let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
+                            setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.title, 
                             meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
                             companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                         }
@@ -115,7 +115,7 @@ export const DashboardPage = (props) => {
                     {
                         if(account.length !== 0){
                             let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
+                            setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.title, 
                             meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
                             companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                         }
@@ -145,8 +145,8 @@ export const DashboardPage = (props) => {
             {
                 search || myPosts && 
                 <div className="clearfix">
-                <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
-                onClick={() => setRefresh(true)}>Return to Dash</button>
+                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
+                    onClick={() => setRefresh(true)}>Return to Dash</button>
                 </div>
             }
             {
@@ -178,8 +178,8 @@ export const DashboardPage = (props) => {
             {
                 search || myPosts && 
                 <div className="clearfix">
-                <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
-                onClick={() => setRefresh(true)}>Return to Dash</button>
+                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
+                    onClick={() => setRefresh(true)}>Return to Dash</button>
                 </div>
             }
             {

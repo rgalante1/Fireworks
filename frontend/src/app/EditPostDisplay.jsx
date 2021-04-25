@@ -18,7 +18,7 @@ export class EditPostDisplay extends React.Component{
       date: props.post.date,
       time: '',
       loc: props.post.location,
-      virtual: props.post.virtual,
+      virtual: !props.post.virtual,
       disabled: false,
       submit: false,
       company: props.post.username,
@@ -37,18 +37,18 @@ export class EditPostDisplay extends React.Component{
   }
 
   handleSubmit(event) {
-    // if(!this.state.meeting){
+    if(!this.state.meeting){
     //   this.postRepo.createPost(this.state.company, this.state.title, this.state.desc, new Date()).then( x=>{ 
     //     this.setState({submit: true})
     //   });
-    // }
-    // else{
-    //   this.postRepo.createMeeting(this.state.desc, this.state.time, this.state.link, this.state.company, 
-    //   this.state.loc, this.state.virtual ? 1 : 0, this.state.date, this.state.title).then(x=>{
-    //     this.setState({submit: true});
-    //   })
-    // }
-    event.preventDefault();
+    }
+    else{
+        event.preventDefault();
+        this.postRepo.updateMeeting(this.state.id, this.state.desc, this.state.time, this.state.link,  
+        this.state.loc, this.state.virtual ? 0 : 1, this.state.date, this.state.title).then( x =>
+            {alert("updated");}
+        );
+    }
   }
 
   render() {

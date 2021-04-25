@@ -431,6 +431,24 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	});
 });
 
+//update a friend request for a user
+app.put('/meeting/update', function (req, res) {
+	var meetingID = req.body.meetingID;
+    var description = req.body.description;
+	var startTime = req.body.startTime;
+	var meetingLink = req.body.meetingLink;
+	var location = req.body.location;
+	var meetingType = req.body.meetingType;
+	var eventDate = req.body.eventDate;
+	var title = req.body.title;
+
+    connection.query("UPDATE meeting SET description = ?, startTime = ?, meetingLink = ?, location = ?, meetingType = ?, eventDate = ?, title = ? WHERE meetingID = ?",
+	 [description, startTime, meetingLink, location, meetingType, eventDate, title, meetingID], function (err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result)); // Result in JSON format
+    });
+});
+
 // POST /
 
 //insert a friendship between two users

@@ -96,4 +96,23 @@ export class PostsRepository {
                 });
         })
     }
+
+    updateMeeting(meetingID, description, time, meetingLink, location, meetingType, eventDate, title) {
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/meeting/update`, {
+                "description": description,
+                "startTime": time,
+                "meetingLink": meetingLink,
+                "location": location,
+                "meetingType": meetingType,
+                "eventDate": eventDate,
+                "title": title
+            }, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error creating meeting!");
+                    reject(error);
+                });
+        });
+    }
 }
