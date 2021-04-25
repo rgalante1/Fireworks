@@ -18,34 +18,33 @@ export class CreatePostPage extends React.Component{
       date: '',
       time: '',
       loc: '',
-      verified: '',
       virtual: '',
       disabled: false,
       submit: false,
       user: '',
-      company: ''
+      company: '',
+      link: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  handleChange(event) {
+  handleChange(event){
     const target = event.target;
-    const value = target.value;
-    const name = target.name
-    this.setState({ [name]: value });
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({[name]: value});
   }
 
   handleSubmit(event) {
-    alert('Created Review');
     if(!this.state.meeting){
-      this.postRepo.createPost(this.state.company, this.state.title, this.state.desc).then( x=>{ 
+      this.postRepo.createPost(this.state.company, this.state.title, this.state.desc, new Date()).then( x=>{ 
         this.setState({submit: true})
       });
     }
     else{
-      this.postRepo.createMeeting(this.state.desc, this.state.time, "", this.state.company, 
-      this.state.loc, this.state.virtual, this.state.date).then(x=>{
+      this.postRepo.createMeeting(this.state.desc, this.state.time, this.state.link, this.state.company, 
+      this.state.loc, this.state.virtual ? 1 : 0, this.state.date, this.state.title).then(x=>{
         alert("done");
         this.setState({submit: true});
       })
