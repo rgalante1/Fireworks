@@ -29,6 +29,7 @@ export class SearchBar extends React.Component{
         else if(this.state.postType === "Posts"){
             alert("searching by post");
             this.postRepo.getPosts().then(data =>{
+                this.props.onSearch(data, 1);
                 console.log(data);
             })
         }
@@ -41,24 +42,27 @@ export class SearchBar extends React.Component{
                     return;
                 }
                 alert("searching by event type " + this.state.eventType);
-                this.postRepo.filterPosts("3", this.state.eventType).then(data =>{
+                this.postRepo.filterPosts("3", this.state.eventType === "Virtual" ? 0 : 1).then(data =>{
+                    this.props.onSearch(data, 0);
                     console.log(data);
                 });
             }
             else if(this.state.searchBy === "Date"){
                 alert("searching by event date " + this.state.eventDate);
                 this.postRepo.filterPosts("2", this.state.eventDate).then(data =>{
+                    this.props.onSearch(data, 0);
                     console.log(data);
                 });
             }
             else{
                 alert("searching by event location");
                 this.postRepo.filterPosts("1", "0").then(data =>{
+                    this.props.onSearch(data, 0);
                     console.log(data);
                 });
             }
         }
-        this.props.onSearch();
+        // this.props.onSearch();
     }
 
     render(){

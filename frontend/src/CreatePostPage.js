@@ -44,7 +44,7 @@ export class CreatePostPage extends React.Component{
     }
     else{
       this.postRepo.createMeeting(this.state.desc, this.state.time, this.state.link, this.state.company, 
-      this.state.loc, this.state.virtual ? "Virtual" : "In-person", this.state.date, this.state.title).then(x=>{
+      this.state.loc, this.state.virtual ? 1 : 0, this.state.date, this.state.title).then(x=>{
         alert("done");
         this.setState({submit: true});
       })

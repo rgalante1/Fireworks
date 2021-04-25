@@ -14,7 +14,7 @@ export const DashboardPage = (props) => {
     const accountRepo = new AccountsRepository();
 
     useEffect(() => {
-        if(posts.length === 0){
+        if(posts.length === 0 && search === false){
             postRepo.getPosts().then((x) => {
                 x.forEach(postDB => {
                     accountRepo.getCompanyByID(postDB.companyID).then( account =>
@@ -56,14 +56,41 @@ export const DashboardPage = (props) => {
         });
     });
 
-    const handleSearch = (data) => {
-        setSearch(!search);
+    const handleSearch = (x, post) => {
+        console.log(x);
+        if(post){
+            setPosts([]);
+            x.forEach(postDB => {
+                accountRepo.getCompanyByID(postDB.companyID).then( account =>
+                    {
+                        let companyName = account[0].companyName;
+                        setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, 
+                            postDB.description, "", "", "", companyName, postDB.date, "post")));
+                    }
+                )
+            });
+        }
+        else{
+            setPosts([]);
+            x.forEach(meetDB => {
+                accountRepo.getCompanyByID(meetDB.hostCompanyID).then( account =>
+                    {
+                        if(account.length !== 0){
+                            let companyName = account[0].companyName;
+                            setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
+                            meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
+                            companyName, "", "meeting")));
+                        }
+                    }
+                )
+            });
+        }
     }
 
     if (posts.length === 0) {
         return <>
             <div className="colorBlue pb-5">
-                <button className="btn btn-success float-left ml-3" onClick={handleSearch}>Search Posts & Events</button>
+                <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
             {
                 type === "company" ? 
                     <Link to={"/" + params.username + "/createpost"} 
@@ -86,7 +113,7 @@ export const DashboardPage = (props) => {
     } else {
         return <>
             <div className="colorBlue pb-5">
-                <button className="btn btn-success float-left ml-3" onClick={handleSearch}>Search Posts & Events</button>
+                <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
             {
                 type === "company" ? 
                     <Link to={"/" + params.username + "/createpost"} 
@@ -98,7 +125,7 @@ export const DashboardPage = (props) => {
             }
             </div>
             {
-                search && <SearchBar onSearch={() => setSearch(false)}/>
+                search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
             }
             <div className="clear-fix" />
             <div className="dashboardPage">

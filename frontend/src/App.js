@@ -3,12 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-<<<<<<< HEAD
-  Link,
-  useParams
-=======
   Link
->>>>>>> 2a91e6e6482e55dd0841d2c0368129161c0f720a
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
