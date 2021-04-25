@@ -8,7 +8,7 @@ import './UserList.css';
 
 export const UserList = (props) => {
     const [users, setUsers] = useState([]);
-    const theSearch = '';
+    const theSearch = 'n';
     const params = useParams();
 
     const accountRepo = new AccountsRepository();
@@ -25,6 +25,11 @@ export const UserList = (props) => {
             if (!theSearch) {
                 accountRepo.getUsers().then(result => {
                     setUsers(result);
+                })
+            } else if(theSearch){
+                accountRepo.searchUsers(theSearch).then(result => {
+                    console.log(result.data);
+                    setUsers(result.data);
                 })
             }
         }
