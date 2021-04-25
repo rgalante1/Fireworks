@@ -344,10 +344,10 @@ app.get('/dashboard/filter', function (req, res) {
 	var FilterOpt = req.param('filteropt');
 	var SearchOpt = req.param('searchopt');
 	
-	console.log('First log');
-	console.log(FilterOpt);
-	console.log('Second log');
-	console.log(SearchOpt);
+	//console.log('First log');
+	//console.log(FilterOpt);
+	//console.log('Second log');
+	//console.log(SearchOpt);
 	
 	if(FilterOpt == 1)
 	{
@@ -383,13 +383,13 @@ app.get('/dashboard/filter', function (req, res) {
 // PUT 
 
 //update a friend request for a user
-app.put('/profile/:username/togglerequest', function (req, res) {
-	var InviteID = req.body.inviteID
+app.put('/profile/:inviteID/togglerequest', function (req, res) {
+    var InviteID = req.params.inviteID;
 
-	connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
+    connection.query("UPDATE friendInvites SET accepted = 1 WHERE inviteID = ?", InviteID, function (err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result)); // Result in JSON format
+    });
 });
 
 
@@ -406,8 +406,6 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	var PhoneNumber = req.body.phoneNumber;
 	var EmailAddress = req.body.emailAddress;
 	var ProfilePhotoURL = req.body.profilePhotoURL;
-
-	console.log(title);
 
 	let array = [FirstName, LastName, bio, title, PhoneNumber, EmailAddress, ProfilePhotoURL, UserName];
 	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array, function (err, result, fields) {
@@ -688,10 +686,8 @@ app.delete('/meeting/:meetingID', async (req, res) => {
 	});
 });
 
-app.delete('/profile/:username/deleteFR', async (req, res) => {
-	var id = req.param('InviteID');
-	console.log('First log');
-	console.log(id);  
+app.delete('/profile/:inviteID/deleteFR', async (req, res) => {
+	var id = req.params.inviteID;
 	
 	connection.query("DELETE FROM friendInvites WHERE inviteID = ?", id, function (err, result, fields) {
 		if (err) throw err;

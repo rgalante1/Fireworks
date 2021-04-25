@@ -148,23 +148,36 @@ export class AccountsRepository {
         });
     }
 
+    updateRequest(inviteID) {
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/profile/${inviteID}/togglerequest`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error updating request!");
+                    reject(error);
+                });
+        });
+    }
+
+    deleteRequest(inviteID) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/profile/${inviteID}/deleteFR`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error deleting request!");
+                    reject(error);
+                });
+        });
+    }
+
+    
+
     updateProfile(username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL){
         return new Promise((resolve, reject) => {
             axios.put(`${this.url}/profile/${username}/changeinfo`, {username, firstName, lastName, bio, title, location, phoneNumber, emailAddress, profilePhotoURL}, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     alert("Error updating profile!");
-                    reject(error);
-                });
-        });
-    }
-
-    toggleRequest(inviteID){
-        return new Promise((resolve, reject) => {
-            axios.put(`${this.url}/profile/togglerequest`, inviteID, this.config)
-                .then(x => resolve(x.data))
-                .catch(error => {
-                    alert("Error updating invite!");
                     reject(error);
                 });
         });
