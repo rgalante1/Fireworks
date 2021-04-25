@@ -406,9 +406,10 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	var PhoneNumber = req.body.phoneNumber;
 	var EmailAddress = req.body.emailAddress;
 	var ProfilePhotoURL = req.body.profilePhotoURL;
+	var companyname = req.body.companyName;
 
-	let array = [FirstName, LastName, bio, title, PhoneNumber, EmailAddress, ProfilePhotoURL, UserName];
-	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, phone = ?, mail = ?, picture = ? WHERE username = ?", array, function (err, result, fields) {
+	let array = [FirstName, LastName, bio, title, Location, PhoneNumber, EmailAddress, ProfilePhotoURL, companyname, UserName];
+	connection.query("UPDATE user SET firstName = ?, lastName = ?, bio = ?, title = ?, location = ?, phone = ?, mail = ?, picture = ?, companyName = ? WHERE username = ?", array, function (err, result, fields) {
 
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
