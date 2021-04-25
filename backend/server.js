@@ -560,7 +560,7 @@ app.post('/createpost', async (req, res) => {
   var date = req.body.date;
 
 	let array = [id, title, description,date];
-	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`,date) values (?,?,?,?)";
+	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`,`date`) values (?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
