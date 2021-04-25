@@ -15,18 +15,18 @@ export class PostsRepository {
             axios.get(`${this.url}/post`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
-                    alert("Error getting posts");
                     reject(error);
                 });
         })
     }
 
-    createPost(companyID, title, description){
+    createPost(companyID, title, description, date){
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/createpost`, {
                 "companyID": companyID,
                 "title": title,
-                "description": description
+                "description": description,
+                "date": ""
             }, this.config)
             .then(x => resolve(x.data))
             .catch(error => {
@@ -36,7 +36,7 @@ export class PostsRepository {
         })
     }
     
-    createMeeting(description, time, meetingLink, hostCompanyID, location, meetingType, eventDate) {
+    createMeeting(description, time, meetingLink, hostCompanyID, location, meetingType, eventDate, title) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/createmeeting`, {
                 "description": description,
@@ -46,7 +46,8 @@ export class PostsRepository {
                 "hostCompanyID": hostCompanyID,
                 "location": location,
                 "meetingType": meetingType,
-                "eventDate": eventDate
+                "eventDate": eventDate,
+                "title": title
             }, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
@@ -58,10 +59,19 @@ export class PostsRepository {
 
     getMeetings(){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/post`, this.config)
+            axios.get(`${this.url}/meetings`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
-                    alert("Error getting posts");
+                    reject(error);
+                });
+        })
+    }
+
+    filterPosts(filteropt, searchopt){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/dashboard/filter`, {params: {filteropt, searchopt}}, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
                     reject(error);
                 });
         })

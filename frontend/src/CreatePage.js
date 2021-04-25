@@ -1,7 +1,7 @@
 import React from 'react';
 import { Company } from './Company';
 import './CreatePage.css';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class CreateAccount extends React.Component{
   constructor(props){
