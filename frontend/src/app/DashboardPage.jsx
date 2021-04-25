@@ -105,7 +105,7 @@ export const DashboardPage = (props) => {
             }
             </div>
             {
-                search && <SearchBar onSearch={() => setSearch(false)}/>
+               search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
             }
             <div className="clear-fix" />
             <div className="dashboardPage">
@@ -117,6 +117,7 @@ export const DashboardPage = (props) => {
         return <>
             <div className="colorBlue pb-5">
                 <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
+                <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
             {
                 type === "company" ? 
                     <Link to={"/" + params.username + "/createpost"} 
