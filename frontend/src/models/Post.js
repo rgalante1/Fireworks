@@ -1,5 +1,5 @@
 class Post {
-    constructor(id, title, description, date, location, meetingLink, username, postDate, type) {
+    constructor(id, title, description, date, location, meetingLink, username, postDate, type, virtual ="0") {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -9,6 +9,7 @@ class Post {
         this.username = username;
         this.postDate = postDate;
         this.type = type;
+        this.virtual = virtual;
     }
 }
 
