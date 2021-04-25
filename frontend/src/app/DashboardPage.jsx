@@ -9,12 +9,18 @@ import { SearchBar } from './SearchBar';
 export const DashboardPage = (props) => {
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(false);
+    const [myPosts, setMyPosts] = useState(false);
+    const [refresh, setRefresh] = useState(false);
     const params = useParams();
     const postRepo = new PostsRepository();
     const accountRepo = new AccountsRepository();
 
     useEffect(() => {
-        if(posts.length === 0 && search === false){
+        if(refresh || (posts.length === 0 && search === false && myPosts === false)){
+            if(refresh){
+                setRefresh(false);
+                setPosts([]);
+            }
             postRepo.getPosts().then((x) => {
                 x.forEach(postDB => {
                     accountRepo.getCompanyByID(postDB.companyID).then( account =>
@@ -34,7 +40,7 @@ export const DashboardPage = (props) => {
                                 let companyName = account[0].companyName;
                                 setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
                                 meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
-                                companyName, "", "meeting")));
+                                companyName, "", "meeting", meetDB.meetingType)));
                             }
                         }
                     )
@@ -57,7 +63,6 @@ export const DashboardPage = (props) => {
     });
 
     const handleSearch = (x, post) => {
-        console.log(x);
         if(post){
             setPosts([]);
             x.forEach(postDB => {
@@ -79,12 +84,42 @@ export const DashboardPage = (props) => {
                             let companyName = account[0].companyName;
                             setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
                             meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
-                            companyName, "", "meeting")));
+                            companyName, "", "meeting", meetDB.meetingType)));
                         }
                     }
                 )
             });
         }
+    }
+
+    const handleViewMine = () => {
+        setMyPosts(true);
+        setPosts([]);
+        postRepo.getMyPosts(params.username).then((x) => {
+            x.forEach(postDB => {
+                accountRepo.getCompanyByID(postDB.companyID).then( account =>
+                    {
+                        let companyName = account[0].companyName;
+                        setPosts(posts => posts.concat(new Post(postDB.companyID, postDB.title, 
+                            postDB.description, "", "", "", companyName, postDB.date, "post")));
+                    }
+                )
+            });
+        });
+        postRepo.getMyMeetings(params.username).then((x) =>{
+            x.forEach(meetDB => {
+                accountRepo.getCompanyByID(meetDB.hostCompanyID).then( account =>
+                    {
+                        if(account.length !== 0){
+                            let companyName = account[0].companyName;
+                            setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
+                            meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
+                            companyName, "", "meeting", meetDB.meetingType)));
+                        }
+                    }
+                )
+            });
+        })
     }
 
     if (posts.length === 0) {
@@ -96,7 +131,7 @@ export const DashboardPage = (props) => {
                 type === "company" ? <>
                     <Link to={"/" + params.username + "/createpost"} 
                     className="btn btn-success float-right mr-3">Create Post</Link>
-                    <button className="btn btn-info float-right mr-3">My Posts</button>
+                    <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>My Posts</button>
                     </>
                 :
                     <Link to={"/profile/" + params.username + "/" + params.username} 
@@ -104,6 +139,13 @@ export const DashboardPage = (props) => {
 
             }
             </div>
+            {
+                search || myPosts && 
+                <div className="clearfix">
+                <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
+                onClick={() => setRefresh(true)}>Return to Dash</button>
+                </div>
+            }
             {
                search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
             }
@@ -119,15 +161,24 @@ export const DashboardPage = (props) => {
                 <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
                 <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
             {
-                type === "company" ? 
+                type === "company" ? <>
                     <Link to={"/" + params.username + "/createpost"} 
                     className="btn btn-success float-right mr-3">Create Post</Link>
+                    <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>{!myPosts ? "My Posts" : "Back to Dash"}</button>
+                    </>
                 :
                     <Link to={"/profile/" + params.username + "/" + params.username} 
                     className="btn btn-info float-right mr-3">Profile</Link>
 
             }
             </div>
+            {
+                search || myPosts && 
+                <div className="clearfix">
+                <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
+                onClick={() => setRefresh(true)}>Return to Dash</button>
+                </div>
+            }
             {
                 search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
             }
