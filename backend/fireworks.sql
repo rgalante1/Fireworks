@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`user` (
   `picture` VARCHAR(500) NULL,
   `bio` VARCHAR(500) NULL,
   `title` VARCHAR(100) NULL,
-  `location` VARCHAR(100),
+  `location` VARCHAR(100) NULL,
+  `companyName` VARCHAR(100) NULL,
   PRIMARY KEY (`userID`),
   UNIQUE INDEX `userID_UNIQUE` (`userID` ASC) VISIBLE,
   INDEX `employerID_idx` (`employerID` ASC) VISIBLE,
@@ -217,13 +218,13 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fireworks`;
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'lawrimore', 'abc123', 'John', 'Lawrimore', '1234567000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'cannon', '1234', 'Kristina', 'Cannon', '8005882300', 2, 'example.email@gmail.com', 1, NULL, NULL, NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'henry', '0000', 'Jordan', 'Spieth', '5436578000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'chan', 'password!', 'Will', 'Chan', '9054367854', 3, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'malhotra', 'helloworld', 'Naishur', 'Malhotra', '4569807600', 2, 'example.email@gmail.com', 4, NULL, NULL, NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'walsh', 'password123', 'Sam', 'Walsh', '3451236578', 2, 'example.email@gmail.com', 5, NULL, NULL, NULL);
-INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`) VALUES (DEFAULT, 'rgalante', 'password', 'Riley', 'Galante', '1111110000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`, `location`, `companyName`) VALUES (DEFAULT, 'lawrimore', 'abc123', 'John', 'Lawrimore', '1234567000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`, `location`, `companyName`) VALUES (DEFAULT, 'cannon', '1234', 'Kristina', 'Cannon', '8005882300', 2, 'example.email@gmail.com', 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`, `location`, `companyName`) VALUES (DEFAULT, 'henry', '0000', 'Jordan', 'Spieth', '5436578000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`, `location`, `companyName`) VALUES (DEFAULT, 'chan', 'password!', 'Will', 'Chan', '9054367854', 3, 'example.email@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`, `location`, `companyName`) VALUES (DEFAULT, 'malhotra', 'helloworld', 'Naishur', 'Malhotra', '4569807600', 2, 'example.email@gmail.com', 4, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`, `location`, `companyName`) VALUES (DEFAULT, 'walsh', 'password123', 'Sam', 'Walsh', '3451236578', 2, 'example.email@gmail.com', 5, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `fireworks`.`user` (`userID`, `username`, `password`, `firstName`, `lastName`, `phone`, `userType`, `mail`, `employerID`, `picture`, `bio`, `title`, `location`, `companyName`) VALUES (DEFAULT, 'rgalante', 'password', 'Riley', 'Galante', '1111110000', 1, 'example.email@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 
@@ -247,11 +248,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fireworks`;
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`) VALUES (1, 'Job Opening', 'example description');
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`) VALUES (2, 'New Virtual Meeting', 'example description');
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`) VALUES (3, 'New Webinar', 'example description');
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`) VALUES (4, 'January Webinar', 'example description');
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`) VALUES (5, 'August Meeting', 'example description');
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (1, 'Job Opening', 'example description', NULL);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (2, 'New Virtual Meeting', 'example description', NULL);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (3, 'New Webinar', 'example description', NULL);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (4, 'January Webinar', 'example description', NULL);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (5, 'August Meeting', 'example description', NULL);
 
 COMMIT;
 
@@ -279,5 +280,11 @@ INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, 
 INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 2, 'Tiger Woods', 'Did not have time to answer questions', '3');
 INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 4, 'Jordan Spieth', 'Interesting opportunity', '5');
 INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, `rating`) VALUES (DEFAULT, 4, 'Rory Mcilroy', 'Informative', '4');
+
+COMMIT;
+
+
+
+ `rating`) VALUES (DEFAULT, 4, 'Rory Mcilroy', 'Informative', '4');
 
 COMMIT;
