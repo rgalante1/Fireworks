@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link,
-    useRouteMatch,
-    useParams,
-    Redirect
+    useParams
 } from "react-router-dom";
 import { AccountsRepository } from './api/AccountRepository';
 import './UserList.css';
