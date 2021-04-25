@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Post from './../models/Post';
 import PostDisplay from './PostDisplay';
+import {EditPostDisplay} from './EditPostDisplay';
 import {Link, useParams} from "react-router-dom";
 import { PostsRepository } from '../api/PostRepository';
 import { AccountsRepository } from '../api/AccountRepository';
@@ -19,6 +20,8 @@ export const DashboardPage = (props) => {
         if(refresh || (posts.length === 0 && search === false && myPosts === false)){
             if(refresh){
                 setRefresh(false);
+                setMyPosts(false);
+                setSearch(false);
                 setPosts([]);
             }
             postRepo.getPosts().then((x) => {
@@ -40,7 +43,7 @@ export const DashboardPage = (props) => {
                                 let companyName = account[0].companyName;
                                 setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
                                 meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
-                                companyName, "", "meeting", meetDB.meetingType)));
+                                companyName, "", "meeting", meetDB.meetingType, meetDB.startTime, meetDB.meetingID)));
                             }
                         }
                     )
@@ -84,7 +87,7 @@ export const DashboardPage = (props) => {
                             let companyName = account[0].companyName;
                             setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
                             meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
-                            companyName, "", "meeting", meetDB.meetingType)));
+                            companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                         }
                     }
                 )
@@ -114,7 +117,7 @@ export const DashboardPage = (props) => {
                             let companyName = account[0].companyName;
                             setPosts(posts => posts.concat(new Post(meetDB.hostCompanyID, meetDB.Title, 
                             meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
-                            companyName, "", "meeting", meetDB.meetingType)));
+                            companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                         }
                     }
                 )
@@ -164,7 +167,7 @@ export const DashboardPage = (props) => {
                 type === "company" ? <>
                     <Link to={"/" + params.username + "/createpost"} 
                     className="btn btn-success float-right mr-3">Create Post</Link>
-                    <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>{!myPosts ? "My Posts" : "Back to Dash"}</button>
+                    <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>My Posts</button>
                     </>
                 :
                     <Link to={"/profile/" + params.username + "/" + params.username} 
@@ -183,11 +186,22 @@ export const DashboardPage = (props) => {
                 search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
             }
             <div className="clear-fix" />
-            <div className="dashboardPage">
+            {
+                !myPosts &&
+                <div className="dashboardPage">
                 {posts.map((x, i) => 
                     <PostDisplay post={x} headerLink={true} userName={params.username} key={i}/>
                 )}
-            </div>
+                </div>
+            }
+            {
+                myPosts &&
+                <div className="dashboardPage">
+                {posts.map((x, i) => 
+                    <EditPostDisplay post={x} headerLink={true} userName={params.username} key={i}/>
+                )}
+                </div>
+            }
         </>
     }
 
