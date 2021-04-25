@@ -91,10 +91,13 @@ export const DashboardPage = (props) => {
         return <>
             <div className="colorBlue pb-5">
                 <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
+                <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
             {
-                type === "company" ? 
+                type === "company" ? <>
                     <Link to={"/" + params.username + "/createpost"} 
                     className="btn btn-success float-right mr-3">Create Post</Link>
+                    <button className="btn btn-info float-right mr-3">My Posts</button>
+                    </>
                 :
                     <Link to={"/profile/" + params.username + "/" + params.username} 
                     className="btn btn-info float-right mr-3">Profile</Link>

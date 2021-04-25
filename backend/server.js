@@ -298,7 +298,7 @@ app.get('/friendInvites/:id', function (req, res) {
 app.get('/allposts', function (req, res) {
 	var companyName = req.param('request');
 
-	connection.query("SELECT * FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
+	connection.query("SELECT p.*, m2.* FROM company c INNER JOIN post p on c.companyID = p.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
