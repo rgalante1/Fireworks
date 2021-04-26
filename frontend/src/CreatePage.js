@@ -2,6 +2,7 @@ import React from 'react';
 import { Company } from './Company';
 import './CreatePage.css';
 import { Redirect } from 'react-router-dom';
+import { AccountsRepository } from './api/AccountRepository';
 
 class CreateAccount extends React.Component{
   constructor(props){
@@ -13,7 +14,8 @@ class CreateAccount extends React.Component{
       Password: '',
       Birthday: '',
       Company: false,
-      login: false
+      CompanyName: '',
+      CompanyDesc: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,19 +29,16 @@ class CreateAccount extends React.Component{
   }
 
   handleSubmit(event){
-    alert('Account Created');
-    
-    this.setState({
-      login: true
-    });
+    const repo = new AccountsRepository();
+
+    repo.createAccount(this.state.FirstName, this.state.LastName, this.state.UserName, this.state.Password, this.state.Birthday,
+      this.state.Company ? this.state.CompanyName : undefined, this.state.Company ? this.state.CompanyDesc : undefined)
+    .then(() => this.props.history.push("/dashboard/" + this.state.UserName));
+
     event.preventDefault();
   }
 
   render(){
-    const login = this.state.login;
-    if(login){
-      return <Redirect  to={{pathname: "/dashboard/" + this.state.UserName}} />
-    }
     return(
       <div className="container my-5 py-4">
         <form onSubmit={this.handleSubmit} className="card container py-4" id="signup">
@@ -83,10 +82,10 @@ class CreateAccount extends React.Component{
   }
 }
 
-function CreatePage(){
+function CreatePage(props){
   return(
     <div>
-      <CreateAccount />
+      <CreateAccount {...props}/>
     </div>
   )
 }

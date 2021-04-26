@@ -598,22 +598,20 @@ app.post('/meeting/:meetingID/rating', function (req, res) {
 
 //Create account 
 app.post('/createaccount', function (req, res) {
-	var FirstName = req.param('First Name');
-	var LastName = req.param('Last Name');
-	var UserName = req.param('User Name');
-	var PassWord = req.param('Password');
-	var BirthDate = req.param('Birthday');
-	var CompanyAccount = req.param('Company Account');
-	var CompanyName = req.param('Company Name');
-	var Description = req.param('Description');
+	var FirstName = req.body.FirstName;
+	var LastName = req.body.LastName;
+	var UserName = req.body.UserName;
+	var PassWord = req.body.PassWord;
+	var BirthDate = req.body.BirthDate;
+	var CompanyData = req.body.CompanyData;
 
-	if (CompanyAccount) {
+	if (CompanyData) {
 		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});
 
-		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName, Description], function (err, result, fields) {
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyData.Name, CompanyData.Description], function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});

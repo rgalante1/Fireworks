@@ -4,10 +4,6 @@ import './CreatePage.css';
 export class Company extends React.Component{
     constructor(props){
         super(props);
-        this.state = {
-            CompanyName: '',
-            CompnayDesc: ''
-        }
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -22,11 +18,11 @@ export class Company extends React.Component{
     render(){
         return(<>
         <label htmlFor="CompanyName">
-            <input type="text" id="CompanyName" name="CompanyName" value={this.state.Name} 
+            <input type="text" id="CompanyName" name="CompanyName" 
               placeholder="Company Name" onChange={this.handleChange} className="form-control" required/>
         </label>
         <label htmlFor="CompanyDesc" >
-            <textarea id="CompanyDesc" name="CompanyDesc" value={this.state.Name} rows="3"
+            <textarea id="CompanyDesc" name="CompanyDesc" rows="3"
             placeholder="Description" onChange={this.handleChange} className="form-control" required/>
         </label>
         </>);
