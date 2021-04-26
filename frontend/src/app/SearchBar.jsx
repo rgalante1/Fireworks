@@ -44,6 +44,9 @@ export class SearchBar extends React.Component{
                 });
             }
             else if(this.state.searchBy === "Date"){
+                if(this.state.eventDate === ""){
+                    return;
+                }
                 this.postRepo.filterPosts("2", this.state.eventDate).then(data =>{
                     this.props.onSearch(data, 0);
                 });

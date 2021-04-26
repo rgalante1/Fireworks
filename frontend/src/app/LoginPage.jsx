@@ -1,9 +1,9 @@
 import './LoginPage.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { AccountsRepository } from './api/AccountRepository'
+import { AccountsRepository } from '../api/AccountRepository'
 
-class CreateAccount extends React.Component {
+class LoginAccount extends React.Component {
   accountRepo = new AccountsRepository();
 
   constructor(props) {
@@ -30,6 +30,7 @@ class CreateAccount extends React.Component {
       this.accountRepo.getUserPass(this.state.UserName, this.state.Password)
         .then(result => {
           if (result.data) {
+            window.userName = this.state.UserName;
             this.setState({ LinkStatus: true });
           }
           else {
@@ -44,17 +45,19 @@ class CreateAccount extends React.Component {
   }
 
   render() {
-    if (this.state.LoggedStatus && !this.state.LinkStatus) {
+    if (window.userName) {
+      return <><Redirect to={"/dashboard/" + window.userName} /></>
+    } else if (this.state.LoggedStatus && !this.state.LinkStatus) {
       return <>
         <div className="logIn container my-5 py-4">
           <div className="loginWrapper">
             <form className="loginForm card container py-4" id="logCard">
               <h1 className="titleLogIn text-center text-center">Log In</h1>
-              <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName}
+              <input type="text" id="inputLoginName" name="UserName" placeholder={this.state.UserName}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="username" />
 
-              <input type="password" id="inputLogin" name="Password" placeholder={this.state.Password}
+              <input type="password" id="inputLoginPassword" name="Password" placeholder={this.state.Password}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}
@@ -74,11 +77,11 @@ class CreateAccount extends React.Component {
               <div className="alert alert-danger" role="alert">
                 Login Failed! Enter information again.
               </div>
-              <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName}
+              <input type="text" id="inputLoginName" name="UserName" placeholder={this.state.UserName}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="username" />
 
-              <input type="password" id="inputLogin" name="Password" placeholder={this.state.Password}
+              <input type="password" id="inputLoginPassword" name="Password" placeholder={this.state.Password}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}
@@ -101,7 +104,7 @@ class CreateAccount extends React.Component {
 function LoginPage() {
   return (
     <div>
-      <CreateAccount />
+      <LoginAccount />
     </div>
   )
 }

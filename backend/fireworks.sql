@@ -83,42 +83,42 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fireworks`.`post`
+-- Table `fireworks`.`meetingRSVP`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `fireworks`.`post` (
-  `companyID` INT NOT NULL,
-  `title` VARCHAR(45) NULL,
-  `description` VARCHAR(255) NULL,
-  `date` DATE NULL,
-  INDEX `companyID_idx` (`companyID` ASC) VISIBLE,
-  CONSTRAINT `companyID`
-    FOREIGN KEY (`companyID`)
-    REFERENCES `fireworks`.`company` (`companyID`)
+CREATE TABLE IF NOT EXISTS `fireworks`.`meetingRSVP` (
+  `meetingId` INT NOT NULL,
+  `userId` INT NOT NULL,
+  PRIMARY KEY (`meetingId`, `userId`),
+  INDEX `meeting_idx` (`meetingId` ASC) VISIBLE,
+  INDEX `user_idx` (`userId` ASC) VISIBLE,
+  CONSTRAINT `meetingId`
+    FOREIGN KEY (`meetingId`)
+    REFERENCES `fireworks`.`meeting` (`meetingID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `userId`
+    FOREIGN KEY (`userId`)
+    REFERENCES `fireworks`.`user` (`userID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fireworks`.`friendship`
+-- Table `fireworks`.`post`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `fireworks`.`friendship` (
-  `friendshipID` INT NOT NULL AUTO_INCREMENT,
-  `user1ID` INT NOT NULL,
-  `user2ID` INT NOT NULL,
-  `dateFriended` DATE NULL,
-  PRIMARY KEY (`friendshipID`),
-  UNIQUE INDEX `friendshipID_UNIQUE` (`friendshipID` ASC) VISIBLE,
-  INDEX `user1ID_idx` (`user1ID` ASC) VISIBLE,
-  INDEX `user2ID_idx` (`user2ID` ASC) VISIBLE,
-  CONSTRAINT `user1ID`
-    FOREIGN KEY (`user1ID`)
-    REFERENCES `fireworks`.`user` (`userID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `user2ID`
-    FOREIGN KEY (`user2ID`)
-    REFERENCES `fireworks`.`user` (`userID`)
+CREATE TABLE IF NOT EXISTS `fireworks`.`post` (
+  `companyID` INT NOT NULL,
+  `title` VARCHAR(45) NULL,
+  `description` VARCHAR(255) NULL,
+  `postID` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NULL,
+  PRIMARY KEY (`postID`),
+  INDEX `postID_idx` (`postID` ASC) VISIBLE,
+  INDEX `companyID_idx` (`companyID` ASC) VISIBLE,
+  CONSTRAINT `companyID`
+    FOREIGN KEY (`companyID`)
+    REFERENCES `fireworks`.`company` (`companyID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -248,27 +248,14 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fireworks`;
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (1, 'Job Opening', 'example description', NULL);
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (2, 'New Virtual Meeting', 'example description', NULL);
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (3, 'New Webinar', 'example description', NULL);
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (4, 'January Webinar', 'example description', NULL);
-INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `date`) VALUES (5, 'August Meeting', 'example description', NULL);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `postID`, `date`) VALUES (1, 'Job Opening', 'example description', NULL, DEFAULT);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `postID`, `date`) VALUES (2, 'New Virtual Meeting', 'example description', NULL, DEFAULT);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `postID`, `date`) VALUES (3, 'New Webinar', 'example description', NULL, DEFAULT);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `postID`, `date`) VALUES (4, 'January Webinar', 'example description', NULL, DEFAULT);
+INSERT INTO `fireworks`.`post` (`companyID`, `title`, `description`, `postID`, `date`) VALUES (5, 'August Meeting', 'example description', NULL, DEFAULT);
 
 COMMIT;
 
-
--- -----------------------------------------------------
--- Data for table `fireworks`.`friendship`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `fireworks`;
-INSERT INTO `fireworks`.`friendship` (`friendshipID`, `user1ID`, `user2ID`, `dateFriended`) VALUES (DEFAULT, 1, 3, '2021-02-11');
-INSERT INTO `fireworks`.`friendship` (`friendshipID`, `user1ID`, `user2ID`, `dateFriended`) VALUES (DEFAULT, 4, 2, '2021-01-01');
-INSERT INTO `fireworks`.`friendship` (`friendshipID`, `user1ID`, `user2ID`, `dateFriended`) VALUES (DEFAULT, 3, 5, '2020-09-26');
-INSERT INTO `fireworks`.`friendship` (`friendshipID`, `user1ID`, `user2ID`, `dateFriended`) VALUES (DEFAULT, 2, 1, '2021-03-01');
-INSERT INTO `fireworks`.`friendship` (`friendshipID`, `user1ID`, `user2ID`, `dateFriended`) VALUES (DEFAULT, 1, 5, '2021-03-19');
-
-COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `fireworks`.`rating`
@@ -283,6 +270,10 @@ INSERT INTO `fireworks`.`rating` (`ratingID`, `meeting`, `name`, `description`, 
 
 COMMIT;
 
+
+-- -----------------------------------------------------
+-- Data for table `fireworks`.`friendInvites`
+-- -----------------------------------------------------
 START TRANSACTION;
 USE `fireworks`;
 INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 7,'2021-02-11', 0);

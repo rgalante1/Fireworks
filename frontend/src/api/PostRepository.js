@@ -67,6 +67,66 @@ export class PostsRepository {
         })
     }
 
+    getMeeting(meetingId){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/meetingsById/` + meetingId, this.config)
+                .then(x => resolve(x.data && x.data.length === 1 ? x.data[0] : undefined))
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    }
+
+    getRatings(meetingId){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/ratingsByMeeting/` + meetingId, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    }
+
+    postRating(meetingId, username, description, rating) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/meeting/` + meetingId + `/rating`, { meetingID: meetingId, rating: rating, ratingDescription: description, Name: username }, this.config)
+                .then(x => resolve())
+                .catch(error => reject(error))
+        })
+    }
+
+    getMeetingRSVP(meetingId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/meeting/` + meetingId + `/rsvp`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => reject(error));
+        });
+    }
+
+    isRSVPMeeting(meetingId, userId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/meeting/` + meetingId + `/rsvp/` + userId, this.config)
+                .then(x => resolve(x.data && x.data[0].rsvpExists))
+                .catch(error => reject(error));
+        });
+    }
+
+    putMeetingRSVP(meetingId, userId) {
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/meeting/` + meetingId + `/rsvp/` + userId, undefined, this.config)
+                .then(x => resolve())
+                .catch(error => reject(error));
+        });
+    }
+
+    deleteMeetingRSVP(meetingId, userId) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/meeting/` + meetingId + `/rsvp/` + userId, undefined, this.config)
+                .then(x => resolve())
+                .catch(error => reject(error));
+        });
+    }
+
     filterPosts(filteropt, searchopt){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/dashboard/filter`, {params: {filteropt, searchopt}}, this.config)
@@ -90,6 +150,36 @@ export class PostsRepository {
     getMyPosts(companyName){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/posts/${companyName}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    }
+
+    updateMeeting(meetingID, description, time, meetingLink, location, meetingType, eventDate, title) {
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/meeting/update`, {
+                "description": description,
+                "startTime": time,
+                "meetingLink": meetingLink,
+                "location": location,
+                "meetingType": meetingType,
+                "eventDate": eventDate,
+                "title": title,
+                "meetingID": meetingID
+            }, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error creating meeting!");
+                    reject(error);
+                });
+        });
+    }
+
+    deleteMeeting(meetingID){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/meeting/${meetingID}`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
                     reject(error);

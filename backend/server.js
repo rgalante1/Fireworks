@@ -157,10 +157,19 @@ app.get('/meetings', function (req, res) {
 	});
 });
 
+app.get('/meetingsById/:meetingId', function (req, res) {
+    var meetingId = req.param('meetingId');
+    connection.query("SELECT * FROM meeting INNER JOIN company ON meeting.hostCompanyID = company.companyID WHERE meeting.meetingID = ?",
+    meetingId, function(err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+
 // get meeting by company name 
 app.get('/meetings/:companyName', function (req, res) {
 	var companyName = req.param('companyName');
-	connection.query("SELECT * FROM meeting INNER JOIN company ON meeting.hostCompanyID = company.companyID WHERE company.companyName = ?", 
+	connection.query("SELECT meeting.* FROM meeting INNER JOIN company ON meeting.hostCompanyID = company.companyID WHERE company.companyName = ?", 
 	companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -170,7 +179,7 @@ app.get('/meetings/:companyName', function (req, res) {
 // get posts by company name 
 app.get('/posts/:companyName', function (req, res) {
 	var companyName = req.param('companyName');
-	connection.query("SELECT * FROM post INNER JOIN company ON post.companyID = company.companyID WHERE company.companyName = ?", 
+	connection.query("SELECT post.* FROM post INNER JOIN company ON post.companyID = company.companyID WHERE company.companyName = ?", 
 	companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -257,6 +266,13 @@ app.get('/rating/:id', function (req, res) {
 	});
 });
 
+app.get('/ratingsByMeeting/:meetingId', function (req, res) {
+    connection.query("SELECT * FROM rating WHERE meeting = ?", req.param('meetingId'), function(err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+
 //Get friendship
 app.get('/friendship', function (req, res) {
 	connection.query("SELECT * FROM friendship", function (err, result, fields) {
@@ -328,6 +344,41 @@ app.get('/allposts', function (req, res) {
 	connection.query("SELECT p.title as postTitle, p.description as postDescript, m2.* FROM post p INNER JOIN company c on p.companyID = c.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+app.get('/meeting/:meetingID/rsvp', function (req, res) {
+	var meetingID = req.params.meetingID;
+	connection.query("SELECT * FROM meetingRSVP WHERE meetingId = ?", meetingID, function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.get('/meeting/:meetingID/rsvp/:userID', function (req, res) {
+	var meetingID = req.params.meetingID;
+	var userID = req.params.userID;
+	connection.query("SELECT COUNT(*) AS rsvpExists FROM meetingRSVP WHERE meetingId = ? AND userId = ?", [meetingID, userID], function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.put('/meeting/:meetingID/rsvp/:userID', function (req, res) {
+	var meetingID = req.params.meetingID;
+	var userID = req.params.userID;
+	connection.query("INSERT INTO meetingRSVP (meetingId, userId) VALUES (?, ?)", [meetingID, userID], function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.delete('/meeting/:meetingID/rsvp/:userID', function (req, res) {
+	var meetingID = req.params.meetingID;
+	var userID = req.params.userID;
+	connection.query("DELETE FROM meetingRSVP WHERE meetingId = ? AND userId = ?", [meetingID, userID], function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
 	});
 });
 
@@ -410,12 +461,12 @@ app.get('/dashboard/filter', function (req, res) {
 });
 
 //search for a specific user by username, first name or lastname
-app.get('/profile/:username/search', function (req, res) {
+app.get('/profile/search/:query', function (req, res) {
 	//var name = req.param('name');
-	var Name = req.params.name
+	var Name = ("%" + req.params.query + "%")
 	var query = "SELECT * FROM user where username =" + Name + " OR firstName = " + Name + " OR lastName = " + Name;
 
-	connection.query("SELECT * FROM user where username = ? OR firstName = ? OR lastName = ?", [Name, Name, Name] , function (err, result, fields) {
+	connection.query("SELECT * FROM user where username LIKE ? OR firstName LIKE ? OR lastName LIKE ?", [Name, Name, Name] , function (err, result, fields) {
 
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -458,6 +509,25 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	});
 });
 
+//update a friend request for a user
+app.put('/meeting/update', function (req, res) {
+	var meetingID = req.body.meetingID;
+    var description = req.body.description;
+	var startTime = req.body.startTime;
+	var meetingLink = req.body.meetingLink;
+	var location = req.body.location;
+	var meetingType = req.body.meetingType;
+	var eventDate = req.body.eventDate;
+	var title = req.body.title;
+
+    connection.query("UPDATE meeting SET description = ?, startTime = ?, meetingLink = ?, location = ?, meetingType = ?, eventDate = ?, title = ? WHERE meetingID = ?",
+	 [description, startTime, meetingLink, location, meetingType, eventDate, title, meetingID], function (err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result)); // Result in JSON format
+    });
+});
+
+// POST /
 //eddit info for a specific post
 app.put('/post/eddit', function(req, res) {
 	
@@ -528,22 +598,20 @@ app.post('/meeting/:meetingID/rating', function (req, res) {
 
 //Create account 
 app.post('/createaccount', function (req, res) {
-	var FirstName = req.param('First Name');
-	var LastName = req.param('Last Name');
-	var UserName = req.param('User Name');
-	var PassWord = req.param('Password');
-	var BirthDate = req.param('Birthday');
-	var CompanyAccount = req.param('Company Account');
-	var CompanyName = req.param('Company Name');
-	var Description = req.param('Description');
+	var FirstName = req.body.FirstName;
+	var LastName = req.body.LastName;
+	var UserName = req.body.UserName;
+	var PassWord = req.body.PassWord;
+	var BirthDate = req.body.BirthDate;
+	var CompanyData = req.body.CompanyData;
 
-	if (CompanyAccount) {
+	if (CompanyData) {
 		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});
 
-		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName, Description], function (err, result, fields) {
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyData.Name, CompanyData.Description], function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});
@@ -749,8 +817,6 @@ app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
 		return res.status(401).json({ Errors: "Invalid Input" });
 	}
 	
-});
-
 
 //delete a friend request
 app.delete('/profile/:inviteID/deleteFR', async (req, res) => {

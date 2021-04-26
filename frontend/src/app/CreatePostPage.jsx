@@ -2,8 +2,8 @@ import React from 'react';
 import './CreatePostPage.css';
 import { Meeting } from './Meeting';
 import { Link, Redirect } from 'react-router-dom';
-import { PostsRepository } from './api/PostRepository'
-import { AccountsRepository } from './api/AccountRepository';
+import { PostsRepository } from '../api/PostRepository'
+import { AccountsRepository } from '../api/AccountRepository';
 
 export class CreatePostPage extends React.Component{
   postRepo = new PostsRepository();
@@ -44,7 +44,7 @@ export class CreatePostPage extends React.Component{
     }
     else{
       this.postRepo.createMeeting(this.state.desc, this.state.time, this.state.link, this.state.company, 
-      this.state.loc, this.state.virtual ? 1 : 0, this.state.date, this.state.title).then(x=>{
+      this.state.loc, this.state.virtual ? 0 : 1, this.state.date, this.state.title).then(x=>{
         this.setState({submit: true});
       })
     }
