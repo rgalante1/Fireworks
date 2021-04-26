@@ -411,8 +411,44 @@ app.put('/profile/:username/changeinfo', function(req, res) {
 	});
 });
 
-// POST /
+//eddit info for a specific post
+app.put('/post/eddit', function(req, res) {
+	
+	var CompanyID = req.body.companyid;
+	var Title = req.body.title;
+	var Description = req.body.description;
+	var Dates = req.body.date;
 
+	let array = [Title, Description, Dates, CompanyID];
+	connection.query("UPDATE post SET title = ?,description = ?, date = ? WHERE companyID = ?", array, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//eddit info for a specific metting
+app.put('/metting/eddit', function(req, res) {
+	
+	var MettingID = req.body.mettingID;
+	var Description = req.body.description;
+	var StartTime = req.body.startTime;
+	var EndTime = req.body.endTime;
+	var MeetingLink = req.body.MeetingLink;
+	var Location = req.body.location;
+	var MeetingType = req.body.meetingType;
+	var EventDate = req.body.eventDate;
+	var Title = req.body.title;
+	
+	let array = [Description, StartTime, EndTime, MeetingLink, Location, MeetingType, EventDate, Title,  MettingID];
+	connection.query("UPDATE meeting SET description = ? ,  startTime = ? , endTime = ?, meetingLink = ? , location = ? , meetingType = ? , eventDate = ?, title = ? WHERE meetingID = ?", array, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+// POST /
 //insert a friendship between two users
 app.post('/profile/:username/friendship', async (req, res) => {
 	var useraddressee = req.body.useraddressee;
