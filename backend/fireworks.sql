@@ -83,6 +83,28 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `fireworks`.`meetingRSVP`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `fireworks`.`meetingRSVP` (
+  `meetingId` INT NOT NULL,
+  `userId` INT NOT NULL,
+  PRIMARY KEY (`meetingId`, `userId`),
+  INDEX `meeting_idx` (`meetingId` ASC) VISIBLE,
+  INDEX `user_idx` (`userId` ASC) VISIBLE,
+  CONSTRAINT `meetingId`
+    FOREIGN KEY (`meetingId`)
+    REFERENCES `fireworks`.`meeting` (`meetingID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `userId`
+    FOREIGN KEY (`userId`)
+    REFERENCES `fireworks`.`user` (`userID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `fireworks`.`post`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `fireworks`.`post` (

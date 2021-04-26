@@ -190,7 +190,7 @@ export const DashboardPage = (props) => {
                 !myPosts &&
                 <div className="dashboardPage">
                 {posts.map((x, i) => 
-                    <PostDisplay post={x} headerLink={true} userName={params.username} key={i}/>
+                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>
                 )}
                 </div>
             }
@@ -198,7 +198,7 @@ export const DashboardPage = (props) => {
                 myPosts &&
                 <div className="dashboardPage">
                 {posts.map((x, i) => 
-                    <EditPostDisplay post={x} headerLink={true} userName={params.username} key={i}/>
+                    <EditPostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>
                 )}
                 </div>
             }
