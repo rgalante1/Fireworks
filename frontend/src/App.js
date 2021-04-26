@@ -7,14 +7,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
-import LoginPage from './LoginPage.js';
-import { DeletePage } from './DeletePage.js';
-import { CreatePostPage } from './CreatePostPage.js';
-import ProfilePage from './ProfilePage.js';
-import CreatePage from './CreatePage.js';
-import DashboardPage from './app/DashboardPage';
-import { MeetingRating } from './MeetingRating';
-import UserList from './UserList';
+import routes from './routes';
 
 function Title() {
   return (
@@ -38,24 +31,7 @@ function App() {
     <Router>
       <Title />
       <Switch>
-        <Route path="/login">
-          <LoginPage />
-        </Route>
-        <Route path="/:userName/deleteaccount" component={DeletePage} />
-        <Route path="/createaccount">
-          <CreatePage />
-        </Route>
-        <Route path="/:userName/createpost" component={CreatePostPage} />
-        <Route exact path="/profile/:usernameLooking/:usernamePassed" component={ProfilePage} />
-        {/* <Route path="/post/:postId" exact component={PostDisplay} /> */}
-        <Route path="/dashboard/:username" component={DashboardPage} />
-
-        <Route path="/post/:meetingId/rating/:userName" component={MeetingRating} />
-
-        <Route path="/users/:username" component={UserList} />
-        <Route path="/" exact>
-          <LoginPage />
-        </Route>
+        { routes.map(x => <Route key={x.path} {...x} />) }
       </Switch>
     </Router>
   );

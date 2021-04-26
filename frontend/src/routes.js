@@ -14,10 +14,10 @@ export const routes = [
     { path: "/:userName/createpost", component: CreatePostPage },
     { path: "/dashboard/:username", component: DashboardPage },
     { path: "/post/:meetingId/rating/:userName", component: MeetingRating },
-    { path: "/users/:username", component: UserList }
+    { path: "/users/:username", component: UserList },
+    { path: "/profile/:usernameLooking/:usernamePassed", exact: true, component: ProfilePage },
+    { path: "/", exact: true, component: LoginPage },
+    /* <Route path="/post/:postId" exact component={PostDisplay} /> */
 ];
 
-export const exactRoutes = [
-    { path: "/profile/:usernameLooking/:usernamePassed", component: ProfilePage },
-    { path: "/", component: LoginPage }
-]
+export default routes;
