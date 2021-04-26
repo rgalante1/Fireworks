@@ -10,6 +10,29 @@ export class AccountsRepository {
         withCredentials: true
     };
 
+    createAccount(firstName, lastName, userName, password, birthDate, companyName, companyDescription) {
+        return new Promise((resolve, reject) => {
+            let body = {
+                FirstName: firstName,
+                LastName: lastName,
+                UserName: userName,
+                PassWord: password,
+                BirthDate: birthDate
+            };
+
+            if (companyName && companyDescription) {
+                body["CompanyData"] = {
+                    Name: companyName,
+                    Description: companyDescription
+                };
+            }
+
+            axios.post(`${this.url}/createaccount`, body, this.config)
+                .then(x => resolve())
+                .catch(error => reject(error));
+        })
+    }
+
     getUsers() {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/users/get`, this.config)

@@ -28,7 +28,7 @@ export class MeetingRating extends React.Component {
       <div className="container my-5 py-4">
           <div className="card container py-4" id="ratingCard">
             <h1 className="text-center text-center">Rate This Meeting</h1>
-            <p>"{this.state.Meeting.title}" by {this.state.Meeting.username}</p>
+            <p>{this.state.Meeting.title ? '"' + this.state.Meeting.title + '"' : "Meeting"} by {this.state.Meeting.username}</p>
             <p>{this.state.Meeting.description}</p>
             <form className="mb-n3">
               <div className="form-row">
@@ -55,6 +55,9 @@ export class MeetingRating extends React.Component {
                 <div className="col-7"></div>
                 <Link to={"/post/" + this.state.Meeting.id} className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
                 <input type="button" value="Submit Review" className="ml-2 btn btn-success mb-3 rounded-pill col-2" onClick={e => {
+                  if (this.state.Rating === '') {
+                    return;
+                  }
                   new PostsRepository().postRating(this.state.Meeting.id, userName, this.state.RatingDesc, this.state.Rating).then(() => {
                     this.props.history.push("/post/" + this.state.Meeting.id);
                   });
