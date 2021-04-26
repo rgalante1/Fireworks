@@ -528,37 +528,15 @@ app.put('/meeting/update', function (req, res) {
 });
 
 // POST /
-//eddit info for a specific post
-app.put('/post/eddit', function(req, res) {
+//edit info for a specific post
+app.put('/post/update', function(req, res) {
 	
-	var CompanyID = req.body.companyid;
+	var postID = req.body.postID;
 	var Title = req.body.title;
 	var Description = req.body.description;
-	var Dates = req.body.date;
 
-	let array = [Title, Description, Dates, CompanyID];
-	connection.query("UPDATE post SET title = ?,description = ?, date = ? WHERE companyID = ?", array, function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//eddit info for a specific metting
-app.put('/metting/eddit', function(req, res) {
-	
-	var MettingID = req.body.mettingID;
-	var Description = req.body.description;
-	var StartTime = req.body.startTime;
-	var EndTime = req.body.endTime;
-	var MeetingLink = req.body.MeetingLink;
-	var Location = req.body.location;
-	var MeetingType = req.body.meetingType;
-	var EventDate = req.body.eventDate;
-	var Title = req.body.title;
-	
-	let array = [Description, StartTime, EndTime, MeetingLink, Location, MeetingType, EventDate, Title,  MettingID];
-	connection.query("UPDATE meeting SET description = ? ,  startTime = ? , endTime = ?, meetingLink = ? , location = ? , meetingType = ? , eventDate = ?, title = ? WHERE meetingID = ?", array, function (err, result, fields) {
+	let array = [Title, Description, postID];
+	connection.query("UPDATE post SET title = ?, description = ? WHERE postID = ?", array, function (err, result, fields) {
 
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -816,6 +794,7 @@ app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
 	{
 		return res.status(401).json({ Errors: "Invalid Input" });
 	}
+});
 	
 
 //delete a friend request

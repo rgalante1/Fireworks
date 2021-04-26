@@ -177,13 +177,18 @@ export class PostsRepository {
         });
     }
 
-    deleteMeeting(meetingID){
+    updatePost(postID, title, description) {
         return new Promise((resolve, reject) => {
-            axios.delete(`${this.url}/meeting/${meetingID}`, this.config)
+            axios.put(`${this.url}/post/update`, {
+                "description": description,
+                "title": title,
+                "postID": postID
+            }, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
+                    alert("Error creating meeting!");
                     reject(error);
                 });
-        })
+        });
     }
 }
