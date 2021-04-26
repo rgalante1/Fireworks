@@ -1,57 +1,37 @@
 import React from 'react';
 import './MeetingRating.css';
 import { Link, Redirect } from 'react-router-dom';
-import { Rating } from './Rating';
+import { RatingDisplay } from './app/PostDisplayPage';
+import { PostsRepository } from './api/PostRepository';
+import Post from './models/Post';
 
 export class MeetingRating extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Title: 'Example Title',
-      MeetingDesc: 'Example Description',
       Rating: '',
       RatingDesc: '',
-      submit: false,
-      postId: '',
-      user: ''
+      Meeting: undefined
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   ratings = [1, 2, 3, 4, 5];
 
-  handleChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name
-    this.setState({ [name]: value });
-  }
-
-  handleSubmit(event) {
-    alert('Created Review');
-    this.setState({
-      Title: 'Example Title',
-      MeetingDesc: 'Example Description',
-      Rating: '',
-      RatingDesc: '',
-      submit: true
-    });
-    event.preventDefault();
-  }
-
   render() {
-    const submitted = this.state.submit;
-    if(submitted){
-      return <Redirect to={"/dashboard/" + this.state.user} />
+    let meetingId = this.props.match.params.meetingId;
+    let userName = this.props.match.params.userName;
+
+    if (!this.state.Meeting) {
+      return (<div />);
     }
+
     return (<>
       <div className="container my-5 py-4">
           <div className="card container py-4" id="ratingCard">
             <h1 className="text-center text-center">Rate This Meeting</h1>
-            <p>{this.state.Title}</p>
-            <p>{this.state.MeetingDesc}</p>
-            <form className="mb-n3" onSubmit={this.handleSubmit}>
+            <p>"{this.state.Meeting.title}" by {this.state.Meeting.username}</p>
+            <p>{this.state.Meeting.description}</p>
+            <form className="mb-n3">
               <div className="form-row">
                 <div className="form-group col-3">
                   <label htmlFor="Rating">Rating</label>
@@ -65,17 +45,21 @@ export class MeetingRating extends React.Component {
                 </div>
                 <div className="form-group col-7"></div>
                 <div className="form-group col-2">
-                  <div className="pt-4"><Rating value={ this.state.Rating } /></div>
+                  <div className="pt-4"><RatingDisplay value={ this.state.Rating } /></div>
                 </div>
               </div>
               <div className="form-group mb-4">
                 <textarea rows="5" id="RatingDesc" name="RatingDesc" value={this.state.RatingDesc} 
-                placeholder="Leave a comment (optional)" onChange={this.handleChange} className="form-control"/>
+                placeholder="Leave a comment (optional)" onChange={event => this.setState({RatingDesc: event.target.value})} className="form-control"/>
               </div>
               <div className="form-row">
                 <div className="col-7"></div>
-                <Link to={"/dashboard/" + this.state.user} className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
-                <input type="submit" value="Submit Review" className="ml-2 btn btn-success mb-3 rounded-pill col-2"/>
+                <Link to={"/post/" + this.state.Meeting.id} className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
+                <input type="button" value="Submit Review" className="ml-2 btn btn-success mb-3 rounded-pill col-2" onClick={e => {
+                  new PostsRepository().postRating(this.state.Meeting.id, userName, this.state.RatingDesc, this.state.Rating).then(() => {
+                    this.props.history.push("/post/" + this.state.Meeting.id);
+                  });
+                }}/>
               </div>
             </form>
           </div>
@@ -83,14 +67,15 @@ export class MeetingRating extends React.Component {
       </>
     )
   }
+
   componentDidMount() {
-    let meetingId = this.props.match.params.meetingId;
-    if (meetingId) {
-        this.setState({ postId: meetingId });
+    const repo = new PostsRepository();
+    const meetingId = this.props.match.params.meetingId;
+
+    if (!meetingId) {
+      return;
     }
-    let userName = this.props.match.params.userName;
-    if(userName){
-      this.setState({user: userName});
-    }
+
+    repo.getMeeting(meetingId).then(result => this.setState({Meeting: new Post(result.meetingID, result.companyID, result.title, result.description, result.eventDate, result.location, result.meetingLink, result.companyName, "", "meeting", result.meetingType)}));
   }
 }
