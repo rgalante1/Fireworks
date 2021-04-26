@@ -42,7 +42,7 @@ export const PostDisplayPage = (props) => {
                     ratings.map(x => {
                         return (
                             <div key={x.id}>
-                                <div className="card" style={{width: "80%", marginLeft: "10%"}}>
+                                <div className="card" style={{width: "70%", marginLeft: "15%"}}>
                                     <div className="card-header">
                                         <RatingDisplay value={x.rating} />
                                     </div>
