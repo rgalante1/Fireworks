@@ -1,4 +1,5 @@
 import DashboardPage from "./app/DashboardPage";
+import PostDisplayPage from "./app/PostDisplayPage";
 import CreatePage from "./CreatePage";
 import { CreatePostPage } from "./CreatePostPage";
 import { DeletePage } from "./DeletePage";
@@ -17,6 +18,7 @@ export const routes = [
     { path: "/users/:username", component: UserList },
     { path: "/profile/:usernameLooking/:usernamePassed", exact: true, component: ProfilePage },
     { path: "/", exact: true, component: LoginPage },
+    { path: "/post/:postId", exact: true, component: PostDisplayPage },
     /* <Route path="/post/:postId" exact component={PostDisplay} /> */
 ];
 

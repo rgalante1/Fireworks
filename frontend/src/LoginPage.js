@@ -74,11 +74,11 @@ class CreateAccount extends React.Component {
               <div className="alert alert-danger" role="alert">
                 Login Failed! Enter information again.
               </div>
-              <input type="text" id="inputLogin" name="UserName" placeholder={this.state.UserName}
+              <input type="text" id="inputLoginName" name="UserName" placeholder={this.state.UserName}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="username" />
 
-              <input type="password" id="inputLogin" name="Password" placeholder={this.state.Password}
+              <input type="password" id="inputLoginPassword" name="Password" placeholder={this.state.Password}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}
