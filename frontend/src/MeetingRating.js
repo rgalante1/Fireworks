@@ -1,6 +1,6 @@
 import React from 'react';
 import './MeetingRating.css';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { RatingDisplay } from './app/PostDisplayPage';
 import { PostsRepository } from './api/PostRepository';
 import Post from './models/Post';
@@ -18,7 +18,6 @@ export class MeetingRating extends React.Component {
   ratings = [1, 2, 3, 4, 5];
 
   render() {
-    let meetingId = this.props.match.params.meetingId;
     let userName = this.props.match.params.userName;
 
     if (!this.state.Meeting) {
