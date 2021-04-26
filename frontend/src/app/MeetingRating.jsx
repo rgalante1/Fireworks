@@ -1,9 +1,9 @@
 import React from 'react';
 import './MeetingRating.css';
 import { Link } from 'react-router-dom';
-import { RatingDisplay } from './app/PostDisplayPage';
-import { PostsRepository } from './api/PostRepository';
-import Post from './models/Post';
+import { RatingDisplay } from './PostDisplayPage';
+import { PostsRepository } from '../api/PostRepository';
+import Post from '../models/Post';
 
 export class MeetingRating extends React.Component {
   constructor(props) {

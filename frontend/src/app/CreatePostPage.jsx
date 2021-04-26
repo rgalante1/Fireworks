@@ -2,8 +2,8 @@ import React from 'react';
 import './CreatePostPage.css';
 import { Meeting } from './Meeting';
 import { Link, Redirect } from 'react-router-dom';
-import { PostsRepository } from './api/PostRepository'
-import { AccountsRepository } from './api/AccountRepository';
+import { PostsRepository } from '../api/PostRepository'
+import { AccountsRepository } from '../api/AccountRepository';
 
 export class CreatePostPage extends React.Component{
   postRepo = new PostsRepository();

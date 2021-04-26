@@ -27,7 +27,7 @@ export const PostDisplay = (props) => {
             });
             repo.getMeetingRSVP(props.post.id).then(x => setRsvpTotal(x.length));
         }
-    }, []);
+    }, [props]);
 
     return (
         <div className="postDisplay container mt-1 mb-1 py-4" key={props.id}>

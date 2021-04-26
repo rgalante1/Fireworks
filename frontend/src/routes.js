@@ -1,12 +1,12 @@
 import DashboardPage from "./app/DashboardPage";
 import PostDisplayPage from "./app/PostDisplayPage";
-import CreatePage from "./CreatePage";
-import { CreatePostPage } from "./CreatePostPage";
-import { DeletePage } from "./DeletePage";
-import LoginPage from "./LoginPage";
-import { MeetingRating } from "./MeetingRating";
-import ProfilePage from "./ProfilePage";
-import UserList from "./UserList";
+import CreatePage from "./app/CreatePage";
+import { CreatePostPage } from "./app/CreatePostPage";
+import { DeletePage } from "./app/DeletePage";
+import LoginPage from "./app/LoginPage";
+import { MeetingRating } from "./app/MeetingRating";
+import ProfilePage from "./app/ProfilePage";
+import UserList from "./app/UserList";
 
 export const routes = [
     { path: "/login", component: LoginPage },
@@ -18,8 +18,7 @@ export const routes = [
     { path: "/users/:username", component: UserList },
     { path: "/profile/:usernameLooking/:usernamePassed", exact: true, component: ProfilePage },
     { path: "/", exact: true, component: LoginPage },
-    { path: "/post/:postId/:username", exact: true, component: PostDisplayPage },
-    /* <Route path="/post/:postId" exact component={PostDisplay} /> */
+    { path: "/post/:postId/:username", exact: true, component: PostDisplayPage }
 ];
 
 export default routes;

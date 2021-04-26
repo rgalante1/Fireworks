@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import logoFWB from './logo.jpg';
-import routes from './routes';
+import routes from '../routes';
 
 function Title() {
   return (

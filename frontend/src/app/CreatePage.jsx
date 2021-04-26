@@ -1,8 +1,7 @@
 import React from 'react';
 import { Company } from './Company';
 import './CreatePage.css';
-import { Redirect } from 'react-router-dom';
-import { AccountsRepository } from './api/AccountRepository';
+import { AccountsRepository } from '../api/AccountRepository';
 
 class CreateAccount extends React.Component{
   constructor(props){

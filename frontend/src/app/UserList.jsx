@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Link
 } from "react-router-dom";
-import { AccountsRepository } from './api/AccountRepository';
+import { AccountsRepository } from '../api/AccountRepository';
 import './UserList.css';
 
 export default class UserList extends React.Component {

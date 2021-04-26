@@ -1,8 +1,8 @@
 import './ProfilePage.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AccountsRepository } from './api/AccountRepository'
-import { friendRequest } from './models/friendRequest'
+import { AccountsRepository } from '../api/AccountRepository'
+import { friendRequest } from '../models/friendRequest'
 
 export default class ProfilePage extends React.Component {
     accountRepo = new AccountsRepository();

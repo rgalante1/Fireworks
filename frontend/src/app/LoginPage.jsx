@@ -1,7 +1,7 @@
 import './LoginPage.css';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { AccountsRepository } from './api/AccountRepository'
+import { AccountsRepository } from '../api/AccountRepository'
 
 class LoginAccount extends React.Component {
   accountRepo = new AccountsRepository();

@@ -1,7 +1,5 @@
 import React from 'react';
 import "./PostDisplay.css";
-import { Meeting } from '../Meeting';
-import { Link, Redirect } from 'react-router-dom';
 import { PostsRepository } from '../api/PostRepository'
 import { AccountsRepository } from '../api/AccountRepository';
 
