@@ -346,10 +346,10 @@ app.get('/dashboard/filter', function (req, res) {
 	var FilterOpt = req.param('filteropt');
 	var SearchOpt = req.param('searchopt');
 	
-	console.log('First log');
-	console.log(FilterOpt);
-	console.log('Second log');
-	console.log(SearchOpt);
+	//console.log('First log');
+	//console.log(FilterOpt);
+	//console.log('Second log');
+	//console.log(SearchOpt);
 	
 	if(FilterOpt == 1)
 	{
@@ -729,12 +729,26 @@ app.post('/createFriendInvites', async (req, res) => {
 
 
 // DELETE /
-app.delete('/meeting/:meetingID', async (req, res) => {
-	var id = req.params.meetingID;
-	connection.query("DELETE FROM meeting WHERE meetingID = ?", meetingID, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
+//delete a meeting and any stored rating with it have to use stored procedure
+app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
+	//var id = req.params.meetingID;
+	
+	var id = req.param('meetingID');
+	//console.log('First log');
+	//console.log(id);
+	
+	if(id)
+	{
+		connection.query("call Delete_metting(?)", meetingID, function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result));
+		});
+	}
+	else
+	{
+		return res.status(401).json({ Errors: "Invalid Input" });
+	}
+	
 });
 
 
