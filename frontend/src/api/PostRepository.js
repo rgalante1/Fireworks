@@ -106,7 +106,8 @@ export class PostsRepository {
                 "location": location,
                 "meetingType": meetingType,
                 "eventDate": eventDate,
-                "title": title
+                "title": title,
+                "meetingID": meetingID
             }, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
@@ -114,5 +115,15 @@ export class PostsRepository {
                     reject(error);
                 });
         });
+    }
+
+    deleteMeeting(meetingID){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/meeting/${meetingID}`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    reject(error);
+                });
+        })
     }
 }

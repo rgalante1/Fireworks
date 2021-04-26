@@ -19,7 +19,6 @@ export class EditPostDisplay extends React.Component{
       time: '',
       loc: props.post.location,
       virtual: !props.post.virtual,
-      disabled: false,
       submit: false,
       company: props.post.username,
       link: props.post.meetingLink,
@@ -27,6 +26,15 @@ export class EditPostDisplay extends React.Component{
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  handleDelete(event){
+    alert("deleted");
+    if(this.state.meeting){
+      this.postRepo.deleteMeeting(this.state.id);
+    }
+    event.preventDefault();
   }
   
   handleChange(event){
@@ -46,7 +54,9 @@ export class EditPostDisplay extends React.Component{
         event.preventDefault();
         this.postRepo.updateMeeting(this.state.id, this.state.desc, this.state.time, this.state.link,  
         this.state.loc, this.state.virtual ? 0 : 1, this.state.date, this.state.title).then( x =>
-            {alert("updated");}
+            {
+              alert("updated " + this.state.id);
+            }
         );
     }
   }
@@ -54,9 +64,9 @@ export class EditPostDisplay extends React.Component{
   render() {
     return (<>
       <div className="postDisplay container mt-1 mb-1 py-4">
-        <form onSubmit={this.handleSubmit} className="card container py-4" id="createPost">
+        <form  className="card container py-4" id="createPost">
           <label htmlFor="title" id="title">
-            <input type="text" id="title" name="title" value={this.state.title} placeholder={this.state.title || 
+            <input type="text" id="title" name="title" value={this.state.title || ""} placeholder={this.state.title || 
                 "Enter Title"} onChange={this.handleChange} className="form-control" />
           </label>
           <label htmlFor="desc" id="desc">
@@ -67,7 +77,7 @@ export class EditPostDisplay extends React.Component{
           this.state.meeting && <>
             <label htmlFor="loc" id="loc">
                 <input type="text" id="loc" name="loc" value={this.state.loc} 
-                placeholder={this.state.loc|| "Location"} disabled={(this.state.disabled) ? "disabled" : ""} 
+                placeholder={this.state.loc|| "Location"} disabled={(this.state.virtual) ? "disabled" : ""} 
                 onChange={this.handleChange} className="form-control" />
               </label>
               <label htmlFor="date">
@@ -79,8 +89,8 @@ export class EditPostDisplay extends React.Component{
                 onChange={this.handleChange} className="form-control" />
               </label>
               <label htmlFor="virtual" className="form-check">
-                <input type="checkbox" id="virtual" name="virtual" value={this.state.verified} 
-                onChange={this.handleVirtual} className="form-check-input" />
+                <input type="checkbox" id="virtual" name="virtual" value={this.state.virtual} 
+                onChange={this.handleChange} className="form-check-input" checked={this.state.virtual}/>
                 <span className="checkboxText">Virtual</span>
               </label>
               {
@@ -93,7 +103,12 @@ export class EditPostDisplay extends React.Component{
               }
             </>
           }
-          <input type="submit" value="Save Changes" id="submit" className="col btn btn-success rounded-pill mt-2"/>
+          { this.state.meeting && 
+          <>
+          {/* <button className="col btn btn-danger rounded-pill mt-2" onClick={this.handleDelete}>Delete</button> */}
+          <button id="submit" className="col btn btn-success rounded-pill mt-2"
+          onClick={this.handleSubmit}>Save Changes </button>
+          </>}
         </form>
       </div>
       </>

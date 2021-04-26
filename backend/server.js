@@ -160,7 +160,7 @@ app.get('/meetings', function (req, res) {
 // get meeting by company name 
 app.get('/meetings/:companyName', function (req, res) {
 	var companyName = req.param('companyName');
-	connection.query("SELECT * FROM meeting INNER JOIN company ON meeting.hostCompanyID = company.companyID WHERE company.companyName = ?", 
+	connection.query("SELECT meeting.* FROM meeting INNER JOIN company ON meeting.hostCompanyID = company.companyID WHERE company.companyName = ?", 
 	companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -170,7 +170,7 @@ app.get('/meetings/:companyName', function (req, res) {
 // get posts by company name 
 app.get('/posts/:companyName', function (req, res) {
 	var companyName = req.param('companyName');
-	connection.query("SELECT * FROM post INNER JOIN company ON post.companyID = company.companyID WHERE company.companyName = ?", 
+	connection.query("SELECT post.* FROM post INNER JOIN company ON post.companyID = company.companyID WHERE company.companyName = ?", 
 	companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -685,7 +685,7 @@ app.post('/createFriendInvites', async (req, res) => {
 
 // DELETE /
 app.delete('/meeting/:meetingID', async (req, res) => {
-	var id = req.params.meetingID;
+	var meetingID = req.params.meetingID;
 	connection.query("DELETE FROM meeting WHERE meetingID = ?", meetingID, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));

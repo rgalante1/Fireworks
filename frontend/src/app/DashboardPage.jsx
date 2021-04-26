@@ -11,13 +11,13 @@ export const DashboardPage = (props) => {
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState(false);
     const [myPosts, setMyPosts] = useState(false);
-    const [refresh, setRefresh] = useState(false);
+    const [refresh, setRefresh] = useState(true);
     const params = useParams();
     const postRepo = new PostsRepository();
     const accountRepo = new AccountsRepository();
 
     useEffect(() => {
-        if((posts.length === 0 && search === false && myPosts === false)){
+        if(refresh && search === false && myPosts === false){
             if(refresh){
                 setRefresh(false);
                 setMyPosts(false);
@@ -143,14 +143,14 @@ export const DashboardPage = (props) => {
             }
             </div>
             {
-                search || myPosts && 
-                <div className="clearfix">
-                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
-                    onClick={() => setRefresh(true)}>Return to Dash</button>
-                </div>
+               search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
             }
             {
-               search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
+                (search || myPosts) && 
+                <div className="clearfix">
+                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
+                    onClick={() => {setSearch(false); setMyPosts(false); setRefresh(true)}}>Return to Dash</button>
+                </div>
             }
             <div className="clear-fix" />
             <div className="dashboardPage">
@@ -176,14 +176,14 @@ export const DashboardPage = (props) => {
             }
             </div>
             {
-                search || myPosts && 
-                <div className="clearfix">
-                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
-                    onClick={() => setRefresh(true)}>Return to Dash</button>
-                </div>
+                search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
             }
             {
-                search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
+                (search || myPosts) && 
+                <div className="clearfix">
+                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
+                    onClick={() => {setSearch(false); setMyPosts(false); setRefresh(true)}}>Return to Dash</button>
+                </div>
             }
             <div className="clear-fix" />
             {
