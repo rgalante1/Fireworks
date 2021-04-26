@@ -347,6 +347,41 @@ app.get('/allposts', function (req, res) {
 	});
 });
 
+app.get('/meeting/:meetingID/rsvp', function (req, res) {
+	var meetingID = req.params.meetingID;
+	connection.query("SELECT * FROM meetingRSVP WHERE meetingId = ?", meetingID, function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.get('/meeting/:meetingID/rsvp/:userID', function (req, res) {
+	var meetingID = req.params.meetingID;
+	var userID = req.params.userID;
+	connection.query("SELECT COUNT(*) AS rsvpExists FROM meetingRSVP WHERE meetingId = ? AND userId = ?", [meetingID, userID], function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.put('/meeting/:meetingID/rsvp/:userID', function (req, res) {
+	var meetingID = req.params.meetingID;
+	var userID = req.params.userID;
+	connection.query("INSERT INTO meetingRSVP (meetingId, userId) VALUES (?, ?)", [meetingID, userID], function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+app.delete('/meeting/:meetingID/rsvp/:userID', function (req, res) {
+	var meetingID = req.params.meetingID;
+	var userID = req.params.userID;
+	connection.query("DELETE FROM meetingRSVP WHERE meetingId = ? AND userId = ?", [meetingID, userID], function(err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
 //Get attendees
 app.get('/meeting/:meetingID/attendees', function (req, res) {
 	var id = req.params.meetingID;

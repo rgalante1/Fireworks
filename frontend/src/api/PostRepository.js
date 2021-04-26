@@ -95,6 +95,38 @@ export class PostsRepository {
         })
     }
 
+    getMeetingRSVP(meetingId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/meeting/` + meetingId + `/rsvp`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => reject(error));
+        });
+    }
+
+    isRSVPMeeting(meetingId, userId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/meeting/` + meetingId + `/rsvp/` + userId, this.config)
+                .then(x => resolve(x.data && x.data[0].rsvpExists))
+                .catch(error => reject(error));
+        });
+    }
+
+    putMeetingRSVP(meetingId, userId) {
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/meeting/` + meetingId + `/rsvp/` + userId, undefined, this.config)
+                .then(x => resolve())
+                .catch(error => reject(error));
+        });
+    }
+
+    deleteMeetingRSVP(meetingId, userId) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/meeting/` + meetingId + `/rsvp/` + userId, undefined, this.config)
+                .then(x => resolve())
+                .catch(error => reject(error));
+        });
+    }
+
     filterPosts(filteropt, searchopt){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/dashboard/filter`, {params: {filteropt, searchopt}}, this.config)

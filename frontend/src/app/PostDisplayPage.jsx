@@ -37,7 +37,7 @@ export const PostDisplayPage = (props) => {
     if (post) {
         return (
             <div id="postDisplayPage">
-                <PostDisplay post={post} userName={"Alex"} />
+                <PostDisplay post={post} userName={"lawrimore"} />
                 {
                     ratings.map(x => {
                         return (
