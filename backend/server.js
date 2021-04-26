@@ -157,6 +157,15 @@ app.get('/meetings', function (req, res) {
 	});
 });
 
+app.get('/meetingsById/:meetingId', function (req, res) {
+    var meetingId = req.param('meetingId');
+    connection.query("SELECT * FROM meeting INNER JOIN company ON meeting.hostCompanyID = company.companyID WHERE meeting.meetingID = ?",
+    meetingId, function(err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+});
+
 // get meeting by company name 
 app.get('/meetings/:companyName', function (req, res) {
 	var companyName = req.param('companyName');
@@ -255,6 +264,13 @@ app.get('/rating/:id', function (req, res) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
+});
+
+app.get('/ratingsByMeeting/:meetingId', function (req, res) {
+    connection.query("SELECT * FROM rating WHERE meeting = ?", req.param('meetingId'), function(err, result, fields) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
 });
 
 //Get friendship

@@ -67,6 +67,26 @@ export class PostsRepository {
         })
     }
 
+    getMeeting(meetingId){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/meetingsById/` + meetingId, this.config)
+                .then(x => resolve(x.data && x.data.length === 1 ? x.data[0] : undefined))
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    }
+
+    getRatings(meetingId){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/ratingsByMeeting/` + meetingId, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    }
+
     filterPosts(filteropt, searchopt){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/dashboard/filter`, {params: {filteropt, searchopt}}, this.config)
