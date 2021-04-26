@@ -18,7 +18,7 @@ export const routes = [
     { path: "/users/:username", component: UserList },
     { path: "/profile/:usernameLooking/:usernamePassed", exact: true, component: ProfilePage },
     { path: "/", exact: true, component: LoginPage },
-    { path: "/post/:postId", exact: true, component: PostDisplayPage },
+    { path: "/post/:postId/:username", exact: true, component: PostDisplayPage },
     /* <Route path="/post/:postId" exact component={PostDisplay} /> */
 ];
 

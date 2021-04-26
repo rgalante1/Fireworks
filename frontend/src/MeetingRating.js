@@ -59,7 +59,7 @@ export class MeetingRating extends React.Component {
                     return;
                   }
                   new PostsRepository().postRating(this.state.Meeting.id, userName, this.state.RatingDesc, this.state.Rating).then(() => {
-                    this.props.history.push("/post/" + this.state.Meeting.id);
+                    this.props.history.push("/post/" + this.state.Meeting.id + "/" + userName);
                   });
                 }}/>
               </div>

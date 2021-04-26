@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { AccountsRepository } from './api/AccountRepository'
 
-class CreateAccount extends React.Component {
+class LoginAccount extends React.Component {
   accountRepo = new AccountsRepository();
 
   constructor(props) {
@@ -30,6 +30,7 @@ class CreateAccount extends React.Component {
       this.accountRepo.getUserPass(this.state.UserName, this.state.Password)
         .then(result => {
           if (result.data) {
+            window.userName = this.state.UserName;
             this.setState({ LinkStatus: true });
           }
           else {
@@ -44,7 +45,9 @@ class CreateAccount extends React.Component {
   }
 
   render() {
-    if (this.state.LoggedStatus && !this.state.LinkStatus) {
+    if (window.userName) {
+      return <><Redirect to={"/dashboard/" + window.userName} /></>
+    } else if (this.state.LoggedStatus && !this.state.LinkStatus) {
       return <>
         <div className="logIn container my-5 py-4">
           <div className="loginWrapper">
@@ -101,7 +104,7 @@ class CreateAccount extends React.Component {
 function LoginPage() {
   return (
     <div>
-      <CreateAccount />
+      <LoginAccount />
     </div>
   )
 }

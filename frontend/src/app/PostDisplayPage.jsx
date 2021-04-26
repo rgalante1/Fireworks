@@ -16,7 +16,7 @@ export const RatingDisplay = (props) => {
 }
 
 export const PostDisplayPage = (props) => {
-    let { postId } = useParams();
+    let { postId, username } = useParams();
     const [ post, setPost ] = useState(undefined);
     const [ ratings, setRatings ] = useState([]);
 
@@ -37,7 +37,7 @@ export const PostDisplayPage = (props) => {
     if (post) {
         return (
             <div id="postDisplayPage">
-                <PostDisplay post={post} userName={"lawrimore"} />
+                <PostDisplay post={post} userName={username} />
                 {
                     ratings.map(x => {
                         return (
