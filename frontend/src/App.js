@@ -14,6 +14,7 @@ import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
 import DashboardPage from './app/DashboardPage';
 import { MeetingRating } from './MeetingRating';
+import { UserList } from './UserList';
 
 function Title() {
   return (
@@ -50,6 +51,8 @@ function App() {
         <Route path="/dashboard/:username" component={DashboardPage} />
 
         <Route path="/post/:meetingId/rating/:userName" component={MeetingRating} />
+
+        <Route path="/users/:username" component={UserList} />
         <Route path="/" exact>
           <LoginPage />
         </Route>

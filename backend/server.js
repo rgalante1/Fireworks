@@ -157,6 +157,26 @@ app.get('/meetings', function (req, res) {
 	});
 });
 
+// get meeting by company name 
+app.get('/meetings/:companyName', function (req, res) {
+	var companyName = req.param('companyName');
+	connection.query("SELECT * FROM meeting INNER JOIN company ON meeting.hostCompanyID = company.companyID WHERE company.companyName = ?", 
+	companyName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+// get posts by company name 
+app.get('/posts/:companyName', function (req, res) {
+	var companyName = req.param('companyName');
+	connection.query("SELECT * FROM post INNER JOIN company ON post.companyID = company.companyID WHERE company.companyName = ?", 
+	companyName, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 //Get users
 
 app.get('/users/get', function (req, res) {
