@@ -346,40 +346,67 @@ app.get('/dashboard/filter', function (req, res) {
 	var FilterOpt = req.param('filteropt');
 	var SearchOpt = req.param('searchopt');
 	
-	//console.log('First log');
-	//console.log(FilterOpt);
-	//console.log('Second log');
-	//console.log(SearchOpt);
+	console.log('First log');
+	console.log(FilterOpt);
+	console.log('Second log');
+	console.log(SearchOpt);
 	
 	if(FilterOpt == 1)
 	{
 		
-	connection.query("SELECT * FROM meeting where location IS NOT NULL order by location", 
-		function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-		
+		if(SearchOpt)
+		{
+			connection.query("SELECT * FROM meeting where location = ? AND location IS NOT NULL order by location", SearchOpt, function (err, result, fields) {
+					if (err) throw err;
+					res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
+		else
+		{
+			connection.query("SELECT * FROM meeting where location IS NOT NULL order by location", function (err, result, fields) {;
+					if (err) throw err;
+					res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
 	}
 	else if(FilterOpt == 2)
 	{
-		connection.query("Select * From meeting where eventDate = ? AND eventDate IS NOT NULL order by eventDate", SearchOpt, 
-		function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
+		if(SearchOpt)
+		{
+			
+			connection.query("Select * From meeting where eventDate = ? AND eventDate IS NOT NULL order by eventDate", SearchOpt, function (err, result, fields) {
+				if (err) throw err;
+				res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
+		else
+		{
+			connection.query("Select * From meeting where eventDate IS NOT NULL order by eventDate", function (err, result, fields) {
+				if (err) throw err;
+				res.end(JSON.stringify(result)); // Result in JSON format
+			});
+			
+		}
+	}
+	else if(FilterOpt == 3)
+	{
+		//The code is specifically designed this way b/c meetingType is an int value the app will crash is switching from !SearchOpy to SearchOpt
+		if(!SearchOpt)
+		{
+			return res.status(401).json({ Errors: "Can Not filter" });
+		}
+		{
+			connection.query("SELECT * FROM meeting where meetingType = ? AND meetingType IS NOT NULL order by meetingType", SearchOpt, function (err, result, fields) {
+				if (err) throw err;
+				res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
 	}
 	else
 	{
-		connection.query("SELECT * FROM meeting where meetingType = ? AND meetingType IS NOT NULL order by meetingType", SearchOpt, 
-		function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-		
+		return res.status(401).json({ Errors: "Can Not filter" });
 	}
 	
-
 });
 
 //search for a specific user by username, first name or lastname
