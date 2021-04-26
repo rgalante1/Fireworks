@@ -265,7 +265,7 @@ export default class ProfilePage extends React.Component {
                                                             <div className="col-md-8">
                                                                 <div className="row">
                                                                     <div className="col-md-6">
-                                                                        <div className="well"><h4 className="pt-3 pb-2">{x.senderName}</h4></div>
+                                                                        <div className="well"><h4 className="pt-3 pb-2 text-center">{x.senderName}</h4></div>
                                                                     </div>
                                                                     <div className="col-md-6">
                                                                         <div className="well"><button type="button" id={"buttonAccept" + i} className="btn btn-success w-50 float-right mb-3" onClick={() => this.toggleRequests(x.inviteID, x, i)}>Accept</button></div>
@@ -273,7 +273,7 @@ export default class ProfilePage extends React.Component {
                                                                 </div>
                                                                 <div className="row">
                                                                     <div className="col-md-6">
-                                                                        <div className="well"><h5 className="pt-2 text-secondary">Sent: {x.dateSent}</h5></div>
+                                                                        <div className="well"><h5 className="pt-2 text-secondary text-center">{x.senderUsername}</h5></div>
                                                                     </div>
                                                                     <div className="col-md-6">
                                                                         <div className="well"><button type="button" id={"buttonDecline" + i} className="btn btn-danger w-50 float-right" onClick={() => this.deleteRequestsAndButton(x.inviteID, i)}>Decline</button></div>

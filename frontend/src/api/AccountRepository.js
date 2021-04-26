@@ -115,6 +115,16 @@ export class AccountsRepository {
         });
     }
 
+    searchUsers(query){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/profile/search/${query}`, this.config)
+                .then(x => resolve(x))
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
     getFriendRequestExistance(useraddressee, usersender){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/profile/requestcheck/${useraddressee}/${usersender}`, this.config)
