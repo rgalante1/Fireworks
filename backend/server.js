@@ -346,49 +346,76 @@ app.get('/dashboard/filter', function (req, res) {
 	var FilterOpt = req.param('filteropt');
 	var SearchOpt = req.param('searchopt');
 	
-	//console.log('First log');
-	//console.log(FilterOpt);
-	//console.log('Second log');
-	//console.log(SearchOpt);
+	console.log('First log');
+	console.log(FilterOpt);
+	console.log('Second log');
+	console.log(SearchOpt);
 	
 	if(FilterOpt == 1)
 	{
 		
-	connection.query("SELECT * FROM meeting where location IS NOT NULL order by location", 
-		function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-		
+		if(SearchOpt)
+		{
+			connection.query("SELECT * FROM meeting where location = ? AND location IS NOT NULL order by location", SearchOpt, function (err, result, fields) {
+					if (err) throw err;
+					res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
+		else
+		{
+			connection.query("SELECT * FROM meeting where location IS NOT NULL order by location", function (err, result, fields) {;
+					if (err) throw err;
+					res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
 	}
 	else if(FilterOpt == 2)
 	{
-		connection.query("Select * From meeting where eventDate = ? AND eventDate IS NOT NULL order by eventDate", SearchOpt, 
-		function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
+		if(SearchOpt)
+		{
+			
+			connection.query("Select * From meeting where eventDate = ? AND eventDate IS NOT NULL order by eventDate", SearchOpt, function (err, result, fields) {
+				if (err) throw err;
+				res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
+		else
+		{
+			connection.query("Select * From meeting where eventDate IS NOT NULL order by eventDate", function (err, result, fields) {
+				if (err) throw err;
+				res.end(JSON.stringify(result)); // Result in JSON format
+			});
+			
+		}
+	}
+	else if(FilterOpt == 3)
+	{
+		//The code is specifically designed this way b/c meetingType is an int value the app will crash is switching from !SearchOpy to SearchOpt
+		if(!SearchOpt)
+		{
+			return res.status(401).json({ Errors: "Can Not filter" });
+		}
+		{
+			connection.query("SELECT * FROM meeting where meetingType = ? AND meetingType IS NOT NULL order by meetingType", SearchOpt, function (err, result, fields) {
+				if (err) throw err;
+				res.end(JSON.stringify(result)); // Result in JSON format
+			});
+		}
 	}
 	else
 	{
-		connection.query("SELECT * FROM meeting where meetingType = ? AND meetingType IS NOT NULL order by meetingType", SearchOpt, 
-		function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-		
+		return res.status(401).json({ Errors: "Can Not filter" });
 	}
 	
-
 });
 
 //search for a specific user by username, first name or lastname
-app.get('/profile/:username/search', function (req, res) {
+app.get('/profile/search/:query', function (req, res) {
 	//var name = req.param('name');
-	var Name = req.params.name
+	var Name = ("%" + req.params.query + "%")
 	var query = "SELECT * FROM user where username =" + Name + " OR firstName = " + Name + " OR lastName = " + Name;
 
-	connection.query("SELECT * FROM user where username = ? OR firstName = ? OR lastName = ?", [Name, Name, Name] , function (err, result, fields) {
+	connection.query("SELECT * FROM user where username LIKE ? OR firstName LIKE ? OR lastName LIKE ?", [Name, Name, Name] , function (err, result, fields) {
 
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
@@ -450,7 +477,44 @@ app.put('/meeting/update', function (req, res) {
 });
 
 // POST /
+//eddit info for a specific post
+app.put('/post/eddit', function(req, res) {
+	
+	var CompanyID = req.body.companyid;
+	var Title = req.body.title;
+	var Description = req.body.description;
+	var Dates = req.body.date;
 
+	let array = [Title, Description, Dates, CompanyID];
+	connection.query("UPDATE post SET title = ?,description = ?, date = ? WHERE companyID = ?", array, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//eddit info for a specific metting
+app.put('/metting/eddit', function(req, res) {
+	
+	var MettingID = req.body.mettingID;
+	var Description = req.body.description;
+	var StartTime = req.body.startTime;
+	var EndTime = req.body.endTime;
+	var MeetingLink = req.body.MeetingLink;
+	var Location = req.body.location;
+	var MeetingType = req.body.meetingType;
+	var EventDate = req.body.eventDate;
+	var Title = req.body.title;
+	
+	let array = [Description, StartTime, EndTime, MeetingLink, Location, MeetingType, EventDate, Title,  MettingID];
+	connection.query("UPDATE meeting SET description = ? ,  startTime = ? , endTime = ?, meetingLink = ? , location = ? , meetingType = ? , eventDate = ?, title = ? WHERE meetingID = ?", array, function (err, result, fields) {
+
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+// POST /
 //insert a friendship between two users
 app.post('/profile/:username/friendship', async (req, res) => {
 	var useraddressee = req.body.useraddressee;

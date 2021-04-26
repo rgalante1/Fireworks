@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `fireworks`.`meeting` (
   `meetingLink` VARCHAR(255) NULL,
   `hostCompanyID` INT NULL,
   `location` VARCHAR(45) NULL,
-  `meetingType` VARCHAR(45) NULL,
+  `meetingType` INT NULL,
   `eventDate` DATE NULL,
   `title` VARCHAR(255) NULL,
   PRIMARY KEY (`meetingID`),
@@ -234,11 +234,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `fireworks`;
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '12:00', '13:00', 'https://examplelink.com', 1, 'Seattle, WA', 'In-person', '2021-04-29');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '10:00', '11:00', 'https://examplelink.com', 2, 'Dallas, TX', 'In-person', '2021-05-13');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '09:15', '10:00', 'https://examplelink.com', 3, 'Dallas, TX', 'In-person', '2021-05-19');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '15:00', '15:30', 'https://examplelink.com', 4, 'Dallas, TX', 'In-person', '2021-06-10');
-INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '08:00', '10:00', 'https://examplelink.com', 5, 'Dallas, TX', 'In-person', '2021-07-05');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '12:00', '13:00', 'https://examplelink.com', 1, 'Seattle, WA', 1, '2021-04-29');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '10:00', '11:00', 'https://examplelink.com', 2, 'Dallas, TX', 1, '2021-05-13');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '09:15', '10:00', 'https://examplelink.com', 3, 'Dallas, TX', 0, '2021-05-19');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '15:00', '15:30', 'https://examplelink.com', 4, 'Dallas, TX', 0, '2021-06-10');
+INSERT INTO `fireworks`.`meeting` (`meetingID`, `description`, `startTime`, `endTime`, `meetingLink`, `hostCompanyID`, `location`, `meetingType`, `eventDate`) VALUES (DEFAULT, 'Meet some of our executives, hear from current employees, and learn about how our business runs.', '08:00', '10:00', 'https://examplelink.com', 5, 'Dallas, TX', 1, '2021-07-05');
 
 COMMIT;
 
@@ -291,7 +291,7 @@ INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, 
 INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 2,'2021-02-11', 0);
 INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (6, 3,'2021-02-11', 0);
 INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (4, 6,'2021-02-11', 0);
-INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (8, 6,'2021-02-11', 1);
+INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (7, 6,'2021-02-11', 1);
 INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (1, 7,'2021-02-11', 0);
 INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (2, 7,'2021-02-11', 1);
 INSERT INTO `fireworks`.`friendInvites` (`addresseeID`, `senderID`, `dateSent`, `accepted`) VALUES (1, 5,'2021-02-11', 0);

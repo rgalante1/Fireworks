@@ -14,7 +14,7 @@ import ProfilePage from './ProfilePage.js';
 import CreatePage from './CreatePage.js';
 import DashboardPage from './app/DashboardPage';
 import { MeetingRating } from './MeetingRating';
-import { UserList } from './UserList';
+import UserList from './UserList';
 
 function Title() {
   return (
