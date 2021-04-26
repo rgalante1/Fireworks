@@ -87,6 +87,14 @@ export class PostsRepository {
         })
     }
 
+    postRating(meetingId, username, description, rating) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/meeting/` + meetingId + `/rating`, { meetingID: meetingId, rating: rating, ratingDescription: description, Name: username }, this.config)
+                .then(x => resolve())
+                .catch(error => reject(error))
+        })
+    }
+
     filterPosts(filteropt, searchopt){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/dashboard/filter`, {params: {filteropt, searchopt}}, this.config)

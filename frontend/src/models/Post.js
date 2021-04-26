@@ -1,5 +1,3 @@
-import { post } from "jquery";
-
 class Post {
     constructor(id, companyId, title, description, date, location, meetingLink, username, postDate, type, virtual ="0") {
         this.id = id;
