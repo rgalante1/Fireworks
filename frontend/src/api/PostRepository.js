@@ -191,4 +191,26 @@ export class PostsRepository {
                 });
         });
     }
+
+    deleteMeeting(meetingID){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/meeting/${meetingID}/delete`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error deleting meeting!");
+                    reject(error);
+                });
+        });
+    }
+
+    deletePost(postID){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/post/${postID}/delete`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error deleting post!");
+                    reject(error);
+                });
+        });
+    }
 }

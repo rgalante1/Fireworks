@@ -13,6 +13,7 @@ class LoginAccount extends React.Component {
       Password: 'Password',
       LoggedStatus: true,
       LinkStatus: false,
+      Comany: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,9 +21,9 @@ class LoginAccount extends React.Component {
 
   handleChange(event) {
     const target = event.target;
-    const value = target.value;
-    const name = target.name
-    this.setState({ [name]: value });
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({[name]: value});
   }
 
   handleSubmit(event) {
@@ -60,6 +61,11 @@ class LoginAccount extends React.Component {
               <input type="password" id="inputLoginPassword" name="Password" placeholder={this.state.Password}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
+              <label htmlFor="Company" className="mt-2">
+                <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
+                checked={this.state.Company} />
+                <span className="font-weight-bold ml-2">Company Account</span>
+              </label> 
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}
                 className="form-control btn btn-success rounded-pill my-2" />
               <Link to="/createaccount"><input type="button" id="submitCreate" value="Create Account"
@@ -84,6 +90,11 @@ class LoginAccount extends React.Component {
               <input type="password" id="inputLoginPassword" name="Password" placeholder={this.state.Password}
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
+              <label htmlFor="Company" className="mt-2">
+                <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
+                checked={this.state.Company} />
+                <span className="font-weight-bold ml-2">Company Account</span>
+              </label> 
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}
                 className="form-control btn btn-success rounded-pill my-2" />
               <Link to="/createaccount"><input type="button" id="submitCreate" value="Create Account"

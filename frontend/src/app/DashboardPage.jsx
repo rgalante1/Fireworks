@@ -9,6 +9,7 @@ import { SearchBar } from './SearchBar';
 
 export const DashboardPage = (props) => {
     const [posts, setPosts] = useState([]);
+    const [meetings, setMeetings] = useState([]);
     const [search, setSearch] = useState(false);
     const [myPosts, setMyPosts] = useState(false);
     const [refresh, setRefresh] = useState(true);
@@ -41,7 +42,7 @@ export const DashboardPage = (props) => {
                         {
                             if(account.length !== 0){
                                 let companyName = account[0].companyName;
-                                setPosts(posts => posts.concat(new Post(meetDB.meetingID, meetDB.hostCompanyID, meetDB.title, 
+                                setMeetings(meetings => meetings.concat(new Post(meetDB.meetingID, meetDB.hostCompanyID, meetDB.title, 
                                 meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
                                 companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                             }
@@ -50,7 +51,7 @@ export const DashboardPage = (props) => {
                 });
             })
         }
-    });
+    }, [refresh, search, myPosts, postRepo, accountRepo]);
 
     const [type, setType] = useState();
     useEffect(() =>{
@@ -85,7 +86,7 @@ export const DashboardPage = (props) => {
                     {
                         if(account.length !== 0){
                             let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(meetDB.meetingID, meetDB.hostCompanyID, meetDB.title, 
+                            setMeetings(meetings => meetings.concat(new Post(meetDB.meetingID, meetDB.hostCompanyID, meetDB.title, 
                             meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
                             companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                         }
@@ -115,7 +116,7 @@ export const DashboardPage = (props) => {
                     {
                         if(account.length !== 0){
                             let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(meetDB.meetingID, meetDB.hostCompanyID, meetDB.title, 
+                            setMeetings(meetings => meetings.concat(new Post(meetDB.meetingID, meetDB.hostCompanyID, meetDB.title, 
                             meetDB.description, meetDB.eventDate, meetDB.location, meetDB.meetingLink, 
                             companyName, "", "meeting", meetDB.meetingType, meetDB.meetingID)));
                         }
@@ -125,87 +126,107 @@ export const DashboardPage = (props) => {
         })
     }
 
-    if (posts.length === 0) {
-        return <>
-            <div className="colorBlue pb-5">
-                <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
-                <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
-            {
-                type === "company" ? <>
-                    <Link to={"/" + params.username + "/createpost"} 
-                    className="btn btn-success float-right mr-3">Create Post</Link>
-                    <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>My Posts</button>
-                    </>
-                :
-                    <Link to={"/profile/" + params.username + "/" + params.username} 
-                    className="btn btn-info float-right mr-3">Profile</Link>
+    return (<>
+        <div className="colorBlue pb-5">
+            <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
+            <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
+        {
+            type === "company" ? <>
+                <Link to={"/" + params.username + "/createpost"} 
+                className="btn btn-success float-right mr-3">Create Post</Link>
+                <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>My Posts</button>
+                </>
+            :
+                <Link to={"/profile/" + params.username + "/" + params.username} 
+                className="btn btn-info float-right mr-3">Profile</Link>
 
-            }
+        }
+        </div>
+        {
+            search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
+        }
+        {
+            (search || myPosts) && 
+            <div className="clearfix">
+                <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
+                onClick={() => {setSearch(false); setMyPosts(false); setRefresh(true)}}>Return to Dash</button>
             </div>
-            {
-               search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
-            }
-            {
-                (search || myPosts) && 
-                <div className="clearfix">
-                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
-                    onClick={() => {setSearch(false); setMyPosts(false); setRefresh(true)}}>Return to Dash</button>
-                </div>
-            }
-            <div className="clear-fix" />
-            <div className="dashboardPage">
-                <br></br>
-                <center><h4>No posts to display.</h4></center>
-            </div>
-        </>
-    } else {
-        return <>
-            <div className="colorBlue pb-5">
-                <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
-                <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
-            {
-                type === "company" ? <>
-                    <Link to={"/" + params.username + "/createpost"} 
-                    className="btn btn-success float-right mr-3">Create Post</Link>
-                    <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>My Posts</button>
-                    </>
-                :
-                    <Link to={"/profile/" + params.username + "/" + params.username} 
-                    className="btn btn-info float-right mr-3">Profile</Link>
-
-            }
-            </div>
-            {
-                search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
-            }
-            {
-                (search || myPosts) && 
-                <div className="clearfix">
-                    <button className="btn btn-secondary float-left mr-3 rounded-pill mt-2 ml-2"
-                    onClick={() => {setSearch(false); setMyPosts(false); setRefresh(true)}}>Return to Dash</button>
-                </div>
-            }
-            <div className="clear-fix" />
-            {
-                !myPosts &&
+        }
+        <div className="clear-fix" />
+        <div className="row">
+        {
+            (!myPosts && !search) && <>
+            <div className="col">
+            { posts.length === 0 ? 
                 <div className="dashboardPage">
-                {posts.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>
-                )}
-                </div>
+                    <br></br>
+                    <center><h4>No posts to display.</h4></center>
+                </div> 
+                : posts.map((x, i) => 
+                        <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
             }
-            {
-                myPosts &&
+            </div>
+            <div className="col">
+            {   meetings.length === 0 ? 
                 <div className="dashboardPage">
-                {posts.map((x, i) => 
-                    <EditPostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>
-                )}
-                </div>
+                    <br></br>
+                    <center><h4>No meetings to display.</h4></center>
+                </div> 
+                : meetings.map((x, i) => 
+                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
             }
-        </>
-    }
-
-
+            </div>
+            </>
+        }
+        </div>
+        <div className="row">
+            { myPosts &&
+                <>
+                <div className="col">
+                { posts.length === 0 ? 
+                    <div className="dashboardPage">
+                        <br></br>
+                        <center><h4>No posts to display.</h4></center>
+                    </div> 
+                    : posts.map((x, i) => 
+                    <EditPostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                }
+                </div>
+                <div className="col">
+                {   meetings.length === 0 ? 
+                    <div className="dashboardPage">
+                        <br></br>
+                        <center><h4>No meetings to display.</h4></center>
+                    </div> 
+                    : meetings.map((x, i) => 
+                        <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                }
+                </div>
+                </>
+            }
+        </div>
+        <div>
+        {
+            search && <>
+            {
+                (posts.length === 0 && meetings.length === 0) &&
+                <div className="dashboardPage">
+                    <br></br>
+                    <center><h4>No search results.</h4></center>
+                </div> 
+            }
+            {   posts.length !== 0 &&
+                posts.map((x, i) => 
+                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+            }
+            {   meetings.length !== 0 && 
+                meetings.map((x, i) => 
+                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+            }
+            </>
+        }
+        </div>
+    </>);
 }
 
 export default DashboardPage;

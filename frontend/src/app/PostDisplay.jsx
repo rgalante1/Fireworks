@@ -52,7 +52,7 @@ export const PostDisplay = (props) => {
                     props.post.date && <p>Meeting Date: {format(props.post.date)}</p>
                 }
                 {
-                    props.post.type === "meeting" ? 
+                    props.post.type === "meeting" &&
                     <>
                     <p>Total RSVPs: {rsvpTotal}</p>
                     <button type="button" id="rsvp" onClick={() => {
@@ -77,10 +77,6 @@ export const PostDisplay = (props) => {
                     }} className={"form-control btn rounded-pill mt-1 " + (rsvpStatus ? "btn-danger" : "btn-success")}>{rsvpStatus ? "Revoke RSVP" : "RSVP"}</button>
                     <Link to={"/post/" + props.post.id + "/rating/" + props.userName} 
                         className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link></>
-                    :
-                    <>
-                    <p className="text-secondary">Posted {props.post.postDate}</p>
-                    </>
                 }
             </div>
         </div>

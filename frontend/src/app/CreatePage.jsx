@@ -60,12 +60,6 @@ class CreateAccount extends React.Component{
             <input type="password" id="Password" name="Password" value={this.state.Password} 
             placeholder="Password" onChange={this.handleChange} className="form-control" required/>
           </label>
-          <label htmlFor="Birthday" id="birthday">
-            <p>Birthday:</p>
-            <input type="date" name="Birthday" id="birthdayDate" className="form-control"
-            onChange={this.handleChange} required/>
-            <div className="clear"></div>
-          </label>
           <label htmlFor="Company" className="mt-2">
             <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
             checked={this.state.Company} />
