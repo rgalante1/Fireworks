@@ -55,38 +55,6 @@ app.get('/', (req, res) => {
 	res.status(200).send('Go to 0.0.0.0:3000.');
 });
 
-
-//get a post by postID
-app.get('/post/:postID', function (req, res) {
-	var postid = req.param('postID');
-
-	connection.query("SELECT * FROM post where post.companyID = ?", postid, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//get a specific user's type of access
-app.get('/user/:username/userType', function (req, res) {
-	var UserName = req.param('username');
-
-	connection.query("SELECT userType FROM user where username = ?", UserName, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-
-//get a post buy company ID
-app.get('/post/:companyID', function (req, res) {
-	var CompanyID = req.param('companyID');
-
-	connection.query("SELECT * FROM post WHERE companyID = ?", CompanyID, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
 //get a profile by username
 app.get('/profile/:username', function (req, res) {
 	var UserName = req.param('username');
@@ -215,16 +183,6 @@ app.get('/post', function (req, res) {
 	});
 });
 
-
-
-//Get company
-app.get('/company', function (req, res) {
-	connection.query("SELECT * FROM company", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
 //Get company by ID
 app.get('/company/:id', function (req, res) {
 	var query = "SELECT * FROM company where companyID =\"" + req.params.id + "\"";
@@ -242,14 +200,6 @@ app.get('/company/byName/:companyName', function (req, res) {
 
 	connection.query(query, function (err, result, fields) {
 
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//Get rating
-app.get('/rating', function (req, res) {
-	connection.query("SELECT * FROM rating", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
