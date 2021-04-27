@@ -728,7 +728,7 @@ app.post('/createFriendInvites', async (req, res) => {
 
 // DELETE /
 //delete a meeting and any stored rating with it have to use stored procedure
-app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
+app.delete('/meeting/:meetingID/delete', async (req, res) => {
 	var id = req.params.meetingID;
 	
 	//var id = req.param('meetingID');
@@ -781,7 +781,7 @@ app.delete('/user/delete', async (req, res) => {
 });
 
 //delete a post
-app.delete('/post/delete', async (req, res) => {
+app.delete('/post/:postID/delete', async (req, res) => {
 	var id = req.params.postID;
 	
 	//var id = req.param('postID');

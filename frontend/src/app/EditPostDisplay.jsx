@@ -28,9 +28,13 @@ export class EditPostDisplay extends React.Component{
   }
 
   handleDelete(event){
-    alert("deleted");
     if(this.state.meeting){
       this.postRepo.deleteMeeting(this.state.id);
+      alert("deleted");
+    }
+    else{
+      this.postRepo.deletePost(this.state.id);
+      alert("deleted");
     }
     event.preventDefault();
   }
