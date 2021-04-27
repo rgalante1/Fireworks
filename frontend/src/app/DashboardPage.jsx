@@ -24,6 +24,7 @@ export const DashboardPage = (props) => {
                 setMyPosts(false);
                 setSearch(false);
                 setPosts([]);
+                setMeetings([]);
             }
             postRepo.getPosts().then((x) => {
                 x.forEach(postDB => {
