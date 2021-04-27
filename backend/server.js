@@ -36,10 +36,14 @@ app.use(cors({
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-// connection.connect(function (err) {
-// 	if (err) throw err;
-// 	logger.info("Connected");
-// });
+connection.getConnection(function (err) {
+	if (err){
+		logger.info("Cannot connect to DB");
+	}
+	else{
+		logger.info("Connected");
+	}
+});
 
 // middleware to use for all requests
 app.use(function (req, res, next) {
