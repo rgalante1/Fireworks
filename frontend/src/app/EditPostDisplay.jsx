@@ -70,38 +70,37 @@ export class EditPostDisplay extends React.Component{
     return (<>
       <div className="postDisplay container mt-1 mb-1 py-4">
         <form  className="card container py-4" id="createPost">
-          <label htmlFor="title" id="title">
-            <input type="text" id="title" name="title" value={this.state.title || ""} placeholder={this.state.title || 
+          <label htmlFor="title" >
+            <input type="text"  name="title" value={this.state.title || ""} placeholder={this.state.title || 
                 "Enter Title"} onChange={this.handleChange} className="form-control" />
           </label>
-          <label htmlFor="desc" id="desc">
-            <textarea rows="5" id="desc" name="desc" value={this.state.desc} placeholder={this.state.desc || 
+          <label htmlFor="desc">
+            <textarea rows="5" name="desc" value={this.state.desc} placeholder={this.state.desc || 
             "Your text here"} onChange={this.handleChange} className="form-control" />
           </label>
           { 
           this.state.meeting && <>
-            <label htmlFor="loc" id="loc">
-                <input type="text" id="loc" name="loc" value={this.state.loc} 
+            <label htmlFor="loc">
+                <input type="text" name="loc" value={this.state.loc} 
                 placeholder={this.state.loc|| "Location"} disabled={(this.state.virtual) ? "disabled" : ""} 
                 onChange={this.handleChange} className="form-control" />
               </label>
               <label htmlFor="date">
-                <input type="date" id="date" name="date" value={this.state.date} 
-                onChange={this.handleChange} className="form-control" />
+                <input type="date" name="date" onChange={this.handleChange} className="form-control" />
               </label>
               <label htmlFor="time">
-                <input type="time" id="time" name="time" value={this.state.time} 
+                <input type="time" name="time" value={this.state.time} 
                 onChange={this.handleChange} className="form-control" />
               </label>
               <label htmlFor="virtual" className="form-check">
-                <input type="checkbox" id="virtual" name="virtual" value={this.state.virtual} 
+                <input type="checkbox" name="virtual" value={this.state.virtual} 
                 onChange={this.handleChange} className="form-check-input" checked={this.state.virtual}/>
                 <span className="checkboxText">Virtual</span>
               </label>
               {
                 this.state.virtual &&
                 <label htmlFor="link">
-                  <input type="text" id="link" name="link" value={this.state.link} 
+                  <input type="text" name="link" value={this.state.link} 
                   onChange={this.handleChange} className="form-control" 
                   placeholder={this.state.meetingLink || "Meeting Link"}/>
                 </label>
@@ -111,7 +110,7 @@ export class EditPostDisplay extends React.Component{
           { 
           <>
           <button className="col btn btn-danger rounded-pill mt-2" onClick={this.handleDelete}>Delete</button>
-          <button id="submit" className="col btn btn-success rounded-pill mt-2"
+          <button  className="col btn btn-success rounded-pill mt-2"
           onClick={this.handleSubmit}>Save Changes </button>
           </>}
         </form>
