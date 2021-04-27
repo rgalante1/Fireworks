@@ -756,6 +756,21 @@ app.delete('/profile/:inviteID/deleteFR', async (req, res) => {
 	});
 });
 
+//delete a post
+app.delete('/profile/delete', async (req, res) => {
+	var id = req.params.postID;
+	
+	//var id = req.param('postID');
+	//console.log('First log');
+	//console.log(id);
+	
+	connection.query("DELETE FROM post WHERE postID = ?", postID, function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result));
+	});
+});
+
+
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
 	if (e) {
