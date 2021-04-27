@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 
 export class AccountsRepository {
 
-    url = 'http://localhost:8000';
+    url = 'ec2-3-128-160-107.us-east-2.compute.amazonaws.com';
 
     config = {
         withCredentials: true
