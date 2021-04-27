@@ -68,6 +68,7 @@ export const DashboardPage = (props) => {
     });
 
     const handleSearch = (x, post) => {
+        setSearch(true);
         if(post){
             setPosts([]);
             x.forEach(postDB => {
@@ -100,6 +101,7 @@ export const DashboardPage = (props) => {
     const handleViewMine = () => {
         setMyPosts(true);
         setPosts([]);
+        setMeetings([]);
         postRepo.getMyPosts(params.username).then((x) => {
             x.forEach(postDB => {
                 accountRepo.getCompanyByID(postDB.companyID).then( account =>
