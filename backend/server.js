@@ -758,6 +758,28 @@ app.delete('/profile/:inviteID/deleteFR', async (req, res) => {
 	});
 });
 
+//delete a user
+app.delete('/user/delete', async (req, res) => {
+	var id = req.params.UserID;
+	
+	//var id = req.param('meetingID');
+	//console.log('First log');
+	//console.log(id);
+	
+	if(id)
+	{
+		connection.query("call Delete_User(?)", UserID , function (err, result, fields) {
+			if (err) throw err;
+			res.end(JSON.stringify(result));
+		});
+	}
+	else
+	{
+		return res.status(401).json({ Errors: "Invalid Input" });
+	}
+	
+});
+
 //delete a post
 app.delete('/profile/delete', async (req, res) => {
 	var id = req.params.postID;
