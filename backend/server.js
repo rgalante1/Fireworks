@@ -273,33 +273,6 @@ app.get('/ratingsByMeeting/:meetingId', function (req, res) {
     });
 });
 
-//Get friendship
-app.get('/friendship', function (req, res) {
-	connection.query("SELECT * FROM friendship", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//Get friendship by ID
-app.get('/friendship/:id', function (req, res) {
-	var query = "SELECT * FROM friendship where friendshipID =\"" + req.params.id + "\"";
-
-	connection.query(query, function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//Get meetingInvites
-app.get('/meetingInvites', function (req, res) {
-	connection.query("SELECT * FROM friendship", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
 //Get meetingInvites by ID
 app.get('/meetingInvites/:id', function (req, res) {
 	var query = "SELECT * FROM meetingInvites where inviteID =\"" + req.params.id + "\"";
@@ -543,22 +516,6 @@ app.put('/post/update', function(req, res) {
 	});
 });
 
-// POST /
-//insert a friendship between two users
-app.post('/profile/:username/friendship', async (req, res) => {
-	var useraddressee = req.body.useraddressee;
-	var usersender = req.body.usersender
-
-
-	let array = [useraddressee, usersender];
-
-	connection.query("INSERT INTO friendship (`user1ID`, `user2ID`, `dateFriended`) SELECT u1.userID, u2.userID, CURDATE() FROM user u1 CROSS JOIN user u2 WHERE u1.username = ? AND u2.username = ?", array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-
-});
-
 //inset a new meeting
 app.post('/meeting/:meetingID/rating', function (req, res) {
 	var Rating = req.body.rating;
@@ -720,21 +677,6 @@ app.post('/createmeeting', async (req, res) => {
 
 	let array = [description, start, end, link, company, loc, meetingType, eventDate, title];
 	var sql = "INSERT into `fireworks`.`meeting` (`meetingID`,`description`,`startTime`,`endTime`,`meetingLink`,`hostCompanyID`,`location`,`meetingType`,`eventDate`,title) values (DEFAULT,?,?,?,?,?,?,?,?,?)";
-	connection.query(sql, array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-});
-
-// create a friendship
-app.post('/createFriendship', async (req, res) => {
-	var id = req.body.friendshipID;
-	var user1ID = req.body.user1ID;
-	var user2ID = req.body.user2ID;
-	var dateFriended = req.body.dateFriended;
-
-	let array = [id, user1ID, user2ID, dateFriended];
-	var sql = "INSERT into `fireworks`.`friendship` (`friendshipID`,`user1ID`,user2ID,dateFriended) values (?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
