@@ -18,7 +18,7 @@ export const DashboardPage = (props) => {
     const accountRepo = new AccountsRepository();
 
     useEffect(() => {
-        if(refresh && search === false && myPosts === false){
+        if(refresh && !search && !myPosts){
             if(refresh){
                 setRefresh(false);
                 setMyPosts(false);
@@ -129,7 +129,7 @@ export const DashboardPage = (props) => {
 
     return (<>
         <div className="colorBlue pb-5">
-            <button className="btn btn-success float-left ml-3" onClick={() => setSearch(!search)}>Search Posts & Events</button>
+            <button className="btn btn-success float-left ml-3" onClick={() => setSearch(true)}>Search Posts & Events</button>
             <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
         {
             type === "company" ? <>
@@ -164,7 +164,7 @@ export const DashboardPage = (props) => {
                     <center><h4>No posts to display.</h4></center>
                 </div> 
                 : posts.map((x, i) => 
-                        <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
             }
             </div>
             <div className="col">

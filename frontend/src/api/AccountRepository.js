@@ -82,7 +82,6 @@ export class AccountsRepository {
             axios.get(`${this.url}/profile/${username}`, this.config)
                 .then(x => resolve(x.data))
                 .catch(error => {
-                    alert("Error getting specific user!");
                     reject(error);
                 });
         });
