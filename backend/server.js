@@ -795,8 +795,6 @@ app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
 		return res.status(401).json({ Errors: "Invalid Input" });
 	}
 });
-	
-});
 
 //delete a friend request
 app.delete('/profile/:inviteID/deleteFR', async (req, res) => {
