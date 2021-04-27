@@ -36,10 +36,14 @@ app.use(cors({
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-// connection.connect(function (err) {
-// 	if (err) throw err;
-// 	logger.info("Connected");
-// });
+connection.getConnection(function (err) {
+	if (err){
+		logger.info("Cannot connect to DB");
+	}
+	else{
+		logger.info("Connected");
+	}
+});
 
 // middleware to use for all requests
 app.use(function (req, res, next) {
@@ -538,8 +542,9 @@ app.post('/createaccount', function (req, res) {
 	var LastName = req.body.LastName;
 	var UserName = req.body.UserName;
 	var PassWord = req.body.PassWord;
-	var CompanyName = req.body.CompanyName;
 	var CompanyData = req.body.CompanyData;
+	var CompanyName = CompanyData ? CompanyData.Name : undefined;
+	var CompanyDescription = CompanyData ? CompanyData.Description : undefined;
 
 	//console.log(FirstName);
 	//console.log(LastName);
@@ -551,12 +556,9 @@ app.post('/createaccount', function (req, res) {
 	if (CompanyData) {
 		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
 			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
-
-		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName, CompanyData], function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
+			connection.query("INSERT INTO company (companyName, description) VALUES (?, ?)", [CompanyName, CompanyDescription], function (err2, result2, fields2) {
+				res.end(JSON.stringify(result)); // Result in JSON format
+			});
 		});
 	}
 	else {

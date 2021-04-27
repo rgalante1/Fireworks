@@ -244,7 +244,7 @@ export default class ProfilePage extends React.Component {
                         <div className="modal-dialog modal-lg modal-dialog-scrollable" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">Current Pending Friend Invitess:</h5>
+                                    <h5 className="modal-title" id="exampleModalLabel">Current Pending Friend Invites:</h5>
                                 </div>
                                 <div className="modal-body bg-light overflow-auto">
                                     {

@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 
 export class PostsRepository {
 
-    url = 'ec2-3-128-160-107.us-east-2.compute.amazonaws.com:8000';
+    url = 'http://ec2-3-128-160-107.us-east-2.compute.amazonaws.com:8000';
 
     config = {
         withCredentials: true
