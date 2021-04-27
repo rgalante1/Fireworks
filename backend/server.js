@@ -781,14 +781,14 @@ app.delete('/user/delete', async (req, res) => {
 });
 
 //delete a post
-app.delete('/profile/delete', async (req, res) => {
+app.delete('/post/delete', async (req, res) => {
 	var id = req.params.postID;
 	
 	//var id = req.param('postID');
 	//console.log('First log');
 	//console.log(id);
 	
-	connection.query("DELETE FROM post WHERE postID = ?", postID, function (err, result, fields) {
+	connection.query("DELETE FROM post WHERE postID = ?", id, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
 	});
