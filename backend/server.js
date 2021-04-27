@@ -206,33 +206,11 @@ app.get('/company/byName/:companyName', function (req, res) {
 	});
 });
 
-//Get rating by ID
-app.get('/rating/:id', function (req, res) {
-	var query = "SELECT * FROM rating where ratingID =\"" + req.params.id + "\"";
-
-	connection.query(query, function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
 app.get('/ratingsByMeeting/:meetingId', function (req, res) {
     connection.query("SELECT * FROM rating WHERE meeting = ?", req.param('meetingId'), function(err, result, fields) {
         if (err) throw err;
         res.end(JSON.stringify(result));
     });
-});
-
-//Get meetingInvites by ID
-app.get('/meetingInvites/:id', function (req, res) {
-	var query = "SELECT * FROM meetingInvites where inviteID =\"" + req.params.id + "\"";
-
-	connection.query(query, function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
 });
 
 //Get friendInvites
@@ -249,23 +227,6 @@ app.get('/friendInvites/:id', function (req, res) {
 
 	connection.query(query, function (err, result, fields) {
 
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//get back all posts
-app.get('/allposts', function (req, res) {
-	var companyName = req.param('request');
-	//console.log("First log");
-	//console.log(companyName);
-
-	var query = "SELECT p.title as postTitle, p.description as postDescript, m2.* FROM post p INNER JOIN company c on p.companyID = c.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = '" + companyName;
-
-	//console.log("Second log");
-	//console.log(query);
-
-	connection.query("SELECT p.title as postTitle, p.description as postDescript, m2.* FROM post p INNER JOIN company c on p.companyID = c.companyID INNER JOIN meeting m2 on c.companyID = m2.hostCompanyID WHERE c.companyName = ?", companyName, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -304,16 +265,6 @@ app.delete('/meeting/:meetingID/rsvp/:userID', function (req, res) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
 	});
-});
-
-//Get attendees
-app.get('/meeting/:meetingID/attendees', function (req, res) {
-	var id = req.params.meetingID;
-	connection.query("select concat(firstname, ' ', lastname) as attendees from user u inner join meetingInvites mi on u.userID = mi.addresseeID inner join meeting m on mi.meetingID = m.meetingID where m.meetingID = ? and mi.accepted = 1;", id,
-		function (err, result, fields) {
-			if (err) throw err;
-			res.end(JSON.stringify(result)); // Result in JSON format
-		});
 });
 
 //Filter by location, Date and meetingType
@@ -514,7 +465,7 @@ app.post('/login', (req, res) => {
 
 	if (!(req.body.username && req.body.password)) {
 
-		res.status(400).send("Missing email or password");
+		res.status(400).send("Missing username or password");
 		return;
 	}
 
@@ -542,21 +493,6 @@ app.post('/login', (req, res) => {
 	})
 })
 
-// create a company 
-app.post('/createCompany', async (req, res) => {
-	var id = req.body.companyID;
-	var companyName = req.body.companyName;
-	var field = req.body.field;
-	var description = req.body.description;
-
-	let array = [id, companyName, field, description];
-	var sql = "INSERT into `fireworks`.`company` (`companyID`,`companyName`,field,`description`) values (?,?,?,?)";
-	connection.query(sql, array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-});
-
 // create a company post
 app.post('/createpost', async (req, res) => {
 	var id = req.body.companyID;
@@ -566,22 +502,6 @@ app.post('/createpost', async (req, res) => {
 
 	let array = [id, title, description,date];
 	var sql = "INSERT into `fireworks`.`post` (`companyID`,`title`,`description`,`date`) values (?,?,?,?)";
-	connection.query(sql, array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-});
-
-// create a rating
-app.post('/createRating', async (req, res) => {
-	var id = req.body.ratingID;
-	var meeting = req.body.meeting;
-	var name = req.body.name;
-	var description = req.body.description;
-	var rating = req.body.rating;
-
-	let array = [id, meeting, name, description, rating];
-	var sql = "INSERT into `fireworks`.`rating` (`ratingID`,`meeting`,name,`description`,rating) values (?,?,?,?,?)";
 	connection.query(sql, array, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result));
@@ -634,22 +554,6 @@ app.post('/createmeeting', async (req, res) => {
 	});
 });
 
-// create a meetingInvites
-app.post('/createMeetingInvites', async (req, res) => {
-	var id = req.body.inviteID;
-	var addresseeID = req.body.addresseeID;
-	var meetingID = req.body.meetingID;
-	var dateSent = req.body.dateSent;
-	var accepted = req.body.accepted;
-
-	let array = [id, addresseeID, meetingID, dateSent, accepted];
-	var sql = "INSERT into `fireworks`.`meetingInvites` (inviteID,addresseeID,meetingID,dateSent,accepted) values (?,?,?,?,?)";
-	connection.query(sql, array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-});
-
 // create a friendInvites
 app.post('/createFriendInvites', async (req, res) => {
 	var id = req.body.addresseeID;
@@ -670,9 +574,9 @@ app.post('/createFriendInvites', async (req, res) => {
 // DELETE /
 //delete a meeting and any stored rating with it have to use stored procedure
 app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
-	//var id = req.params.meetingID;
+	var id = req.params.meetingID;
 	
-	var id = req.param('meetingID');
+	//var id = req.param('meetingID');
 	//console.log('First log');
 	//console.log(id);
 	
