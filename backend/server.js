@@ -538,16 +538,23 @@ app.post('/createaccount', function (req, res) {
 	var LastName = req.body.LastName;
 	var UserName = req.body.UserName;
 	var PassWord = req.body.PassWord;
-	var BirthDate = req.body.BirthDate;
+	var CompanyName = req.body.CompanyName;
 	var CompanyData = req.body.CompanyData;
 
+	//console.log(FirstName);
+	//console.log(LastName);
+	//console.log(UserName);
+	//console.log(PassWord);
+	//console.log(CompanyName);
+	//console.log(CompanyData);
+	
 	if (CompanyData) {
 		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});
 
-		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyData.Name, CompanyData.Description], function (err, result, fields) {
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyData, CompanyData], function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});
@@ -728,7 +735,7 @@ app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
 	
 	if(id)
 	{
-		connection.query("call Delete_metting(?)", meetingID, function (err, result, fields) {
+		connection.query("call Delete_metting(?)", id , function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result));
 		});
