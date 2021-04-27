@@ -554,7 +554,7 @@ app.post('/createaccount', function (req, res) {
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});
 
-		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyData, CompanyData], function (err, result, fields) {
+		connection.query("INSERT INTO company (companyName,description) VALUES (?,?)", [CompanyName, CompanyData], function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result)); // Result in JSON format
 		});
@@ -727,15 +727,15 @@ app.post('/createFriendInvites', async (req, res) => {
 // DELETE /
 //delete a meeting and any stored rating with it have to use stored procedure
 app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
-	//var id = req.params.meetingID;
+	var id = req.params.meetingID;
 	
-	var id = req.param('meetingID');
+	//var id = req.param('meetingID');
 	//console.log('First log');
 	//console.log(id);
 	
 	if(id)
 	{
-		connection.query("call Delete_metting(?)", id , function (err, result, fields) {
+		connection.query("call Delete_metting(?)", meetingID , function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result));
 		});
