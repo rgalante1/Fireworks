@@ -53,7 +53,7 @@ export class MeetingRating extends React.Component {
               </div>
               <div className="form-row">
                 <div className="col-7"></div>
-                <Link to={"/post/" + this.state.Meeting.id} className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
+                <Link to={"/post/" + this.state.Meeting.id + "/" + userName} className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
                 <input type="button" value="Submit Review" className="ml-2 btn btn-success mb-3 rounded-pill col-2" onClick={e => {
                   if (this.state.Rating === '') {
                     return;

@@ -29,7 +29,7 @@ export const DashboardPage = (props) => {
                     accountRepo.getCompanyByID(postDB.companyID).then( account =>
                         {
                             let companyName = account[0].companyName;
-                            setPosts(posts => posts.concat(new Post(1, postDB.companyID, postDB.title, 
+                            setPosts(posts => posts.concat(new Post(postDB.postID, postDB.companyID, postDB.title, 
                                 postDB.description, "", "", "", companyName, postDB.date, "post")));
                         }
                     )
@@ -72,7 +72,7 @@ export const DashboardPage = (props) => {
                 accountRepo.getCompanyByID(postDB.companyID).then( account =>
                     {
                         let companyName = account[0].companyName;
-                        setPosts(posts => posts.concat(new Post(1, postDB.companyID, postDB.title, 
+                        setPosts(posts => posts.concat(new Post(postDB.postID, postDB.companyID, postDB.title, 
                             postDB.description, "", "", "", companyName, postDB.date, "post")));
                     }
                 )
@@ -103,7 +103,7 @@ export const DashboardPage = (props) => {
                 accountRepo.getCompanyByID(postDB.companyID).then( account =>
                     {
                         let companyName = account[0].companyName;
-                        setPosts(posts => posts.concat(new Post(1, postDB.companyID, postDB.title, 
+                        setPosts(posts => posts.concat(new Post(postDB.postID, postDB.companyID, postDB.title, 
                             postDB.description, "", "", "", companyName, postDB.date, "post")));
                     }
                 )

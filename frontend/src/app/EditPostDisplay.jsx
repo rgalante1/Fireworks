@@ -44,16 +44,19 @@ export class EditPostDisplay extends React.Component{
 
   handleSubmit(event) {
     if(!this.state.meeting){
-    //   this.postRepo.createPost(this.state.company, this.state.title, this.state.desc, new Date()).then( x=>{ 
-    //     this.setState({submit: true})
-    //   });
+      event.preventDefault();
+      this.postRepo.updatePost(this.state.id, this.state.title, this.state.desc).then( x =>
+          {
+            alert("Updated post");
+          }
+      );
     }
     else{
         event.preventDefault();
         this.postRepo.updateMeeting(this.state.id, this.state.desc, this.state.time, this.state.link,  
         this.state.loc, this.state.virtual ? 0 : 1, this.state.date, this.state.title).then( x =>
             {
-              alert("updated " + this.state.id);
+              alert("Updated meeting");
             }
         );
     }
@@ -101,7 +104,7 @@ export class EditPostDisplay extends React.Component{
               }
             </>
           }
-          { this.state.meeting && 
+          { 
           <>
           {/* <button className="col btn btn-danger rounded-pill mt-2" onClick={this.handleDelete}>Delete</button> */}
           <button id="submit" className="col btn btn-success rounded-pill mt-2"

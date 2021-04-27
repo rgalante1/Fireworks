@@ -5,7 +5,8 @@ const mysql = require('mysql');
 const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 
-var connection = mysql.createConnection({
+var connection = mysql.createPool({
+	connectionLimit: 10,
 	host: process.env.MYSQL_CLOUD_HOST,
 	password: process.env.MYSQL_CLOUD_PASS,
 	port: process.env.MYSQL_PORT,
@@ -30,15 +31,15 @@ const logger = log({ console: true, file: false, label: config.name });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cors({
-	origin: 'http://localhost:3000',
+	origin: 'http://ec2-3-128-160-107.us-east-2.compute.amazonaws.com:3000',
 	credentials: true
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-connection.connect(function (err) {
-	if (err) throw err;
-	logger.info("Connected");
-});
+// connection.connect(function (err) {
+// 	if (err) throw err;
+// 	logger.info("Connected");
+// });
 
 // middleware to use for all requests
 app.use(function (req, res, next) {
@@ -273,33 +274,6 @@ app.get('/ratingsByMeeting/:meetingId', function (req, res) {
     });
 });
 
-//Get friendship
-app.get('/friendship', function (req, res) {
-	connection.query("SELECT * FROM friendship", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//Get friendship by ID
-app.get('/friendship/:id', function (req, res) {
-	var query = "SELECT * FROM friendship where friendshipID =\"" + req.params.id + "\"";
-
-	connection.query(query, function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//Get meetingInvites
-app.get('/meetingInvites', function (req, res) {
-	connection.query("SELECT * FROM friendship", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
 //Get meetingInvites by ID
 app.get('/meetingInvites/:id', function (req, res) {
 	var query = "SELECT * FROM meetingInvites where inviteID =\"" + req.params.id + "\"";
@@ -528,57 +502,19 @@ app.put('/meeting/update', function (req, res) {
 });
 
 // POST /
-//eddit info for a specific post
-app.put('/post/eddit', function(req, res) {
+//edit info for a specific post
+app.put('/post/update', function(req, res) {
 	
-	var CompanyID = req.body.companyid;
+	var postID = req.body.postID;
 	var Title = req.body.title;
 	var Description = req.body.description;
-	var Dates = req.body.date;
 
-	let array = [Title, Description, Dates, CompanyID];
-	connection.query("UPDATE post SET title = ?,description = ?, date = ? WHERE companyID = ?", array, function (err, result, fields) {
+	let array = [Title, Description, postID];
+	connection.query("UPDATE post SET title = ?, description = ? WHERE postID = ?", array, function (err, result, fields) {
 
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
-});
-
-//eddit info for a specific metting
-app.put('/metting/eddit', function(req, res) {
-	
-	var MettingID = req.body.mettingID;
-	var Description = req.body.description;
-	var StartTime = req.body.startTime;
-	var EndTime = req.body.endTime;
-	var MeetingLink = req.body.MeetingLink;
-	var Location = req.body.location;
-	var MeetingType = req.body.meetingType;
-	var EventDate = req.body.eventDate;
-	var Title = req.body.title;
-	
-	let array = [Description, StartTime, EndTime, MeetingLink, Location, MeetingType, EventDate, Title,  MettingID];
-	connection.query("UPDATE meeting SET description = ? ,  startTime = ? , endTime = ?, meetingLink = ? , location = ? , meetingType = ? , eventDate = ?, title = ? WHERE meetingID = ?", array, function (err, result, fields) {
-
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-// POST /
-//insert a friendship between two users
-app.post('/profile/:username/friendship', async (req, res) => {
-	var useraddressee = req.body.useraddressee;
-	var usersender = req.body.usersender
-
-
-	let array = [useraddressee, usersender];
-
-	connection.query("INSERT INTO friendship (`user1ID`, `user2ID`, `dateFriended`) SELECT u1.userID, u2.userID, CURDATE() FROM user u1 CROSS JOIN user u2 WHERE u1.username = ? AND u2.username = ?", array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-
 });
 
 //inset a new meeting
@@ -755,21 +691,6 @@ app.post('/createmeeting', async (req, res) => {
 	});
 });
 
-// create a friendship
-app.post('/createFriendship', async (req, res) => {
-	var id = req.body.friendshipID;
-	var user1ID = req.body.user1ID;
-	var user2ID = req.body.user2ID;
-	var dateFriended = req.body.dateFriended;
-
-	let array = [id, user1ID, user2ID, dateFriended];
-	var sql = "INSERT into `fireworks`.`friendship` (`friendshipID`,`user1ID`,user2ID,dateFriended) values (?,?,?,?)";
-	connection.query(sql, array, function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result));
-	});
-});
-
 // create a meetingInvites
 app.post('/createMeetingInvites', async (req, res) => {
 	var id = req.body.inviteID;
@@ -823,7 +744,6 @@ app.delete('/meeting/:meetingID/deletemet', async (req, res) => {
 	{
 		return res.status(401).json({ Errors: "Invalid Input" });
 	}
-	
 });
 
 //delete a friend request
