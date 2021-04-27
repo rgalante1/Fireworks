@@ -31,7 +31,7 @@ const logger = log({ console: true, file: false, label: config.name });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cors({
-	origin: 'http://localhost:3000',
+	origin: 'http://ec2-3-128-160-107.us-east-2.compute.amazonaws.com:3000',
 	credentials: true
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
