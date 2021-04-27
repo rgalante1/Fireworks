@@ -80,7 +80,7 @@ export const DashboardPage = (props) => {
             });
         }
         else{
-            setPosts([]);
+            setMeetings([]);
             x.forEach(meetDB => {
                 accountRepo.getCompanyByID(meetDB.hostCompanyID).then( account =>
                     {
@@ -199,7 +199,7 @@ export const DashboardPage = (props) => {
                         <center><h4>No meetings to display.</h4></center>
                     </div> 
                     : meetings.map((x, i) => 
-                        <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                        <EditPostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
                 }
                 </div>
                 </>
