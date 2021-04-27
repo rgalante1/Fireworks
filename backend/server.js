@@ -737,7 +737,7 @@ app.delete('/meeting/:meetingID/delete', async (req, res) => {
 	
 	if(id)
 	{
-		connection.query("call Delete_metting(?)", meetingID , function (err, result, fields) {
+		connection.query("call Delete_metting(?)", id , function (err, result, fields) {
 			if (err) throw err;
 			res.end(JSON.stringify(result));
 		});
