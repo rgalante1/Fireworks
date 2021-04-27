@@ -106,7 +106,7 @@ export class EditPostDisplay extends React.Component{
           }
           { 
           <>
-          {/* <button className="col btn btn-danger rounded-pill mt-2" onClick={this.handleDelete}>Delete</button> */}
+          <button className="col btn btn-danger rounded-pill mt-2" onClick={this.handleDelete}>Delete</button>
           <button id="submit" className="col btn btn-success rounded-pill mt-2"
           onClick={this.handleSubmit}>Save Changes </button>
           </>}

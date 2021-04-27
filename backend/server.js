@@ -385,7 +385,7 @@ app.get('/dashboard/filter', function (req, res) {
 		
 		if(SearchOpt)
 		{
-			connection.query("SELECT * FROM meeting where location = ? AND location IS NOT NULL order by location", SearchOpt, function (err, result, fields) {
+			connection.query("SELECT * FROM meeting where location IS NOT NULL order by location", function (err, result, fields) {
 					if (err) throw err;
 					res.end(JSON.stringify(result)); // Result in JSON format
 			});

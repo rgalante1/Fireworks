@@ -191,4 +191,15 @@ export class PostsRepository {
                 });
         });
     }
+
+    deleteMeeting(meetingID){
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.url}/meeting/${meetingID}/deletemet`, this.config)
+                .then(x => resolve(x.data))
+                .catch(error => {
+                    alert("Error creating meeting!");
+                    reject(error);
+                });
+        });
+    }
 }
