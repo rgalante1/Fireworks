@@ -5,7 +5,8 @@ const mysql = require('mysql');
 const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 
-var connection = mysql.createConnection({
+var connection = mysql.createPool({
+	connectionLimit: 10,
 	host: process.env.MYSQL_CLOUD_HOST,
 	password: process.env.MYSQL_CLOUD_PASS,
 	port: process.env.MYSQL_PORT,
@@ -35,10 +36,10 @@ app.use(cors({
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-connection.connect(function (err) {
-	if (err) throw err;
-	logger.info("Connected");
-});
+// connection.connect(function (err) {
+// 	if (err) throw err;
+// 	logger.info("Connected");
+// });
 
 // middleware to use for all requests
 app.use(function (req, res, next) {
