@@ -69,8 +69,9 @@ export const DashboardPage = (props) => {
 
     const handleSearch = (x, post) => {
         setSearch(true);
+        setPosts([]);
+        setMeetings([]);
         if(post){
-            setPosts([]);
             x.forEach(postDB => {
                 accountRepo.getCompanyByID(postDB.companyID).then( account =>
                     {
@@ -82,7 +83,6 @@ export const DashboardPage = (props) => {
             });
         }
         else{
-            setMeetings([]);
             x.forEach(meetDB => {
                 accountRepo.getCompanyByID(meetDB.hostCompanyID).then( account =>
                     {
