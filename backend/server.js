@@ -556,7 +556,7 @@ app.post('/createaccount', function (req, res) {
 	if (CompanyData) {
 		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
 			if (err) throw err;
-			connection.query("INSERT INTO company (companyName, description) VALUES (?, ?)", [CompanyName, CompanyDescription], function (err2, result2, fields2) {
+			connection.query("INSERT INTO company (companyName, description, password) VALUES (?, ?, ?)", [CompanyName, CompanyDescription, PassWord], function (err2, result2, fields2) {
 				res.end(JSON.stringify(result)); // Result in JSON format
 			});
 		});
@@ -579,6 +579,10 @@ app.post('/login', (req, res) => {
 
 	var query = "select * from user where username=\"" + req.body.username + "\" and p" +
 		"assword=\"" + req.body.password + "\";";
+
+	if (req.body.company) {
+		query = "select * from company where companyName=\"" + req.body.username + "\" and password=\"" + req.body.password + "\";";
+	}
 
 	connection.query(query, function (err, result, fields) {
 		if (err) {
@@ -760,7 +764,7 @@ app.delete('/profile/:inviteID/deleteFR', async (req, res) => {
 });
 
 //delete a user
-app.delete('/user/delete', async (req, res) => {
+app.delete('/user/delete/:UserID', async (req, res) => {
 	var id = req.params.UserID;
 	
 	//var id = req.param('UserID');

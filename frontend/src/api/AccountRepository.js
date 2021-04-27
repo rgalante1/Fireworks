@@ -33,6 +33,28 @@ export class AccountsRepository {
         })
     }
 
+    deleteAccount(username, password) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/login`, {username, password}, this.config)
+                .then(x => {
+                    if (x.data) {
+                        this.getUserInfo(username).then(result => {
+                            if (result && result[0]) {
+                                axios.delete(`${this.url}/user/delete/` + result[0].userID, this.config)
+                                    .then(resolve(true))
+                                    .catch(er => reject(er));
+                            }
+                        }).catch(err => reject(err));
+                    } else {
+                        resolve(false);
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
     getUsers() {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/users/get`, this.config)
@@ -87,9 +109,9 @@ export class AccountsRepository {
         });
     }
 
-    getUserPass(username, password) {
+    getUserPass(username, password, company) {
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/login`, {username, password}, this.config)
+            axios.post(`${this.url}/login`, {username, password, company}, this.config)
                 .then(x => resolve(x))
                 .catch(error => {
                     reject(error);
