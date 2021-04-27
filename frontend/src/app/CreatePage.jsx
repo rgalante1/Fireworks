@@ -32,7 +32,10 @@ class CreateAccount extends React.Component{
 
     repo.createAccount(this.state.FirstName, this.state.LastName, this.state.UserName, this.state.Password, this.state.Birthday,
       this.state.Company ? this.state.CompanyName : undefined, this.state.Company ? this.state.CompanyDesc : undefined)
-    .then(() => this.props.history.push("/dashboard/" + this.state.UserName));
+    .then(() => {
+      window.userName = this.state.UserName;
+      this.props.history.push("/dashboard/" + this.state.UserName);
+    });
 
     event.preventDefault();
   }

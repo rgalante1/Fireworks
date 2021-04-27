@@ -1,6 +1,7 @@
 import React from 'react';
 import './DeletePage.css';
 import { Link, Redirect } from 'react-router-dom';
+import { AccountsRepository } from '../api/AccountRepository';
 
 export class DeletePage extends React.Component{
   constructor(props){
@@ -8,7 +9,6 @@ export class DeletePage extends React.Component{
     this.state = {
       UserName: '',
       Password: '',
-      user: '',
       deleted: false
     };
     this.handleChange = this.handleChange.bind(this);
@@ -23,8 +23,14 @@ export class DeletePage extends React.Component{
   }
 
   handleSubmit(event){
-    alert('Account Deleted');
-    this.setState({deleted: true});
+    new AccountsRepository().deleteAccount(this.state.UserName, this.state.Password).then(done => {
+      if (done) {
+        window.userName = undefined;
+        this.setState({deleted: true});
+      } else {
+        alert("Incorrect Account Details!");
+      }
+    });
     event.preventDefault();
   }
 
@@ -43,21 +49,14 @@ export class DeletePage extends React.Component{
             placeholder="User Name" onChange={this.handleChange} className="form-control" required/>
           </label>
           <label htmlFor="Password">
-            <input type="text" id="Password" name="Password" value={this.state.Password} 
+            <input type="password" id="Password" name="Password" value={this.state.Password} 
             placeholder="Password" onChange={this.handleChange} className="form-control" required/>
           </label>
-          <Link to={"/dashboard/" + this.state.user} type="button" id="cancel" 
+          <Link to="/login" type="button" id="cancel" 
           className="form-control btn btn-secondary rounded-pill mt-2">Cancel</Link>
           <input type="submit" id="delete" value="Delete" className="form-control btn btn-danger rounded-pill mt-2"/>
         </form>
       </div>
     )
-  }
-
-  componentDidMount() {
-    let userName = this.props.match.params.userName;
-    if (userName) {
-      this.setState({ user: userName });
-    }
   }
 }

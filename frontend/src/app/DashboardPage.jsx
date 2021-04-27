@@ -131,19 +131,20 @@ export const DashboardPage = (props) => {
 
     return (<>
         <div className="colorBlue pb-5">
-            <button className="btn btn-success float-left ml-3" onClick={() => setSearch(true)}>Search Posts & Events</button>
-            <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
         {
             type === "company" ? <>
                 <Link to={"/" + params.username + "/createpost"} 
                 className="btn btn-success float-right mr-3">Create Post</Link>
                 <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>My Posts</button>
                 </>
-            :
+            : <>
+                <button className="btn btn-success float-left ml-3" onClick={() => setSearch(true)}>Search Posts & Events</button>
+                <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
                 <Link to={"/profile/" + params.username + "/" + params.username} 
                 className="btn btn-info float-right mr-3">Profile</Link>
-
+                </>
         }
+            <Link to="/"><button className="btn btn-danger float-right mr-3" onClick={() => window.userName = undefined}>Logout</button></Link>
         </div>
         {
             search && <SearchBar onSearch={(data, post) => handleSearch(data, post)}/>
@@ -166,7 +167,7 @@ export const DashboardPage = (props) => {
                     <center><h4>No posts to display.</h4></center>
                 </div> 
                 : posts.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
             }
             </div>
             <div className="col">
@@ -176,7 +177,7 @@ export const DashboardPage = (props) => {
                     <center><h4>No meetings to display.</h4></center>
                 </div> 
                 : meetings.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
             }
             </div>
             </>
@@ -192,7 +193,7 @@ export const DashboardPage = (props) => {
                         <center><h4>No posts to display.</h4></center>
                     </div> 
                     : posts.map((x, i) => 
-                    <EditPostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                    <EditPostDisplay post={x} userName={params.username} key={i}/>)
                 }
                 </div>
                 <div className="col">
@@ -202,7 +203,7 @@ export const DashboardPage = (props) => {
                         <center><h4>No meetings to display.</h4></center>
                     </div> 
                     : meetings.map((x, i) => 
-                        <EditPostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                        <EditPostDisplay post={x} userName={params.username} key={i}/>)
                 }
                 </div>
                 </>
@@ -220,11 +221,11 @@ export const DashboardPage = (props) => {
             }
             {   posts.length !== 0 &&
                 posts.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
             }
             {   meetings.length !== 0 && 
                 meetings.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
             }
             </>
         }

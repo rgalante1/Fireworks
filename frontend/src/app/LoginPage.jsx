@@ -13,7 +13,7 @@ class LoginAccount extends React.Component {
       Password: 'Password',
       LoggedStatus: true,
       LinkStatus: false,
-      Comany: false
+      Company: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,7 +28,7 @@ class LoginAccount extends React.Component {
 
   handleSubmit(event) {
     if (this.state.UserName && this.state.Password) {
-      this.accountRepo.getUserPass(this.state.UserName, this.state.Password)
+      this.accountRepo.getUserPass(this.state.UserName, this.state.Password, this.state.Company)
         .then(result => {
           if (result.data) {
             window.userName = this.state.UserName;
@@ -37,8 +37,7 @@ class LoginAccount extends React.Component {
           else {
             this.setState({ LoggedStatus: false });
           }
-        }
-        );
+        });
     }else{
       this.setState({ LoggedStatus: false });
     }
@@ -62,8 +61,7 @@ class LoginAccount extends React.Component {
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
               <label htmlFor="Company" className="mt-2">
-                <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
-                checked={this.state.Company} />
+                <input type="checkbox" name="Company" id="Company" onChange={this.handleChange} checked={this.state.Company} />
                 <span className="font-weight-bold ml-2">Company Account</span>
               </label> 
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}
@@ -91,8 +89,7 @@ class LoginAccount extends React.Component {
                 className="form-control" onChange={this.handleChange} />
               <label htmlFor="password" />
               <label htmlFor="Company" className="mt-2">
-                <input type="checkbox" name="Company" id="Company" onChange={this.handleChange}
-                checked={this.state.Company} />
+                <input type="checkbox" name="Company" id="Company" onChange={this.handleChange} checked={this.state.Company} />
                 <span className="font-weight-bold ml-2">Company Account</span>
               </label> 
               <input type="submit" id="submitLogin" value="Log In" onClick={this.handleSubmit}

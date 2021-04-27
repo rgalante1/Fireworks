@@ -55,28 +55,33 @@ export const PostDisplay = (props) => {
                     props.post.type === "meeting" &&
                     <>
                     <p>Total RSVPs: {rsvpTotal}</p>
-                    <button type="button" id="rsvp" onClick={() => {
-                        const repo = new PostsRepository();
-                        const users = new AccountsRepository();
-                        users.getUserInfo(props.userName).then(user => {
-                            if (user && user[0]) {
-                                const userId = user[0].userID;
-                                if (rsvpStatus) {
-                                    repo.deleteMeetingRSVP(props.post.id, userId).then(() => {
-                                        setRsvpStatus(false);
-                                        setRsvpTotal(total => total - 1);
-                                    });
-                                } else {
-                                    repo.putMeetingRSVP(props.post.id, userId).then(() => {
-                                        setRsvpStatus(true);
-                                        setRsvpTotal(total => total + 1);
-                                    });
+                    {
+                        !props.hideButtons &&
+                        <>
+                        <button type="button" id="rsvp" onClick={() => {
+                            const repo = new PostsRepository();
+                            const users = new AccountsRepository();
+                            users.getUserInfo(props.userName).then(user => {
+                                if (user && user[0]) {
+                                    const userId = user[0].userID;
+                                    if (rsvpStatus) {
+                                        repo.deleteMeetingRSVP(props.post.id, userId).then(() => {
+                                            setRsvpStatus(false);
+                                            setRsvpTotal(total => total - 1);
+                                        });
+                                    } else {
+                                        repo.putMeetingRSVP(props.post.id, userId).then(() => {
+                                            setRsvpStatus(true);
+                                            setRsvpTotal(total => total + 1);
+                                        });
+                                    }
                                 }
-                            }
-                        });
-                    }} className={"form-control btn rounded-pill mt-1 " + (rsvpStatus ? "btn-danger" : "btn-success")}>{rsvpStatus ? "Revoke RSVP" : "RSVP"}</button>
-                    <Link to={"/post/" + props.post.id + "/rating/" + props.userName} 
-                        className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link></>
+                            });
+                        }} className={"form-control btn rounded-pill mt-1 " + (rsvpStatus ? "btn-danger" : "btn-success")}>{rsvpStatus ? "Revoke RSVP" : "RSVP"}</button>
+                        <Link to={"/post/" + props.post.id + "/rating/" + props.userName} 
+                            className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link></>
+                    }
+                    </>
                 }
             </div>
         </div>
