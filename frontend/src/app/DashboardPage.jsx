@@ -51,7 +51,7 @@ export const DashboardPage = (props) => {
                 });
             })
         }
-    });
+    }, [refresh, search, myPosts, postRepo, accountRepo]);
 
     const [type, setType] = useState();
     useEffect(() =>{
