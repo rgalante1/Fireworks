@@ -34,10 +34,10 @@ export const PostDisplay = (props) => {
             <div className="card container py-4" id="post">
                 {props.post.title ? 
                 props.headerLink ?
-                <Link to={"/post/" + props.post.id + "/" + props.userName}><h1 className="titleLogIn text-center text-center">{props.post.title}</h1></Link>
+                <Link to={"/post/" + props.post.id}><h1 className="titleLogIn text-center text-center">{props.post.title}</h1></Link>
                 : <h1 className="titleLogIn text-center text-center">{props.post.title}</h1>
                 : props.headerLink ?
-                <Link to={"/post/" + props.post.id + "/" + props.userName}><h1 className="titleLogIn text-center text-center">Meeting by {props.post.username}</h1></Link>
+                <Link to={"/post/" + props.post.id}><h1 className="titleLogIn text-center text-center">Meeting by {props.post.username}</h1></Link>
                 : <h1 className="titleLogIn text-center text-center">Meeting by {props.post.username}</h1>}
                 <p className="text-secondary">By {props.post.username}</p>
                 <p >{props.post.description}</p>
@@ -78,7 +78,7 @@ export const PostDisplay = (props) => {
                                 }
                             });
                         }} className={"form-control btn rounded-pill mt-1 " + (rsvpStatus ? "btn-danger" : "btn-success")}>{rsvpStatus ? "Revoke RSVP" : "RSVP"}</button>
-                        <Link to={"/post/" + props.post.id + "/rating/" + props.userName} 
+                        <Link to={"/post/" + props.post.id + "/rating"} 
                             className="form-control btn btn-secondary rounded-pill mt-1">Rate This Meeting</Link></>
                     }
                     </>

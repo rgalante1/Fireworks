@@ -1,6 +1,6 @@
 import React from 'react';
 import './MeetingRating.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { RatingDisplay } from './PostDisplayPage';
 import { PostsRepository } from '../api/PostRepository';
 import Post from '../models/Post';
@@ -18,7 +18,11 @@ export class MeetingRating extends React.Component {
   ratings = [1, 2, 3, 4, 5];
 
   render() {
-    let userName = this.props.match.params.userName;
+    if (!window.userName) {
+      return <Redirect to="/login" />
+    }
+
+    let userName = window.userName;
 
     if (!this.state.Meeting) {
       return (<div />);
@@ -53,13 +57,13 @@ export class MeetingRating extends React.Component {
               </div>
               <div className="form-row">
                 <div className="col-7"></div>
-                <Link to={"/post/" + this.state.Meeting.id + "/" + userName} className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
+                <Link to={"/post/" + this.state.Meeting.id} className="ml-5 btn btn-secondary mb-3 rounded-pill col-2 mr-2">Cancel</Link>
                 <input type="button" value="Submit Review" className="ml-2 btn btn-success mb-3 rounded-pill col-2" onClick={e => {
                   if (this.state.Rating === '') {
                     return;
                   }
                   new PostsRepository().postRating(this.state.Meeting.id, userName, this.state.RatingDesc, this.state.Rating).then(() => {
-                    this.props.history.push("/post/" + this.state.Meeting.id + "/" + userName);
+                    this.props.history.push("/post/" + this.state.Meeting.id);
                   });
                 }}/>
               </div>

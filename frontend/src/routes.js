@@ -10,15 +10,15 @@ import UserList from "./app/UserList";
 
 export const routes = [
     { path: "/login", component: LoginPage },
-    { path: "/:userName/deleteaccount", component: DeletePage },
+    { path: "/deleteaccount", component: DeletePage },
     { path: "/createaccount", component: CreatePage },
-    { path: "/:userName/createpost", component: CreatePostPage },
-    { path: "/dashboard/:username", component: DashboardPage },
-    { path: "/post/:meetingId/rating/:userName", component: MeetingRating },
-    { path: "/users/:username", component: UserList },
-    { path: "/profile/:usernameLooking/:usernamePassed", exact: true, component: ProfilePage },
+    { path: "/createpost", component: CreatePostPage },
+    { path: "/dashboard", component: DashboardPage },
+    { path: "/post/:meetingId/rating", component: MeetingRating },
+    { path: "/users", component: UserList },
+    { path: "/profile/:usernamePassed", exact: true, component: ProfilePage },
     { path: "/", exact: true, component: LoginPage },
-    { path: "/post/:postId/:username", exact: true, component: PostDisplayPage }
+    { path: "/post/:postId", exact: true, component: PostDisplayPage }
 ];
 
 export default routes;

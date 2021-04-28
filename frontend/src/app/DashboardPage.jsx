@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Post from './../models/Post';
 import PostDisplay from './PostDisplay';
 import {EditPostDisplay} from './EditPostDisplay';
-import {Link, useParams} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import { PostsRepository } from '../api/PostRepository';
 import { AccountsRepository } from '../api/AccountRepository';
 import { SearchBar } from './SearchBar';
@@ -13,7 +13,6 @@ export const DashboardPage = (props) => {
     const [search, setSearch] = useState(false);
     const [myPosts, setMyPosts] = useState(false);
     const [refresh, setRefresh] = useState(true);
-    const params = useParams();
     const postRepo = new PostsRepository();
     const accountRepo = new AccountsRepository();
 
@@ -57,7 +56,7 @@ export const DashboardPage = (props) => {
     const [type, setType] = useState();
     useEffect(() =>{
         if(!type)
-            accountRepo.getCompany(params.username).then(data =>{
+            accountRepo.getCompany(window.userName).then(data =>{
             if(data.length !== 0){
                 setType("company");
             }
@@ -66,6 +65,10 @@ export const DashboardPage = (props) => {
             }
         });
     });
+
+    if (!window.userName) {
+        return <Redirect to="/login" />
+    }
 
     const handleSearch = (x, post) => {
         setSearch(true);
@@ -102,7 +105,7 @@ export const DashboardPage = (props) => {
         setMyPosts(true);
         setPosts([]);
         setMeetings([]);
-        postRepo.getMyPosts(params.username).then((x) => {
+        postRepo.getMyPosts(window.userName).then((x) => {
             x.forEach(postDB => {
                 accountRepo.getCompanyByID(postDB.companyID).then( account =>
                     {
@@ -113,7 +116,7 @@ export const DashboardPage = (props) => {
                 )
             });
         });
-        postRepo.getMyMeetings(params.username).then((x) =>{
+        postRepo.getMyMeetings(window.userName).then((x) =>{
             x.forEach(meetDB => {
                 accountRepo.getCompanyByID(meetDB.hostCompanyID).then( account =>
                     {
@@ -133,14 +136,14 @@ export const DashboardPage = (props) => {
         <div className="colorBlue pb-5">
         {
             type === "company" ? <>
-                <Link to={"/" + params.username + "/createpost"} 
+                <Link to="/createpost" 
                 className="btn btn-success float-right mr-3">Create Post</Link>
                 <button className="btn btn-info float-right mr-3" onClick={() => handleViewMine()}>My Posts</button>
                 </>
             : <>
                 <button className="btn btn-success float-left ml-3" onClick={() => setSearch(true)}>Search Posts & Events</button>
-                <Link to={"/users/" + params.username} className="btn btn-info float-left ml-3">Connect With Others</Link>
-                <Link to={"/profile/" + params.username + "/" + params.username} 
+                <Link to="/users" className="btn btn-info float-left ml-3">Connect With Others</Link>
+                <Link to={"/profile/" + window.userName} 
                 className="btn btn-info float-right mr-3">Profile</Link>
                 </>
         }
@@ -168,7 +171,7 @@ export const DashboardPage = (props) => {
                     <center><h4>No posts to display.</h4></center>
                 </div> 
                 : posts.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={window.userName} key={i}/>)
             }
             </div>
             <div className="col">
@@ -179,7 +182,7 @@ export const DashboardPage = (props) => {
                     <center><h4>No meetings to display.</h4></center>
                 </div> 
                 : meetings.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={window.userName} key={i}/>)
             }
             </div>
             </>
@@ -195,7 +198,7 @@ export const DashboardPage = (props) => {
                         <center><h4>No posts to display.</h4></center>
                     </div> 
                     : posts.map((x, i) => 
-                    <EditPostDisplay post={x} userName={params.username} key={i}/>)
+                    <EditPostDisplay post={x} userName={window.userName} key={i}/>)
                 }
                 </div>
                 <div className="col">
@@ -205,7 +208,7 @@ export const DashboardPage = (props) => {
                         <center><h4>No meetings to display.</h4></center>
                     </div> 
                     : meetings.map((x, i) => 
-                        <EditPostDisplay post={x} userName={params.username} key={i}/>)
+                        <EditPostDisplay post={x} userName={window.userName} key={i}/>)
                 }
                 </div>
                 </>
@@ -223,11 +226,11 @@ export const DashboardPage = (props) => {
             }
             {   posts.length !== 0 &&
                 posts.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={window.userName} key={i}/>)
             }
             {   meetings.length !== 0 && 
                 meetings.map((x, i) => 
-                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={params.username} key={i}/>)
+                    <PostDisplay post={x} headerLink={x.type === "meeting" && type !== "company"} hideButtons={type === "company"} userName={window.userName} key={i}/>)
             }
             </>
         }

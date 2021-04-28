@@ -35,6 +35,9 @@ export class DeletePage extends React.Component{
   }
 
   render(){
+    if (!window.userName) {
+      return <Redirect to="/login" />
+    }
     const deleted = this.state.deleted;
     if(deleted){
       return <Redirect to="/login"/>
