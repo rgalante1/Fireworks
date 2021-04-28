@@ -1,6 +1,6 @@
 import './ProfilePage.css';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { AccountsRepository } from '../api/AccountRepository'
 import { friendRequest } from '../models/friendRequest'
 
@@ -306,6 +306,10 @@ export default class ProfilePage extends React.Component {
     }
 
     render() {
+        if (!window.userName) {
+            return <Redirect to="/login" />
+        }
+
         return <>
             <div className="pb-5">
                 <div className="titleStuff">
@@ -320,7 +324,7 @@ export default class ProfilePage extends React.Component {
                 <div className="row">
                     <div className="col">
                         <div className="m-2">
-                            <Link to={"/dashboard/" + this.state.UserNameLooking} className="btn btn-primary btn-lg buttonLink">Return to Dash</Link>
+                            <Link to="/dashboard" className="btn btn-primary btn-lg buttonLink">Return to Dash</Link>
                         </div>
                     </div>
                     <div className="col">
@@ -336,7 +340,7 @@ export default class ProfilePage extends React.Component {
                             <div className="col">
                                 <div className="m-2">
 
-                                    <Link to={"/" + this.state.UserNameLooking + "/deleteaccount"} className="btn btn-danger btn-lg buttonLink">Delete Account</Link>
+                                    <Link to="/deleteaccount" className="btn btn-danger btn-lg buttonLink">Delete Account</Link>
                                 </div>
                             </div>
                             <div className="col">
@@ -398,7 +402,7 @@ export default class ProfilePage extends React.Component {
                                                         }
                                                     </div>
                                                     <div className="col mx-auto">
-                                                        <div className="well mx-auto"><Link to={"/profile/" + this.state.UserNameLooking + "/" + x.senderUsername} type="button" className="btn btn-success w-75 mx-auto" >View Profile</Link></div>
+                                                        <div className="well mx-auto"><Link to={"/profile/" + x.senderUsername} type="button" className="btn btn-success w-75 mx-auto" >View Profile</Link></div>
                                                     </div>
                                                 </div>
                                                 <div className="clearfix" />
@@ -540,14 +544,14 @@ export default class ProfilePage extends React.Component {
     }
 
     componentDidMount() {
-        this.initializeProfile(this.props.match.params.usernameLooking, this.props.match.params.usernamePassed);
+        this.initializeProfile(window.userName, this.props.match.params.usernamePassed);
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.match.params.usernamePassed !== this.props.match.params.usernamePassed) {
             this.setState(this.baseState);
             this.setState({ friendsAlready: false });
-            this.initializeProfile(this.props.match.params.usernameLooking, this.props.match.params.usernamePassed);
+            this.initializeProfile(window.userName, this.props.match.params.usernamePassed);
         }
     }
 }

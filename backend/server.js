@@ -554,11 +554,9 @@ app.post('/createaccount', function (req, res) {
 	//console.log(CompanyData);
 	
 	if (CompanyData) {
-		connection.query("INSERT INTO user (firstName,lastName,username,password) VALUES (?,?,?,?)", [FirstName, LastName, UserName, PassWord], function (err, result, fields) {
+		connection.query("INSERT INTO company (companyName, description, password) VALUES (?, ?, ?)", [CompanyName, CompanyDescription, PassWord], function (err, result, fields) {
 			if (err) throw err;
-			connection.query("INSERT INTO company (companyName, description, password) VALUES (?, ?, ?)", [CompanyName, CompanyDescription, PassWord], function (err2, result2, fields2) {
-				res.end(JSON.stringify(result)); // Result in JSON format
-			});
+			res.end(JSON.stringify(result)); // Result in JSON format
 		});
 	}
 	else {

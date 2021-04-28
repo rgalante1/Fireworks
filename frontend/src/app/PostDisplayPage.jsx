@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { Redirect, useParams } from 'react-router';
 import { PostsRepository } from '../api/PostRepository';
 import Post from '../models/Post';
 import PostDisplay from './PostDisplay';
@@ -16,7 +16,7 @@ export const RatingDisplay = (props) => {
 }
 
 export const PostDisplayPage = (props) => {
-    let { postId, username } = useParams();
+    let { postId } = useParams();
     const [ post, setPost ] = useState(undefined);
     const [ ratings, setRatings ] = useState([]);
 
@@ -34,10 +34,14 @@ export const PostDisplayPage = (props) => {
         });
     }, [ postId ]);
 
+    if (!window.userName) {
+        return <Redirect to="/login" />
+    }
+
     if (post) {
         return (
             <div id="postDisplayPage">
-                <PostDisplay post={post} userName={username} />
+                <PostDisplay post={post} userName={window.userName} />
                 {
                     ratings.map(x => {
                         return (

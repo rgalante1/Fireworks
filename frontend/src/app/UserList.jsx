@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Link
+    Link, Redirect
 } from "react-router-dom";
 import { AccountsRepository } from '../api/AccountRepository';
 import './UserList.css';
@@ -62,10 +62,14 @@ export default class UserList extends React.Component {
     }
 
     render() {
+        if (!window.userName) {
+            return <Redirect to="/login" />
+        }
+
         return <>
             <div className="colorBlue">
-                <Link to={"/profile/" + this.props.match.params.username + "/" + this.props.match.params.username} className="btn btn-info float-right mr-3">Profile</Link>
-                <Link to={"/dashboard/" + this.props.match.params.username} className="btn btn-info float-right mr-3">Dashboard</Link>
+                <Link to={"/profile/" + window.userName} className="btn btn-info float-right mr-3">Profile</Link>
+                <Link to="/dashboard" className="btn btn-info float-right mr-3">Dashboard</Link>
                 <div className="row w-50">
                     <div className="col-8">
                         <input type="text" className="form-control" id="searchbar" value={this.state.theSearch} placeholder="Search..." onChange={this.handleChange} onKeyPress={this.handleKeyPress}/>
@@ -91,7 +95,7 @@ export default class UserList extends React.Component {
                                     <p className="text-center pb-1 mb-0">{x.firstName + " " + x.lastName}</p>
                                 </div>
                                 <div className="card-body">
-                                    <Link to={"/profile/" + this.props.match.params.username + "/" + x.username} className="btn btn-success w-100">Profile</Link>
+                                    <Link to={"/profile/" + x.username} className="btn btn-success w-100">Profile</Link>
                                 </div>
                             </div>
                         </div>

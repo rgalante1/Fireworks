@@ -38,7 +38,7 @@ class LoginAccount extends React.Component {
             this.setState({ LoggedStatus: false });
           }
         });
-    }else{
+    } else {
       this.setState({ LoggedStatus: false });
     }
     event.preventDefault();
@@ -46,7 +46,7 @@ class LoginAccount extends React.Component {
 
   render() {
     if (window.userName) {
-      return <><Redirect to={"/dashboard/" + window.userName} /></>
+      return <><Redirect to="/dashboard" /></>
     } else if (this.state.LoggedStatus && !this.state.LinkStatus) {
       return <>
         <div className="logIn container my-5 py-4">
@@ -102,7 +102,7 @@ class LoginAccount extends React.Component {
       </>
     } else if (this.state.LinkStatus) {
       return <>
-        <Redirect to={"/dashboard/" + this.state.UserName} />
+        <Redirect to="/dashboard" />
       </>
     }
 

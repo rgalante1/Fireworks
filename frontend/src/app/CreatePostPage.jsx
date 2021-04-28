@@ -52,9 +52,12 @@ export class CreatePostPage extends React.Component{
   }
 
   render() {
+    if (!window.userName) {
+      return <Redirect to="/login" />
+    }
     const submitted = this.state.submit;
     if(submitted){
-      return <Redirect to={"/dashboard/" + this.state.user} />
+      return <Redirect to="/dashboard" />
     }
     return (<>
       <div className="container my-5">
@@ -75,7 +78,7 @@ export class CreatePostPage extends React.Component{
           </label> {
             this.state.meeting && <Meeting onChange={ (event) => this.handleChange(event) }/>
           }
-          <Link to={"/dashboard/" + this.state.user} id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
+          <Link to="/dashboard" id="cancel" className="col btn btn-secondary rounded-pill my-2">Cancel</Link>
           <input type="submit" value="Create Post" id="submit" className="col btn btn-success rounded-pill mt-2"/>
         </form>
       </div>
@@ -83,7 +86,10 @@ export class CreatePostPage extends React.Component{
     )
   }
   componentDidMount() {
-    let userName = this.props.match.params.userName;
+    if (!window.userName) {
+      return;
+    }
+    let userName = window.userName;
     if(userName){
       this.setState({user: userName});
     }
