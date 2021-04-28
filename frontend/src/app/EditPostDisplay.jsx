@@ -20,7 +20,8 @@ export class EditPostDisplay extends React.Component{
       submit: false,
       company: props.post.username,
       link: props.post.meetingLink,
-      id: props.post.id
+      id: props.post.id,
+      deleted: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,12 +30,16 @@ export class EditPostDisplay extends React.Component{
 
   handleDelete(event){
     if(this.state.meeting){
-      this.postRepo.deleteMeeting(this.state.id);
-      alert("deleted");
+      this.postRepo.deleteMeeting(this.state.id).then( x =>{
+          alert("deleted");
+          this.setState({deleted: true});
+      });
     }
     else{
-      this.postRepo.deletePost(this.state.id);
-      alert("deleted");
+      this.postRepo.deletePost(this.state.id).then( x=>{
+        alert("deleted");
+        this.setState({deleted: true});
+      });
     }
     event.preventDefault();
   }
@@ -68,6 +73,7 @@ export class EditPostDisplay extends React.Component{
 
   render() {
     return (<>
+    { !this.state.deleted &&
       <div className="postDisplay container mt-1 mb-1 py-4">
         <form  className="card container py-4" id="createPost">
           <label htmlFor="title" >
@@ -115,6 +121,7 @@ export class EditPostDisplay extends React.Component{
           </>}
         </form>
       </div>
+      }
       </>
     )
   }
