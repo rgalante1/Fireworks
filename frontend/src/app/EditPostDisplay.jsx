@@ -31,13 +31,11 @@ export class EditPostDisplay extends React.Component{
   handleDelete(event){
     if(this.state.meeting){
       this.postRepo.deleteMeeting(this.state.id).then( x =>{
-          alert("deleted");
           this.setState({deleted: true});
       });
     }
     else{
       this.postRepo.deletePost(this.state.id).then( x=>{
-        alert("deleted");
         this.setState({deleted: true});
       });
     }
