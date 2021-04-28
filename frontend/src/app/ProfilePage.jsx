@@ -146,7 +146,7 @@ export default class ProfilePage extends React.Component {
                                         <div className="form-group">
                                             <label htmlFor="ProfilePhotoURL" className="labels">Profile Photo URL:</label><br />
                                             <input type="form-control" className="form-control border border-secondary" id="ProfilePhotoURL" name="ProfilePhotoURL" value={this.state.ProfilePhotoURL} onChange={this.handleChange} />
-                                            <small id="ProfilePhotoURL" className="form-text text-muted">Please use a link, such as an IMGUR link.</small>
+                                            <small id="ProfilePhotoURL" className="form-text text-muted">Please use a link that ends in .jpg</small>
                                         </div>
 
                                         <img src={this.imageExists(this.state.ProfilePhotoURL) ? this.state.ProfilePhotoURL : "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png"} alt="ERROR" className="center-block rounded-circle" height="100" width="100" />

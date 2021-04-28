@@ -160,10 +160,11 @@ export const DashboardPage = (props) => {
             </div>
         }
         <div className="clear-fix" />
-        <div className="row">
+        <div className="row mt-2">
         {
             (!myPosts && !search) && <>
             <div className="col">
+                <h1 className="text-center">Posts</h1>
             { posts.length === 0 ? 
                 <div className="dashboardPage">
                     <br></br>
@@ -174,6 +175,7 @@ export const DashboardPage = (props) => {
             }
             </div>
             <div className="col">
+                <h1 className="text-center">Meetings</h1>
             {   meetings.length === 0 ? 
                 <div className="dashboardPage">
                     <br></br>
